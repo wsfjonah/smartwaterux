@@ -1,0 +1,26 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{ vm.header }}</h3>
+</div>
+<div class="modal-body canvas-modal">
+	<table class="table table-bordered" ng-if="!(vm.table.optional | isObjectEmpty)">
+		<tr>
+			<th colspan="2">{{ "site_location_table_info_optional" | translate }}</th>
+		</tr>
+		<tr ng-repeat="(key, value) in vm.table.optional">
+			<td width="200">{{ key }}</td>
+			<td>{{ value }}</td>
+		</tr>
+	</table>
+	<table class="table table-bordered" ng-if="!(vm.table.tag | isObjectEmpty)">
+		<tr>
+			<th colspan="2">{{ "site_location_table_info_tag" | translate }}</th>
+		</tr>
+		<tr ng-repeat="(key, value) in vm.table.tag">
+			<td width="200">{{ key }}</td>
+			<td>{{ value }}</td>
+		</tr>
+	</table>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-click="vm.ok()">{{'site_location_modal_close_btn' | translate}}</button>
+</div>

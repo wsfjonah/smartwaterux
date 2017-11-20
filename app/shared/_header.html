@@ -1,0 +1,58 @@
+<nav class="navbar navbar-default navbar-fixed-top navbar-template">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">Brand</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav" ng-if="vm.isAuthenticated()">
+				<li class="dropdown">
+					<a href="JavaScript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span translate="site_menu_remote"></span> <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li ng-class="{ active: vm.isCurrentPath('/location') }"><a href="#!location" translate="site_menu_location"></a></li>
+						<li ng-class="{ active: vm.isCurrentPath('/site') }"><a href="#!site" translate="site_menu_table"></a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="JavaScript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span translate="site_menu_city_view"></span> <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#" translate="site_menu_city_overview"></a></li>
+						<li><a href="#" translate="site_menu_city_quality"></a></li>
+						<li><a href="#" translate="site_menu_city_pressure"></a></li>
+						<li><a href="#" translate="site_menu_city_anomaly"></a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<!-- lang -->
+				<li class="dropdown dropdown-lang">
+					<a href="JavaScript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					<img ng-src="{{ vm.currLang }}"/></a>
+					<ul class="dropdown-menu">
+						<li><a href ng-click="vm.changeLanguage('en')"><img ng-src="{{ vm.flag_img.en }}" class="m-r-10" /> English</a></li>
+						<li><a href ng-click="vm.changeLanguage('cn')"><img ng-src="{{ vm.flag_img.cn }}" class="m-r-10" /> Chinese</a></li>
+					</ul>
+				</li>
+				<!-- user -->
+				<li class="dropdown" ng-if="vm.isAuthenticated()">
+					<a href="JavaScript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Wesley <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Action</a></li>
+						<li><a href="#">Another action</a></li>
+						<li><a href="#">Something else here</a></li>
+						<li role="separator" class="divider"></li>
+						<li><a href="#" ng-click="vm.logout(item, index)">Logout</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>

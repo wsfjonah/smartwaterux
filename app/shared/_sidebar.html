@@ -1,0 +1,47 @@
+<!-- Sidebar scroll-->
+<div class="scroll-sidebar">
+	<!-- User profile -->
+	<div class="user-profile">
+		<!-- User profile image -->
+		<div class="profile-img"><img src="assets/images/project.png" alt="user" /></div>
+		<!-- User profile text-->
+		<div class="profile-text">
+			<h5>{{ vm.userInfo.current_project.name }}</h5>
+			<a href="JavaScript:void(0);" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><i class="ti-layers"></i></a>
+			<div class="dropdown-menu animated flipInY">
+				<project-dropdown options="vm.userInfo"> </project-dropdown>
+			</div>
+		</div>
+	</div>
+	<!-- End User profile text-->
+	<!-- Sidebar navigation-->
+	<nav class="sidebar-nav">
+		<ul id="sidebarnav">
+			<li class="nav-devider"></li>
+			<li class="nav-small-cap" translate="site_menu_label"></li>
+			<li>
+				<a class="waves-effect waves-dark" href="#!main" aria-expanded="false">
+					<i class="ti-package"></i><span class="hide-menu" translate="site_menu_main"></span>
+				</a>
+			</li>
+			<li> <a class="has-arrow waves-effect waves-dark" href="" aria-expanded="false"><i class="ti-shield"></i><span class="hide-menu" translate="site_menu_remote"></span></a>
+				<ul aria-expanded="false" class="collapse">
+					<li ng-class="{ active: vm.isCurrentPath('/location') }"><a href="#!location" translate="site_menu_location"></a></li>
+					<li ng-class="{ active: vm.isCurrentPath('/site') }"><a href="#!site" translate="site_menu_table"></a></li>
+				</ul>
+			</li>
+			<li> <a class="has-arrow waves-effect waves-dark" href="JavaScript:void(0);" aria-expanded="false"><i class="ti-location-pin"></i><span class="hide-menu" translate="site_menu_network"></span></a>
+				<ul aria-expanded="false" class="collapse">
+					<li><a href="#!gis" translate="site_menu_city_overview"></a></li>
+					<li><a href="#!network-condition" translate="site_menu_network_cond"></a></li>
+					<li><a href="#!network-alert" translate="site_menu_network_alert"></a></li>
+					<!-- <li><a href="#!city-quality" translate="site_menu_city_quality"></a></li>
+					<li><a href="#!city-pressure" translate="site_menu_city_pressure"></a></li>
+					<li><a href="#!city-anomaly" translate="site_menu_city_anomaly"></a></li> -->
+				</ul>
+			</li>
+		</ul>
+	</nav>
+	<!-- End Sidebar navigation -->
+</div>
+<!-- End Sidebar scroll-->

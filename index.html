@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="xProject" ng-controller="layoutCtrl as vm" ng-class="vm.layoutViewClass()">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>Banxin</title>
+		<link href="assets/css/font-awesome.min.css" rel="stylesheet">
+		<!-- Bootstrap -->
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+		<link href="assets/css/app.css" rel="stylesheet">
+		<link href="assets/css/theme.css" id="theme" rel="stylesheet">
+		<link href="assets/css/angular-material.css" rel="stylesheet">
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body class="fix-header fix-sidebar card-no-border" id="xController">
+		<div class="pace-layer"></div>
+		<div id="main-wrapper">
+			<!-- topbar header -->
+			<header class="topbar" ng-include="'app/shared/_topbar.html'" ng-if="vm.isAuthenticated()"></header>
+			<!-- left sidebar -->
+			<aside class="left-sidebar" ng-include="'app/shared/_sidebar.html'" ng-if="vm.isAuthenticated()"></aside>
+	        		<!-- page -->
+			<div class="page-wrapper">
+				<div class="view-container" ng-view></div>
+			</div>
+		</div>
+	</body>
+	<!-- JAVASCRIPT RELATED -->
+	<script src="dist/jquery-lib.min.js"></script>
+	<script src="assets/js/canvasjs.min.js"></script>
+	<script src="assets/js/moment.min.js"></script>
+	<script src="assets/js/daterangepicker.min.js"></script>
+	<!-- ANGULAR RELATED -->
+	<script src="dist/angular-lib.min.js"></script>
+	<!-- map -->
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+	<!-- angular app -->
+	<script src="app/js/env.js"></script>
+	<script src="dist/angular-app.min.js"></script>
+  	<!-- custom -->
+  	<script src="dist/jquery-app.min.js"></script>
+</html>
+
