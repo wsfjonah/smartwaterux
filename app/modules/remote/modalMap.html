@@ -3,7 +3,6 @@
 		<h3 class="modal-title">{{ vm.header }}</h3>
 	</div>
 	<div class="modal-body canvas-modal">
-		<!-- <xpro-map info="wesley" options="vm.siteMapOptions"></xpro-map> -->
 		<div id="allmap"></div>
 	</div>
 	<div class="modal-footer">
@@ -17,26 +16,4 @@
     height: 300px;
 }
 </style>
-<script type="text/javascript">
-	//百度地图API功能
-	/*function loadJScript() {
-		var script = document.createElement("script");
-		script.type = "text/javascript";
-		script.src = "http://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4&callback=init";
-		document.body.appendChild(script);
-		console.log('load js');
-	}
-	function init() {
-		var map = new BMap.Map("allmap");            // 创建Map实例
-		var point = new BMap.Point(116.404, 39.915); // 创建点坐标
-		map.centerAndZoom(point,15);
-		map.enableScrollWheelZoom();                 //启用滚轮放大缩小
-		console.log('loaded init');
-	}
-	angular.element(document).ready(function ($window) {
-		loadJScript();
-		console.log('init');
-	});*/
-	  //异步加载地图
-</script>
 

@@ -7,6 +7,9 @@
 	//API Base url
 	window.__env.baseUrl = "https://101.132.100.22/api/"; //main api path
 
+	//project folder name
+	window.__env.folder = "";
+
 	// API url
 	window.__env.userLoginUrl = window.__env.baseUrl+'user/login';
 	window.__env.siteSearchUrl = window.__env.baseUrl+'site/search';
@@ -19,14 +22,14 @@
 	window.__env.eventDetailsUrl = window.__env.baseUrl+'tsevent/get';
 
 	//modal
-	window.__env.modalTimeSeriesUrl = '/app/modules/remote/modalTimeSeries.html';
-	window.__env.modalEventDetailsUrl = '/app/modules/remote/modalEventDetails.html';
-	window.__env.modalHighRateUrl = '/app/modules/remote/modalHighRate.html';
-	window.__env.modalInformationTableInfo = '/app/modules/remote/modalDetails.html';
-	window.__env.modalInformationTableMap = '/app/modules/remote/modalMap.html';
+	window.__env.modalTimeSeriesUrl = window.__env.folder+'/app/modules/remote/modalTimeSeries.html';
+	window.__env.modalEventDetailsUrl = window.__env.folder+'/app/modules/remote/modalEventDetails.html';
+	window.__env.modalHighRateUrl = window.__env.folder+'/app/modules/remote/modalHighRate.html';
+	window.__env.modalInformationTableInfo = window.__env.folder+'/app/modules/remote/modalDetails.html';
+	window.__env.modalInformationTableMap = window.__env.folder+'/app/modules/remote/modalMap.html';
 
 	//locale folder
-	window.__env.localeFolderUrl = '/app/translations/locale-';
+	window.__env.localeFolderUrl = window.__env.folder+'/app/translations/locale-';
 
 	//ignore auth Interceptor request
 	window.__env.ignoreInterceptorRequest = ['uib/template/modal/window.html', window.__env.baseUrl+'user/login'];

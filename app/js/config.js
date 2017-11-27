@@ -8,7 +8,7 @@
 	function appConfig($routeProvider) {
 		$routeProvider
 		.when('/main', {
-			templateUrl: '/app/modules/main/main.html',
+			templateUrl: __env.folder+'/app/modules/main/main.html',
 			controller: 'mainController as vm',
 			restrictions: {
 				ensureAuthenticated: true,
@@ -35,7 +35,7 @@
 			}
 		})
 		.when('/location', {
-			templateUrl: '/app/modules/remote/location.html',
+			templateUrl: __env.folder+'/app/modules/remote/location.html',
 			controller: 'locationController as vm',
 			restrictions: {
 				ensureAuthenticated: true,
@@ -61,7 +61,7 @@
 			},
 		})
 		.when('/site', {
-			templateUrl: '/app/modules/remote/site.html',
+			templateUrl: __env.folder+'/app/modules/remote/site.html',
 			controller: 'siteTableController as vm',
 			restrictions: {
 				ensureAuthenticated: true,
@@ -93,7 +93,7 @@
 			},
 		})
 		.when('/gis', {
-			templateUrl: '/app/modules/network/gis.html',
+			templateUrl: __env.folder+'/app/modules/network/gis.html',
 			controller: 'gisController as vm',
 			restrictions: {
 				ensureAuthenticated: true,
@@ -114,7 +114,7 @@
 			}
 		})
 		.when('/network-condition', {
-			templateUrl: '/app/modules/network/netcondition.html',
+			templateUrl: __env.folder+'/app/modules/network/netcondition.html',
 			controller: 'networkCondtionController as vm',
 			restrictions: {
 				ensureAuthenticated: true,
@@ -132,7 +132,7 @@
 			}
 		})
 		.when('/network-alert', {
-			templateUrl: '/app/modules/network/netalert.html',
+			templateUrl: __env.folder+'/app/modules/network/netalert.html',
 			controller: 'networkAlertController as vm',
 			restrictions: {
 				ensureAuthenticated: true,
@@ -150,7 +150,7 @@
 			}
 		})
 		.when('/login', {
-			templateUrl: '/app/modules/auth/login.html',
+			templateUrl: __env.folder+'/app/modules/auth/login.html',
 			controller: 'authLoginController',
 			controllerAs: 'authLoginCtrl',
 			restrictions: {

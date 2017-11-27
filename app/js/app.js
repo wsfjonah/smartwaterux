@@ -23,7 +23,7 @@ var app = angular
 app.constant('__env', env);
 app.controller('layoutCtrl', function layoutCtrl ($scope, $translate, authService, $location, $rootScope, $window) {
 	var vm = this;
-	var flag_path = "/assets/img/flags/";
+	var flag_path = __env.folder+"/assets/img/flags/";
 	var default_userInfo = {
 		username: "",
 		token: "",
