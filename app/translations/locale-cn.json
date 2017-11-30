@@ -10,7 +10,7 @@
 	"site_menu_location" : "地理位置",
 	"site_menu_table" : "信息",
 	"site_menu_city_view" : "管网安全",
-	"site_menu_city_overview" : "(GIS)",
+	"site_menu_city_overview" : "GIS",
 	"site_menu_network" : "管网安全",
 	"site_menu_network_cond" : "管网状态",
 	"site_menu_network_alert" : "管网预警",

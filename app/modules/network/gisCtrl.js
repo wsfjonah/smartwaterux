@@ -73,16 +73,20 @@
 			});
 		}
 		function getPipeData(){
-			var query = {"layer":"n1"};
+			//var query = {"layer":"n1"};
+			var query = {};
 			var obj = {};
 			apiService.pipeApi($window.encodeURIComponent(JSON.stringify(query))).then(function(response){
 				angular.forEach(response.data, function(row){
+					console.log("get pipe: "+row);
 					obj = {};
-					var color = "blue";
-					var weight = row.diameter/50;
-					if(weight<=0){
+					var color = "#08088A";
+					var weight = row.diameter/250;
+					if(weight <= 3) {
+						color = "#013ADF";
+					}if(weight < 1) {
 						weight = 1;
-						color = "red";
+						color = "#A9A9F5";
 					}
 					obj.color = color;
 					obj.weight = weight;

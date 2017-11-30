@@ -32,6 +32,8 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="col-lg-3">
 			<div class="card">
 				<div class="card-body">
 					<h4 class="card-title">项目类型</h4>
@@ -41,6 +43,19 @@
 						</div>
 						<div class="ml-auto">
 							<div id="text_projectcat"><h4>供水管网</h4></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">项目状态</h4>
+					<div class="d-flex">
+						<div class="align-self-center">
+							<h4 class="font-medium m-b-0"><i class="ti-angle-up text-danger"></i> </h4>
+						</div>
+						<div class="ml-auto">
+							<div id="text_projectloc"><h4>试运行</h4></div>
 						</div>
 					</div>
 				</div>
@@ -62,19 +77,6 @@
 			</div>
 			<div class="card">
 				<div class="card-body">
-					<h4 class="card-title">项目状态</h4>
-					<div class="d-flex">
-						<div class="align-self-center">
-							<h4 class="font-medium m-b-0"><i class="ti-angle-up text-danger"></i> </h4>
-						</div>
-						<div class="ml-auto">
-							<div id="text_projectloc"><h4>试运行</h4></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-body">
 					<h4 class="card-title">客户名称</h4>
 					<div class="d-flex">
 						<div class="align-self-center">
@@ -82,35 +84,6 @@
 						</div>
 						<div class="ml-auto">
 							<div id="text_projectcat"><h4>上海临港给排水公司</h4></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-2">
-			<div class="card">
-				<div class="card-body">
-					<h4 class="card-title">传感器</h4>
-					<div class="d-flex">
-						<div class="align-self-center">
-							<h4 class="font-medium m-b-0"><i class="ti-angle-up text-success"></i> </h4>
-						</div>
-						<div class="ml-auto">
-							<div id="text_sensorcount"><h4>水压 22</h4><h4>流量 0</h4><h4>水质 0</h4></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-body">
-					<h4 class="card-title">传感器状态</h4>
-					<div class="d-flex">
-						<div class="align-self-center">
-							<h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> </h4>
-						</div>
-						<div class="ml-auto" align="right">
-							<div id="text_sensorcount"><h4>20/22</h4></div>
-							<div id="spark_sensorquality"></div>
 						</div>
 					</div>
 				</div>
@@ -180,6 +153,29 @@
 		</div>
 	</div>
 	<div class="row">
+		<div class="col-lg-4 col-xlg-9">
+			<!-- chart -->
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex flex-wrap">
+						<div>
+							<h4 class="card-title">传感器数据质量</h4>
+							<h6 class="card-subtitle">全区域每月传感器数据质量对比</h6>
+						</div>
+						<div class="ml-auto align-self-center">
+							<ul class="list-inline m-b-0">
+								<li>
+									<h6 class="text-muted text-success"><i class="fa fa-circle font-10 m-r-10"></i><font color="blue" style="font-weight:bold">Data Quality</font></h6>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div id="spark_sensormnthQuality" class="spark_sensormnthQuality ct-charts" style="height:200px!important;; width:100%!important;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
 		<div class="col-lg-4 col-xlg-5">
 			<!-- chart -->
 			<div class="card">
@@ -197,7 +193,7 @@
 							</ul>
 						</div>
 					</div>
-					<div id="chart-daily-pressure" class="chart-daily-pressure-daily-pressure ct-charts" style="height:200px!important;; width:100%!important;"></div>
+					<div id="chart-daily-pressure" class="chart-daily-pressure ct-charts" style="height:200px!important;; width:100%!important;"></div>
 				</div>
 			</div>
 		</div>
@@ -217,13 +213,13 @@
 							</ul>
 						</div>
 					</div>
-					<div id="chart-weekly-pressure" class="chart-daily-pressure-daily-pressure ct-charts" style="height:200px!important;; width:100%!important;"></div>
+					<div id="chart-weekly-pressure" class="chart-daily-pressure ct-charts" style="height:200px!important;; width:100%!important;"></div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-6 col-xlg-10">
+		<div class="col-lg-6 col-xlg-6">
 			<!-- chart -->
 			<div class="card">
 				<div class="card-body">
@@ -240,7 +236,36 @@
 							</ul>
 						</div>
 					</div>
-					<div id="chart-transient" class="chart-transient ct-charts" style="height:280px!important;; width:100%!important;"></div>
+					<div id="chart-transient" class="chart-transient ct-charts" style="height:250px!important;; width:100%!important;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6 col-xlg-3">
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">传感器</h4>
+					<div class="d-flex">
+						<div class="align-self-center">
+							<h4 class="font-medium m-b-0"><i class="ti-angle-up text-success"></i> </h4>
+						</div>
+						<div class="ml-auto">
+							<div id="text_sensorcount"><h4>水压 22</h4><h4>流量 0</h4><h4>水质 0</h4></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">传感器状态</h4>
+					<div class="d-flex">
+						<div class="align-self-center">
+							<h4 class="font-medium m-b-0"><i class="ti-angle-down text-danger"></i> </h4>
+						</div>
+						<div class="ml-auto" align="right">
+							<div id="text_sensorcount"><h4>20/22</h4></div>
+							<div id="spark_sensorquality"></div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

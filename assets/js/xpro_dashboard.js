@@ -142,6 +142,15 @@ xpro.dashboard = (function () {
 			align: "right",
 			sliceColors: ['#2995C4','#EE684B']
 		});
+		$('#spark_sensormnthQuality').sparkline([ [1, 0], [0.8,0.2], [0.8,0.2], [0.8,0.2], [0.7,0.3], [0.7,0.3], [0.66,0.34], [0.55,0.45], [0.3,0.7]], {
+			type: 'bar',
+			width: '100%',
+			height: '200',
+			barWidth: '40',
+			resize: true,
+			barSpacing: '50',
+			barColor: '#2995C4'
+		});
 		$('#spark9').sparkline([ 0, 5, 6, 10, 9, 12, 4, 9], {
 			type: 'bar',
 			width: '100%',
