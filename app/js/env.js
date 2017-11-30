@@ -5,10 +5,10 @@
 	//Assets version
 	window.__env.assetVersion = "1.0";
 	//API Base url
-	window.__env.baseUrl = "https://101.132.100.22/api/"; //main api path
+	window.__env.baseUrl = "/api/"; //main api path
 
 	//project folder name
-	window.__env.folder = "";
+	window.__env.folder = "/smartwater";
 
 	// API url
 	window.__env.userLoginUrl = window.__env.baseUrl+'user/login';
