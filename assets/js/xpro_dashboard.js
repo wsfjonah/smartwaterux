@@ -133,6 +133,15 @@ xpro.dashboard = (function () {
 		transientChart.render();
 	};
 	my.sparkline = function(){
+		$('#spark_pipecomponent').sparkline([ 195, 55, 22], {
+			type: 'pie',
+			width: '40%',
+			height: '60',
+			barWidth: '4',
+			resize: true,
+			align: "right",
+			sliceColors: ['#2995C4','#EE684B','orange']
+		});
 		$('#spark_sensorquality').sparkline([ 22, 2], {
 			type: 'pie',
 			width: '40%',
@@ -145,7 +154,26 @@ xpro.dashboard = (function () {
 		$('#spark_sensormnthQuality').sparkline([ [1, 0], [0.8,0.2], [0.8,0.2], [0.8,0.2], [0.7,0.3], [0.7,0.3], [0.66,0.34], [0.55,0.45], [0.3,0.7]], {
 			type: 'bar',
 			width: '100%',
-			height: '200',
+			height: '100',
+			barWidth: '40',
+			resize: true,
+			barSpacing: '50',
+			barColor: '#2995C4'
+		});
+		$('#spark_pipepressurequality').sparkline([0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99], {
+			type: 'line',
+			width: '100%',
+			height: '100',
+			barWidth: '40',
+			resize: true,
+			barSpacing: '50',
+			barColor: 'red'
+		});
+		$('#spark_pipepressurequality').sparkline([0.998, 0.9974, 0.985, 0.976, 0.965, 0.99, 0.996, 0.9975, 0.9945, 0.968], {
+			type: 'line',
+			composite: true,
+			width: '100%',
+			height: '100',
 			barWidth: '40',
 			resize: true,
 			barSpacing: '50',
