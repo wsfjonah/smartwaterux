@@ -324,7 +324,7 @@
 				chkHeatMap.type = "checkbox";
 				chkHeatMap.setAttribute("name","toggle_heatmap");
 				chkHeatMap.setAttribute("id","toggle_heatmap");
-				chkHeatMap.setAttribute("checked","checked");
+				chkHeatMap.setAttribute("checked","unchecked");
 				labelHeatMap.append(chkHeatMap);
 				labelHeatMap.innerHTML += $translate.instant('site_city_heatmap_toolbar_heatmap');
 
