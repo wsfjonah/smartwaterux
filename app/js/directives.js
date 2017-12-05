@@ -324,7 +324,7 @@
 				chkHeatMap.type = "checkbox";
 				chkHeatMap.setAttribute("name","toggle_heatmap");
 				chkHeatMap.setAttribute("id","toggle_heatmap");
-				chkHeatMap.setAttribute("checked","unchecked");
+				chkHeatMap.setAttribute("checked","checked");
 				labelHeatMap.append(chkHeatMap);
 				labelHeatMap.innerHTML += $translate.instant('site_city_heatmap_toolbar_heatmap');
 
@@ -458,7 +458,9 @@
 
 	function createMarker(marker, point){
 		if (marker.icon) {
-			var icon = new BMap.Icon(marker.icon, new BMap.Size(marker.width, marker.height));
+			var icon = new BMap.Icon(marker.icon, new BMap.Size(marker.width, marker.height),{
+				 anchor: new BMap.Size(15, marker.height),
+			});
 			return new BMap.Marker(point, { icon: icon });
 		}
 		return new BMap.Marker(point);

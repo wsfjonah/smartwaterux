@@ -97,6 +97,9 @@ sidebar navigation
 .scroll-sidebar {
     padding-bottom: 60px;
 }
+.mini-sidebar .scroll-sidebar{
+      overflow-y: visible!important;
+}
 
 .collapse.in {
     display: block;
@@ -246,8 +249,8 @@ When click on sidebar toggler and also for tablet
             top: -35px;
         }
     }
-    .mini-sidebar.fix-sidebar .left-sidebar {
-        position: absolute;
+    .mini-sidebar.fix-sidebar .left-sidebar { //client request to same as desktop mode
+        //position: absolute;
     }
     .mini-sidebar .sidebar-nav #sidebarnav > li:hover > ul {
         height: auto !important;
@@ -283,7 +286,7 @@ When click on sidebar toggler and also for tablet
         .hide-menu,
         .nav-small-cap,
         .sidebar-footer,
-        .user-profile .profile-text,
+        .user-profile .profile-text h5,
         >.label {
             display: none;
         }
@@ -311,6 +314,9 @@ When click on sidebar toggler and also for tablet
 }
 
 @media(max-width:767px) {
+     .mini-sidebar .scroll-sidebar {
+        overflow-y: auto!important;
+    }
     .mini-sidebar {
         .left-sidebar {
             position: fixed;

@@ -210,8 +210,8 @@
 
 .page-titles {
 	background: none;
-	margin: 0 120px 20px 25px;
-	padding: 10px;
+	margin: 0 120px 20px 45px;
+	padding: 10px 10px 10px 0;
 	position: fixed;
 	z-index: 100;
 	top: 5px;
@@ -889,6 +889,9 @@ Dashboard1 chart
 
 .ct-charts {
 	position: relative;
+	canvas{
+		width: 100%!important;
+	}
 }
 
 .amp-pxl {
