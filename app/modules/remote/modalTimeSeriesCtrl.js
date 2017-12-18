@@ -80,6 +80,7 @@
 			options:{
 				applyClass: "btn-primary",
 				cancelClass: "btn-secondary",
+				timePicker: true,
 				maxDate: new Date()
 			}
 		};

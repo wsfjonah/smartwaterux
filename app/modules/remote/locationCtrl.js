@@ -18,10 +18,10 @@
 		var defaultMapInfo = vm.projectInfo.current_project.map;
 		vm.siteMapOptions = {
 			center: {
-				longitude: (angular.isDefined(defaultMapInfo)) ? vm.projectInfo.current_project.map.lng : longitude,
-				latitude: (angular.isDefined(defaultMapInfo)) ? vm.projectInfo.current_project.map.lat : latitude
+				longitude: (angular.isDefined(defaultMapInfo)) ? defaultMapInfo.lng : longitude,
+				latitude: (angular.isDefined(defaultMapInfo)) ? defaultMapInfo.lat : latitude
 			},
-			zoom: (angular.isDefined(defaultMapInfo)) ? vm.projectInfo.current_project.map.level : 13,
+			zoom: (angular.isDefined(defaultMapInfo)) ? defaultMapInfo.level : 13,
 			modalUrl: __env.modalTimeSeriesUrl,
 			modalUrlInfo: __env.modalInformationTableInfo,
 			modalCtrl: 'modalTimeSeriesCtrl as vm',

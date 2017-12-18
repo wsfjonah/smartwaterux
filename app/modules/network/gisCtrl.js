@@ -16,10 +16,10 @@
 		*/
 		vm.siteMapOptions = {
 			center: {
-				longitude: (angular.isDefined(defaultMapInfo)) ? vm.projectInfo.current_project.map.lng : longitude,
-				latitude: (angular.isDefined(defaultMapInfo)) ? vm.projectInfo.current_project.map.lat : latitude
+				longitude: (angular.isDefined(defaultMapInfo)) ? defaultMapInfo.lng : longitude,
+				latitude: (angular.isDefined(defaultMapInfo)) ? defaultMapInfo.lat : latitude
 			},
-			zoom: (angular.isDefined(defaultMapInfo)) ? vm.projectInfo.current_project.map.level : 13,
+			zoom: (angular.isDefined(defaultMapInfo)) ? defaultMapInfo.level : 13,
 			city: 'ShangHai',
 			mapType: "heatmap",
 			markers: [],
@@ -28,7 +28,6 @@
 			pipes: [],
 			fullScreen: false
 		};
-		console.log(vm.siteMapOptions);
 		vm.defaultMarkerConfig = {
 			icon: 'assets/images/map/marker_n.png',
 			width: 30,
