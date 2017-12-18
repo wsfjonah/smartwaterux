@@ -6,7 +6,7 @@
 	*	百度账号：bangzhonggaofenzi@126.com，密码：banzan2004
 	*/
 	location.$inject = ['$scope','apiService'];
-	location.controller('locationController', function locationController ($scope, apiService,$mdDialog,dialogService) {
+	location.controller('locationController', function locationController ($scope, apiService,$mdDialog,dialogService,authService) {
 		var vm = this;
 		var longitude = 121.324914; //default longitude
 		var latitude = 31.099573; //default latitude
@@ -14,16 +14,18 @@
 		*	markers will be fetch by api
 		*/
 		//modalService.open(__env.modalInformationTableInfo, 'modalInfoDetails as vm', params);
+		vm.projectInfo = authService.getAuthentication();
+		var defaultMapInfo = vm.projectInfo.current_project.map;
 		vm.siteMapOptions = {
 			center: {
-				longitude: longitude,
-				latitude: latitude
+				longitude: (angular.isDefined(defaultMapInfo)) ? vm.projectInfo.current_project.map.lng : longitude,
+				latitude: (angular.isDefined(defaultMapInfo)) ? vm.projectInfo.current_project.map.lat : latitude
 			},
+			zoom: (angular.isDefined(defaultMapInfo)) ? vm.projectInfo.current_project.map.level : 13,
 			modalUrl: __env.modalTimeSeriesUrl,
 			modalUrlInfo: __env.modalInformationTableInfo,
 			modalCtrl: 'modalTimeSeriesCtrl as vm',
 			modalCtrlInfo: 'modalInfoDetails as vm',
-			zoom: 17,
 			city: 'ShangHai',
 			markers: [],
 			boundary: []

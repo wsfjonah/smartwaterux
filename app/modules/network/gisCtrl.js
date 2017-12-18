@@ -5,19 +5,21 @@
 
 	gis.$inject = ['$scope'];
 
-	gis.controller('gisController', function cityOverviewController ($scope, apiService, $window) {
+	gis.controller('gisController', function cityOverviewController ($scope, apiService, $window, authService) {
 		var vm = this;
 		var longitude = 121.32521; //default longitude
 		var latitude = 31.099466; //default latitude
+		vm.projectInfo = authService.getAuthentication();
+		var defaultMapInfo = vm.projectInfo.current_project.map;
 		/* 	initial map configuration option
 		*	markers will be fetch by api
 		*/
 		vm.siteMapOptions = {
 			center: {
-				longitude: longitude,
-				latitude: latitude
+				longitude: (angular.isDefined(defaultMapInfo)) ? vm.projectInfo.current_project.map.lng : longitude,
+				latitude: (angular.isDefined(defaultMapInfo)) ? vm.projectInfo.current_project.map.lat : latitude
 			},
-			zoom: 18,
+			zoom: (angular.isDefined(defaultMapInfo)) ? vm.projectInfo.current_project.map.level : 13,
 			city: 'ShangHai',
 			mapType: "heatmap",
 			markers: [],
@@ -26,6 +28,7 @@
 			pipes: [],
 			fullScreen: false
 		};
+		console.log(vm.siteMapOptions);
 		vm.defaultMarkerConfig = {
 			icon: 'assets/images/map/marker_n.png',
 			width: 30,
@@ -73,20 +76,16 @@
 			});
 		}
 		function getPipeData(){
-			//var query = {"layer":"n1"};
-			var query = {};
+			var query = {"layer":"n1"};
 			var obj = {};
 			apiService.pipeApi($window.encodeURIComponent(JSON.stringify(query))).then(function(response){
 				angular.forEach(response.data, function(row){
-					console.log("get pipe: "+row);
 					obj = {};
-					var color = "#08088A";
-					var weight = row.diameter/250;
-					if(weight <= 3) {
-						color = "#013ADF";
-					}if(weight < 1) {
+					var color = "blue";
+					var weight = row.diameter/50;
+					if(weight<=0){
 						weight = 1;
-						color = "#A9A9F5";
+						color = "red";
 					}
 					obj.color = color;
 					obj.weight = weight;
