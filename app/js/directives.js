@@ -288,6 +288,10 @@
 					scope.$watch('options.markers', function (/*newValue, oldValue*/) {
 						redrawMarkers(map, previousMarkers, opts, scope);
 					}, true);
+					//watch menus
+					scope.$watch('options.menus', function (/*newValue, oldValue*/) {
+						createNetworkMenu(map, opts, $translate);
+					}, true);
 					//watch pipe
 					scope.$watch('options.pipes', function (/*newValue, oldValue*/) {
 						drawPipeArea(map, opts, scope);
@@ -520,6 +524,62 @@
 		}
 		return new BMap.Marker(point);
 	}
+
+	function createNetworkMenu(map, opts, $translate){
+		var menu = opts.menus;
+			toggleHeatMapButtons.prototype = new BMap.Control();
+			toggleHeatMapButtons.prototype.initialize = function(map){
+				var div = document.createElement("div");
+				var html = "";
+				div.className = "btn-group map-menu";
+				div.setAttribute("role","group");
+
+				angular.forEach(menu, function(value, key) {
+					var divMenuGroup = document.createElement("div");
+					divMenuGroup.className = "btn-group";
+					divMenuGroup.setAttribute("role","group");
+
+					var menuButton = document.createElement("button");
+					menuButton.className = "btn btn-secondary btn-outline btn-sm";
+					menuButton.setAttribute("type","button");
+					menuButton.setAttribute("data-toggle","dropdown");
+					menuButton.innerHTML = value.label;
+
+					var divDropdown = document.createElement("div");
+					divDropdown.className = "dropdown-menu";
+
+					divMenuGroup.appendChild(menuButton);
+					
+					angular.forEach(value.results, function(row){
+						var divSub = document.createElement("a");
+						divSub.setAttribute("class","dropdown-item active");
+						divSub.setAttribute("href","JavaScript:void(0);");
+						divSub.setAttribute("data-value",row);
+						divSub.setAttribute("data-type",key);
+						divSub.innerHTML = row;
+
+						divSub.onclick = function(e){
+							console.log(e);
+							e.stopPropagation();
+							$(e.target).toggleClass('active');
+						};
+						divDropdown.appendChild(divSub);
+					});
+					divMenuGroup.appendChild(divDropdown);
+					div.appendChild(divMenuGroup);
+				});
+
+				// 添加DOM元素到地图中
+				map.getContainer().appendChild(div);
+				// 将DOM元素返回
+				return div;
+			};
+			// 创建控件
+			var myCtrl = new toggleHeatMapButtons();
+			// 添加到地图当中
+			map.addControl(myCtrl);
+	}
+
 
 	/* draw a pipe area line
 	*

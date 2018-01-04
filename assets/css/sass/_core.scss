@@ -1898,8 +1898,28 @@ File Upload
 }
 
 
-
-
+/*******************
+mapmenu
+******************/
+.map-menu{
+	.dropdown-menu{
+		padding:0;
+	}
+	.dropdown-item{
+		padding: 7px 10px;
+		font-size: 14px;
+	}
+	.dropdown-item.active{
+		padding-right: 28px!important;
+	}
+	.dropdown-item.active:after{
+		@extend %themify-icons;
+		content: "\e64c";
+		right: 10px;
+		position: absolute;
+		font-size: 14px!important;
+	}
+}
 
 /*******************
 Megamenu
