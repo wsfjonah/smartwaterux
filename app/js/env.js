@@ -5,14 +5,14 @@
 	//Assets version
 	window.__env.assetVersion = "1.0";
 	//API Base url
-	window.__env.baseUrl = "/api/"; //main api path
+	window.__env.baseUrl = "https://101.132.100.22/api/"; //main api path - client development path - /api/
 
 	//project folder name
-	window.__env.folder = "/smartwater";
+	window.__env.folder = ""; //client development env - /smartwater
 
 	// API url
 	window.__env.userLoginUrl = window.__env.baseUrl+'user/login';
-	window.__env.siteSearchUrl = window.__env.baseUrl+'site/search';
+
 	window.__env.switchProjectUrl = window.__env.baseUrl+'user/switchproject';
 	window.__env.timeSeriesAnyUrl = window.__env.baseUrl+'tsda/query';
 	window.__env.timeSeriesRangeUrl = window.__env.baseUrl+'tsda/query';
@@ -20,6 +20,12 @@
 	window.__env.eventDurationUrl = window.__env.baseUrl+'tsevent/search';
 	window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query';
 	window.__env.eventDetailsUrl = window.__env.baseUrl+'tsevent/get';
+
+	//network sensor
+	window.__env.siteSearchUrl = window.__env.baseUrl+'site/search';
+	window.__env.networkSensorUrl = window.__env.baseUrl+'site/search';
+	//network pipe
+	window.__env.networkPipeUrl = window.__env.baseUrl+'map/pipe';
 
 	//modal
 	window.__env.modalTimeSeriesUrl = window.__env.folder+'/app/modules/remote/modalTimeSeries.html';

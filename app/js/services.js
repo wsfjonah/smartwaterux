@@ -193,5 +193,19 @@
 				headers: headers
 			});
 		};
+		this.networkSensorApi = function(query){
+			return $http({
+				method: 'GET',
+				url: __env.networkSensorUrl,
+				headers: headers
+			});
+		};
+		this.networkPipeApi = function(query){
+			return $http({
+				method: 'GET',
+				url: __env.networkPipeUrl,
+				headers: headers
+			});
+		};
 	}
 })();

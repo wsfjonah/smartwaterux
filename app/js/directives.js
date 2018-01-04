@@ -5,6 +5,7 @@
 		.module('xProject.directive', ['ui.bootstrap'])
 		.directive('xproMap', xproMap)
 		.directive('xproHeatmap', xproHeatmap)
+		.directive('xproNetworkMap', xproNetworkMap)
 		.directive('projectDropdown', projectDropdown)
 		.directive('canvasToolbar', canvasToolbar)
 		.directive('elemReady', elemReady)
@@ -243,6 +244,60 @@
 					// Promise rejected
 				});
 
+			},
+			template: '<div ng-style="divStyle"><label ng-style="labelStyle"></label></div>'
+		};
+	}
+
+	/* network map - gis
+	* updated - 4/1/2018
+	*/
+	xproNetworkMap.$inject = ['$translate','mapApi'];
+	function xproNetworkMap($translate, mapApi){
+		return{
+			restrict: 'AE',
+			replace: 'true',
+			scope:{
+				info: '@',
+				options: '=',
+				onMapLoaded: '&'
+			},
+			link: function(scope, elem/*, attrs*/) {
+				var topHt = $('.topbar').outerHeight();
+				elem.css('height',$(window).height()-topHt);
+				$(window).resize(function(){
+					elem.css('height',$(window).height()-topHt);
+				});
+				scope.initialize = function() {
+					var default_opts = {
+						navCtrl: true,
+						scaleCtrl: true,
+						overviewCtrl: true,
+						enableScrollWheelZoom: true,
+						zoom: 10,
+						mapType: "networkmap",
+						fullScreen: false
+					};
+					var opts = angular.extend({}, default_opts, scope.options);
+					var map = createMapInstance(opts, elem, $translate);
+					var previousMarkers = [];
+					//create markers
+					redrawMarkers(map, previousMarkers, opts, scope);
+
+					//watch markers
+					scope.$watch('options.markers', function (/*newValue, oldValue*/) {
+						redrawMarkers(map, previousMarkers, opts, scope);
+					}, true);
+					//watch pipe
+					scope.$watch('options.pipes', function (/*newValue, oldValue*/) {
+						drawPipeArea(map, opts, scope);
+					}, true);
+				};
+				mapApi.then(function () {
+					scope.initialize();
+				}, function () {
+					// Promise rejected
+				});
 			},
 			template: '<div ng-style="divStyle"><label ng-style="labelStyle"></label></div>'
 		};
