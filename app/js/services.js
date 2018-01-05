@@ -207,5 +207,13 @@
 				headers: headers
 			});
 		};
+		this.networkPipeSummaryApi = function(){
+			return $http({
+				method: 'GET',
+				url: __env.networkPipeSummaryUrl,
+				headers: headers
+			});
+		};
+
 	}
 })();

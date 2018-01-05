@@ -73,7 +73,7 @@ app.controller('layoutCtrl', function layoutCtrl ($scope, $translate, authServic
 
 	vm.changeLanguage = function (key) {
 		$translate.use(key);
-		if($location.$$path==="/site"){
+		if(__env.langReloadPath.indexOf($location.$$path)>=0){
 			$window.location.reload();
 		}
 	};

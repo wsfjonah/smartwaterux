@@ -5,7 +5,7 @@
 
 	gis.$inject = ['$scope'];
 
-	gis.controller('gisController', function cityOverviewController ($scope, apiService, $window, authService) {
+	gis.controller('gisController', function cityOverviewController ($scope, apiService, $window, authService, $translate) {
 		var vm = this;
 		var longitude = 121.32521; //default longitude
 		var latitude = 31.099466; //default latitude
@@ -39,7 +39,7 @@
 				},
 				status:{
 					label:"Status",
-					results:[]
+					results:["N","I","T","S","E"]
 				}
 			},
 			fullScreen: false
@@ -53,6 +53,7 @@
 		};
 
 		//getHeatMapData();
+		getPipeSummary();
 		getSensorData();
 		getPipeData();
 
@@ -84,15 +85,8 @@
 
 		function getSensorData(){
 			var obj = {};
-			var menuObj = {};
-			var zoneObj = {};
-			console.log('call sensor');
 			apiService.networkSensorApi().then(function(response){
-				console.log('#sensor');
-				//console.log(response.data);
-				//console.log(JSON.stringify(response.data));
 				angular.forEach(response.data, function(row){
-					//console.log(row);
 					var point = row.geo_latlng;
 					obj = angular.extend({},row,vm.defaultMarkerConfig);
 					obj.latitude = point.split(',')[0];
@@ -101,53 +95,39 @@
 					obj.content = '<table class="table table-sm table-striped table-bordered">';
 						obj.content += '<tbody>';
 							obj.content += '<tr>';
-								obj.content += '<td>ID:</td>';
+								obj.content += '<td>'+$translate.instant('site_network_table_field_id')+':</td>';
 								obj.content += '<td>'+row._id+'</td>';
 							obj.content += '</tr>';
 							obj.content += '<tr>';
-								obj.content += '<td>Type:</td>';
+								obj.content += '<td>'+$translate.instant('site_network_table_field_type')+':</td>';
 								obj.content += '<td>'+row.type+'</td>';
 							obj.content += '</tr>';
 							obj.content += '<tr>';
-								obj.content += '<td>RTU:</td>';
+								obj.content += '<td>'+$translate.instant('site_network_table_field_rtu')+':</td>';
 								obj.content += '<td>'+row.device_ref+'</td>';
 							obj.content += '</tr>';
 							obj.content += '<tr>';
-								obj.content += '<td>Geo:</td>';
+								obj.content += '<td>'+$translate.instant('site_network_table_field_geo')+':</td>';
 								obj.content += '<td>'+row.geo_ref+'</td>';
 							obj.content += '</tr>';
 							obj.content += '<tr>';
-								obj.content += '<td>Layer:</td>';
+								obj.content += '<td>'+$translate.instant('site_network_table_field_layer')+':</td>';
 								obj.content += '<td>'+row.tag.layer+'</td>';
 							obj.content += '</tr>';
 							obj.content += '<tr>';
-								obj.content += '<td>Subzone:</td>';
+								obj.content += '<td>'+$translate.instant('site_network_table_field_subzone')+':</td>';
 								obj.content += '<td>'+row.tag.subzone+'</td>';
 							obj.content += '</tr>';
 						obj.content += '</tbody>';
 					obj.content += '</table>';
 					vm.siteMapOptions.markers.push(obj);
-					if(!menuObj.hasOwnProperty(row.status)){
-						menuObj[row.status] = null;
-						vm.siteMapOptions.menus.status.results.push(row.status);
-					}
-					if(angular.isDefined(row.tag.subzone) && !zoneObj.hasOwnProperty(row.tag.subzone)){
-						zoneObj[row.tag.subzone] = null;
-						vm.siteMapOptions.menus.sensors.results.push(row.tag.subzone);
-					}
 				});
 			}).catch(function(/*err*/){
 			});
 		}
 		function getPipeData(){
-			//https://jsoneditoronline.org/?id=7b75dd3de8a21073a49aea5c01656971
 			var obj = {};
-			var zoneObj = {};
-			console.log('call network');
 			apiService.networkPipeApi().then(function(response){
-				console.log('#pipe');
-				console.log(response);
-				//console.log(JSON.stringify(response.data));
 				angular.forEach(response.data, function(row){
 					obj = {};
 					var weight = row.diameter/250;
@@ -157,6 +137,7 @@
 					obj.color = getColorPipe(row);
 					obj.weight = weight;
 					obj.location = [];
+					obj.subzone = row.subzone;
 					angular.forEach(row.location, function(loc){
 						obj.location.push({
 							latitude: loc.latitude,
@@ -164,12 +145,19 @@
 						});
 					});
 					vm.siteMapOptions.pipes.push(obj);
-					if(angular.isDefined(row.options.subzone) && !zoneObj.hasOwnProperty(row.options.subzone)){
-						zoneObj[row.options.subzone] = null;
-						vm.siteMapOptions.menus.pipes.results.push(row.options.subzone);
-					}
 				});
 			}).catch(function(/*err*/){
+			});
+		}
+
+		function getPipeSummary(){
+			apiService.networkPipeSummaryApi().then(function(response){
+				if(angular.isDefined(response.data)){
+					angular.forEach(response.data.subzones, function(zone){
+						vm.siteMapOptions.menus.pipes.results.push(zone);
+						vm.siteMapOptions.menus.sensors.results.push(zone);
+					});
+				}
 			});
 		}
 
@@ -182,8 +170,6 @@
 				pipeColor[zone] = colorSet[0];
 				setColor = pipeColor[zone];
 				colorSet.shift();
-			}else{
-				console.log('no enuf color');
 			}
 			return setColor;
 		}

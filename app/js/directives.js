@@ -367,6 +367,11 @@
 		this.defaultOffset = new BMap.Size(50, 10);
 	}
 
+	function toggleNetworkMapButtons(){
+		this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
+		this.defaultOffset = new BMap.Size(10, 10);
+	}
+
 	function createHeatMapButtons(map, opts, element, $translate){
 		if(opts.mapType==="heatmap"){
 			toggleHeatMapButtons.prototype = new BMap.Control();
@@ -516,68 +521,209 @@
 	}
 
 	function createMarker(marker, point){
+		var newMarker = new BMap.Marker(point);
 		if (marker.icon) {
 			var icon = new BMap.Icon(marker.icon, new BMap.Size(marker.width, marker.height),{
 				 anchor: new BMap.Size(15, marker.height),
 			});
-			return new BMap.Marker(point, { icon: icon });
+			newMarker = new BMap.Marker(point, { icon: icon });
 		}
-		return new BMap.Marker(point);
+		return newMarker;
 	}
 
 	function createNetworkMenu(map, opts, $translate){
 		var menu = opts.menus;
-			toggleHeatMapButtons.prototype = new BMap.Control();
-			toggleHeatMapButtons.prototype.initialize = function(map){
-				var div = document.createElement("div");
-				var html = "";
-				div.className = "btn-group map-menu";
-				div.setAttribute("role","group");
+		var langMenu = {
+			pipes: $translate.instant('site_network_toolbar_pipes'),
+			sensors: $translate.instant('site_network_toolbar_sensors'),
+			status: $translate.instant('site_network_toolbar_status'),
+		};
+		toggleNetworkMapButtons.prototype = new BMap.Control();
+		toggleNetworkMapButtons.prototype.initialize = function(map){
+			var div = document.createElement("div");
+			div.className = "btn-group map-menu";
+			div.setAttribute("role","group");
 
-				angular.forEach(menu, function(value, key) {
-					var divMenuGroup = document.createElement("div");
-					divMenuGroup.className = "btn-group";
-					divMenuGroup.setAttribute("role","group");
+			angular.forEach(menu, function(value, key) {
+				var divMenuGroup = document.createElement("div");
+				divMenuGroup.className = "btn-group";
+				divMenuGroup.setAttribute("role","group");
 
-					var menuButton = document.createElement("button");
-					menuButton.className = "btn btn-secondary btn-outline btn-sm";
-					menuButton.setAttribute("type","button");
-					menuButton.setAttribute("data-toggle","dropdown");
-					menuButton.innerHTML = value.label;
+				var menuButton = document.createElement("button");
+				menuButton.className = "btn btn-secondary btn-outline btn-sm";
+				menuButton.setAttribute("type","button");
+				menuButton.setAttribute("data-toggle","dropdown");
+				menuButton.innerHTML = langMenu[key];
 
-					var divDropdown = document.createElement("div");
-					divDropdown.className = "dropdown-menu";
+				var divDropdown = document.createElement("div");
+				divDropdown.className = "dropdown-menu";
 
-					divMenuGroup.appendChild(menuButton);
-					
-					angular.forEach(value.results, function(row){
-						var divSub = document.createElement("a");
-						divSub.setAttribute("class","dropdown-item active");
-						divSub.setAttribute("href","JavaScript:void(0);");
-						divSub.setAttribute("data-value",row);
-						divSub.setAttribute("data-type",key);
-						divSub.innerHTML = row;
+				divMenuGroup.appendChild(menuButton);
 
-						divSub.onclick = function(e){
-							console.log(e);
-							e.stopPropagation();
-							$(e.target).toggleClass('active');
-						};
-						divDropdown.appendChild(divSub);
-					});
-					divMenuGroup.appendChild(divDropdown);
-					div.appendChild(divMenuGroup);
+				var divAll = document.createElement("a");
+				divAll.setAttribute("class","dropdown-item active");
+				divAll.setAttribute("href","#");
+				divAll.setAttribute("data-value","all");
+				divAll.setAttribute("data-type",key);
+				divAll.innerHTML = $translate.instant('site_network_toolbar_menu_all')+" "+langMenu[key];
+
+				divDropdown.appendChild(divAll);
+
+				divAll.onclick = function(e){
+					e.preventDefault();
+					e.stopPropagation();
+					var thisElem = $(e.target),
+						type = thisElem.data('type'),
+						value = "all",
+						isActive = !thisElem.hasClass('active');
+					thisElem.toggleClass('active');
+					if(isActive){
+						thisElem.siblings().addClass('active');
+					}else{
+						thisElem.siblings().removeClass('active');
+					}
+					toggleUpdateOverlay(type, map, isActive, value, opts);
+				};
+
+				angular.forEach(value.results, function(row){
+					var divSub = document.createElement("a");
+					divSub.setAttribute("class","dropdown-item active");
+					divSub.setAttribute("href","#");
+					divSub.setAttribute("data-value",row);
+					divSub.setAttribute("data-type",key);
+					divSub.innerHTML = row;
+
+					divSub.onclick = function(e){
+						e.preventDefault();
+						e.stopPropagation();
+						var thisElem = $(e.target);
+						thisElem.toggleClass('active');
+						var group = thisElem.parent('.dropdown-menu'),
+							items = group.find('.dropdown-item'),
+							itemNonSelect = items.filter(":not(.active):not([data-value='all'])"),
+							itemAll = items.filter('[data-value="all"]'),
+							value = thisElem.data('value'),
+							type = thisElem.data('type'),
+							isActive = thisElem.hasClass('active');
+
+						if(itemNonSelect.length<=0){
+							itemAll.addClass('active');
+						}else if(itemNonSelect.length<=parseInt(items.length-1)){
+							itemAll.removeClass('active');
+						}
+						toggleUpdateOverlay(type, map, isActive, value, opts);
+					};
+					divDropdown.appendChild(divSub);
 				});
+				divMenuGroup.appendChild(divDropdown);
+				div.appendChild(divMenuGroup);
+			});
 
-				// 添加DOM元素到地图中
-				map.getContainer().appendChild(div);
-				// 将DOM元素返回
-				return div;
-			};
-			// 创建控件
-			var myCtrl = new toggleHeatMapButtons();
-			// 添加到地图当中
-			map.addControl(myCtrl);
+			// 添加DOM元素到地图中
+			map.getContainer().appendChild(div);
+			// 将DOM元素返回
+			return div;
+		};
+		// 创建控件
+		var myCtrl = new toggleNetworkMapButtons();
+		// 添加到地图当中
+		map.addControl(myCtrl);
+	}
+
+	/* toggle update overlay
+	*
+	*/
+
+	function toggleUpdateOverlay(type, map, status, value, opts){
+		if(type==="sensors"){
+			updateSensorOverlay(map, status, value, opts);
+		}else if(type==="pipes"){
+			updatePipeOverlay(map, status, value, opts);
+		}else if(type==="status"){
+			updateStatusOverlay(map, status, value, opts);
+		}
+	}
+
+	/* update status overlap
+	*
+	*/
+	function updateStatusOverlay(map, status, value, opts){
+		//console.log(opts);
+		//console.log(status);
+		var markerInstance = opts.markerInstance;
+		if(!status && value==="all"){ //all & off
+			angular.forEach(opts.markers, function(element, i){
+				map.removeOverlay(markerInstance[i]);
+			});
+		}else if(status && value==="all"){ //all & on
+			angular.forEach(opts.markers, function(element, i){
+				map.addOverlay(markerInstance[i]);
+			});
+		}else if(value!=="all"){
+			angular.forEach(opts.markers, function(element, i){
+				if(element.status===value){
+					if(status){
+						map.addOverlay(markerInstance[i]);
+					}else{
+						map.removeOverlay(markerInstance[i]);
+					}
+				}
+			});
+		}
+	}
+
+	/* update sensor overlap
+	*
+	*/
+	function updateSensorOverlay(map, status, value, opts){
+		//console.log(opts);
+		//console.log(status);
+		var markerInstance = opts.markerInstance;
+		if(!status && value==="all"){ //all & off
+			angular.forEach(opts.markers, function(element, i){
+				map.removeOverlay(markerInstance[i]);
+			});
+		}else if(status && value==="all"){ //all & on
+			angular.forEach(opts.markers, function(element, i){
+				map.addOverlay(markerInstance[i]);
+			});
+		}else if(value!=="all"){
+			angular.forEach(opts.markers, function(element, i){
+				if(element.tag.subzone===value){
+					if(status){
+						map.addOverlay(markerInstance[i]);
+					}else{
+						map.removeOverlay(markerInstance[i]);
+					}
+				}
+			});
+		}
+	}
+
+	/* update sensor overlap
+	*
+	*/
+	function updatePipeOverlay(map, status, value, opts){
+		var pipeInstance = opts.pipeInstance;
+		if(!status && value==="all"){ //all & off
+			angular.forEach(opts.pipes, function(element, i){
+				map.removeOverlay(pipeInstance[i]);
+			});
+		}else if(status && value==="all"){ //all & on
+			angular.forEach(opts.pipes, function(element, i){
+				map.addOverlay(pipeInstance[i]);
+			});
+		}else if(value!=="all"){
+			angular.forEach(opts.pipes, function(element, i){
+				if(element.subzone===value){
+					if(status){
+						map.addOverlay(pipeInstance[i]);
+					}else{
+						map.removeOverlay(pipeInstance[i]);
+					}
+				}
+			});
+		}
 	}
 
 
@@ -585,6 +731,7 @@
 	*
 	*/
 	function drawPipeArea(map, opts){
+		opts.pipeInstance = [];
 		opts.pipes.forEach(function (row) {
 			var pipeArr = [];
 			row.location.forEach(function (loc) {
@@ -593,6 +740,7 @@
 
 			});
 			var pipeOverlay = new BMap.Polyline(pipeArr, {strokeColor: row.color, strokeWeight: row.weight, strokeOpacity:1});
+			opts.pipeInstance.push(pipeOverlay);
 			map.addOverlay(pipeOverlay);
 		});
 	}
@@ -649,15 +797,16 @@
 		if (!opts.markers) {
 			return;
 		}
-
+		opts.markerInstance = [];
 		opts.markers.forEach(function (marker) {
 			var markerItem = createMarker(marker, new BMap.Point(marker.longitude, marker.latitude));
+
 			var infoButton = "<div class='btn-group'>";
 				infoButton += "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='View Info' id='baidu_marker_info'><i class='ti-info-alt'></i></button>";
 				infoButton += "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='View Data' id='baidu_marker_data'><i class='ti-stats-up'></i></button>";
 				infoButton += "</div>";
 			points.push(new BMap.Point(marker.longitude, marker.latitude));
-
+			opts.markerInstance.push(markerItem);
 			// add marker to the map
 			map.addOverlay(markerItem);
 			markerItem.setLabel("");
