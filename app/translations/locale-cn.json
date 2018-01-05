@@ -57,10 +57,13 @@
 	"site_network_toolbar_sensors" : "传感器",
 	"site_network_toolbar_status" : "状态",
 	"site_network_toolbar_menu_all" : "全部",
+	"site_network_info_pipe_title" : "水管信息",
 	"site_network_table_field_id" : "ID",
 	"site_network_table_field_type" : "类型",
 	"site_network_table_field_rtu" : "RTU",
 	"site_network_table_field_geo" : "Geo",
 	"site_network_table_field_layer" : "层",
-	"site_network_table_field_subzone" : "分区"
+	"site_network_table_field_subzone" : "分区",
+	"site_network_table_field_diameter" : "直径",
+	"site_network_table_field_others" : "其他"
 }
