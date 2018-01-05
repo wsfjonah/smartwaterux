@@ -742,6 +742,22 @@
 			var pipeOverlay = new BMap.Polyline(pipeArr, {strokeColor: row.color, strokeWeight: row.weight, strokeOpacity:1});
 			opts.pipeInstance.push(pipeOverlay);
 			map.addOverlay(pipeOverlay);
+
+			/* info window
+			*/
+			if (!row.title && !row.content) {
+				return;
+			}
+			//info window msg
+			var msg = '<p>' + (row.title || '') + '</p><p>' + (row.content || '') + '</p>';
+			var infoWindowItem = new BMap.InfoWindow(msg, {
+				enableMessage: true,
+				width : 350
+			});
+
+			pipeOverlay.addEventListener('click', function(e){
+				map.openInfoWindow(infoWindowItem, new BMap.Point(e.point.lng, e.point.lat));
+			});
 		});
 	}
 

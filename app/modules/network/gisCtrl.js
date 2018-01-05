@@ -12,7 +12,7 @@
 		vm.projectInfo = authService.getAuthentication();
 		var defaultMapInfo = vm.projectInfo.current_project.map;
 		var pipeColor = {};
-		var colorSet = ["#FF1493","#FFA500","#0f7ca8","#008066","#96137c","#696969","#f9b49d","#c60303","#3867c4","#823f5e","#687759","#d14959","#703e7f","#000000"];
+		var colorSet = ["#FF1493","#FFA500","#0f7ca8","#3867c4","#96137c","#696969","#f9b49d","#c60303","#008066","#823f5e","#687759","#d14959","#703e7f","#000000"];
 		/* 	initial map configuration option
 		*	markers will be fetch by api
 		*/
@@ -137,7 +137,32 @@
 					obj.color = getColorPipe(row);
 					obj.weight = weight;
 					obj.location = [];
+					obj.diameter = row.diameter;
+					obj.id = row.id;
+					obj.options = row.options;
+					obj.type = row.type;
 					obj.subzone = row.subzone;
+					obj.title = "Pipe Information";
+					obj.content = '<div class="overflow:auto"><table class="table table-sm table-striped table-bordered table-responsive">';
+						obj.content += '<tbody>';
+							obj.content += '<tr>';
+								obj.content += '<td>'+$translate.instant('site_network_table_field_id')+':</td>';
+								obj.content += '<td>'+obj.id+'</td>';
+							obj.content += '</tr>';
+							obj.content += '<tr>';
+								obj.content += '<td>'+$translate.instant('site_network_table_field_type')+':</td>';
+								obj.content += '<td>'+obj.type+'</td>';
+							obj.content += '</tr>';
+							obj.content += '<tr>';
+								obj.content += '<td>Diameter:</td>';
+								obj.content += '<td>'+obj.diameter+'</td>';
+							obj.content += '</tr>';
+							obj.content += '<tr>';
+								obj.content += '<td>Others:</td>';
+								obj.content += '<td><pre>'+angular.toJson(obj.options, true)+'</pre></td>';
+							obj.content += '</tr>';
+						obj.content += '</tbody>';
+					obj.content += '</table><div>';
 					angular.forEach(row.location, function(loc){
 						obj.location.push({
 							latitude: loc.latitude,
