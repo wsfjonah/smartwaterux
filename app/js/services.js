@@ -4,6 +4,7 @@
 	angular
 		.module('xProject.services', [])
 		.service('authService', authService)
+		.service('commonService', commonService)
 		.service('apiService', apiService);
 
 	authService.$inject = ['$http','localStorageService','$httpParamSerializerJQLike'];
@@ -85,9 +86,22 @@
 		this.logout = function(){
 			localStorageService.set('authorizationData', _authentication_info);
 			this.updateProject(_authentication_info);
-			//console.log('#logout');
-			//console.log(_authentication_info);
 		};
+	}
+
+	function commonService(){
+		this.getColors = function() {
+			return ["#FF1493","#FFA500","#0f7ca8","#3867c4","#96137c","#696969","#f9b49d","#c60303","#008066","#823f5e","#687759","#d14959","#703e7f","#000000"];
+		}
+		this.markerConfig = function(){
+			return {
+				icon: 'assets/images/map/marker_n.png',
+				width: 30,
+				height: 38,
+				title: '',
+				content: ''
+			};
+		}
 	}
 
 	function apiService($http, localStorageService, $httpParamSerializerJQLike){
@@ -214,6 +228,19 @@
 				headers: headers
 			});
 		};
-
+		this.networkAnalysisPipeApi = function(query){
+			return $http({
+				method: 'GET',
+				url: __env.networkAnalysisPipeUrl,
+				headers: headers
+			});
+		};
+		this.networkAnalysisCoverageApi = function(id){
+			return $http({
+				method: 'GET',
+				url: __env.networkAnalysisSensorCoverageUrl+'?site='+id,
+				headers: headers
+			});
+		};
 	}
 })();

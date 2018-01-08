@@ -132,8 +132,8 @@
 	//xproMap.$inject = [];
 	/* baidu map
 	*/
-	xproMap.$inject = ['modalService','mapApi'];
-	function xproMap(modalService, mapApi) {
+	xproMap.$inject = ['modalService','mapApi','$translate'];
+	function xproMap(modalService, mapApi, $translate) {
 		return{
 			restrict: 'AE',
 			replace: 'true',
@@ -165,12 +165,12 @@
 					var previousMarkers = [];
 
 					//create markers
-					redrawMarkers(map, previousMarkers, opts, scope, modalService);
+					redrawMarkers(map, $translate, previousMarkers, opts, scope, modalService);
 					//set boundary
 					boundaryArea(map, opts);
 
 					scope.$watch('options.markers', function (/*newValue, oldValue*/) {
-						redrawMarkers(map, previousMarkers, opts, scope, modalService);
+						redrawMarkers(map, $translate, previousMarkers, opts, scope, modalService);
 					}, true);
 					scope.$watch('options.boundary', function (/*newValue, oldValue*/) {
 						boundaryArea(map, opts, scope);
@@ -220,12 +220,12 @@
 					var map = createMapInstance(opts, elem, $translate);
 					var previousMarkers = [];
 					//create markers
-					redrawMarkers(map, previousMarkers, opts, scope);
+					redrawMarkers(map, $translate, previousMarkers, opts, scope);
 
 
 					//watch markers
 					scope.$watch('options.markers', function (/*newValue, oldValue*/) {
-						redrawMarkers(map, previousMarkers, opts, scope);
+						redrawMarkers(map, $translate, previousMarkers, opts, scope);
 					}, true);
 					//watch pipe
 					scope.$watch('options.pipes', function (/*newValue, oldValue*/) {
@@ -252,8 +252,8 @@
 	/* network map - gis
 	* updated - 4/1/2018
 	*/
-	xproNetworkMap.$inject = ['$translate','mapApi'];
-	function xproNetworkMap($translate, mapApi){
+	xproNetworkMap.$inject = ['$translate','mapApi','apiService'];
+	function xproNetworkMap($translate, mapApi, apiService){
 		return{
 			restrict: 'AE',
 			replace: 'true',
@@ -282,11 +282,11 @@
 					var map = createMapInstance(opts, elem, $translate);
 					var previousMarkers = [];
 					//create markers
-					redrawMarkers(map, previousMarkers, opts, scope);
+					redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService);
 
 					//watch markers
 					scope.$watch('options.markers', function (/*newValue, oldValue*/) {
-						redrawMarkers(map, previousMarkers, opts, scope);
+						redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService);
 					}, true);
 					//watch menus
 					scope.$watch('options.menus', function (/*newValue, oldValue*/) {
@@ -531,12 +531,44 @@
 		return newMarker;
 	}
 
+	function removeCoverage(map, opts){
+		angular.forEach(opts.coveragePipes, function(row){
+			map.removeOverlay(row);
+		});
+	}
+
+	function drawCoveragePipe(map, opts, status, marker, results){
+		var isAdd = status || true;
+		var color = "red";
+		var junctions = [];
+		var centerPoints = [];
+		angular.forEach(results, function(row){
+			angular.forEach(row.junctions, function(element){
+				var p = new BMap.Point(element.lng, element.lat);
+				centerPoints.push({lng: element.lng, lat: element.lat});
+				junctions.push(p);
+			});
+			var pline = new BMap.Polyline(junctions, {strokeColor:color, strokeWeight:7, strokeOpacity:0.7});
+			opts.coveragePipes.push(pline);
+			map.addOverlay(pline);
+		});
+		map.closeInfoWindow();
+		/* move to center of highlight pipe
+		*/
+		var points = [];
+		centerPoints.forEach(function (loc) {
+			points.push(new BMap.Point(loc.lng, loc.lat));
+		});
+		map.setViewport(points, {zoomFactor: -0.5});
+	}
+
 	function createNetworkMenu(map, opts, $translate){
 		var menu = opts.menus;
 		var langMenu = {
 			pipes: $translate.instant('site_network_toolbar_pipes'),
 			sensors: $translate.instant('site_network_toolbar_sensors'),
 			status: $translate.instant('site_network_toolbar_status'),
+			coverage: $translate.instant('site_network_toolbar_coverage')
 		};
 		toggleNetworkMapButtons.prototype = new BMap.Control();
 		toggleNetworkMapButtons.prototype.initialize = function(map){
@@ -545,78 +577,91 @@
 			div.setAttribute("role","group");
 
 			angular.forEach(menu, function(value, key) {
-				var divMenuGroup = document.createElement("div");
-				divMenuGroup.className = "btn-group";
-				divMenuGroup.setAttribute("role","group");
+				var divMenuGroup = document.createElement("button");
 
-				var menuButton = document.createElement("button");
-				menuButton.className = "btn btn-secondary btn-outline btn-sm";
-				menuButton.setAttribute("type","button");
-				menuButton.setAttribute("data-toggle","dropdown");
-				menuButton.innerHTML = langMenu[key];
+				if(key!=="coverage"){
+					divMenuGroup = document.createElement("div");
+					divMenuGroup.className = "btn-group";
+					divMenuGroup.setAttribute("role","group");
 
-				var divDropdown = document.createElement("div");
-				divDropdown.className = "dropdown-menu";
+					var menuButton = document.createElement("button");
+					menuButton.className = "btn btn-secondary btn-outline btn-sm";
+					menuButton.setAttribute("type","button");
+					menuButton.setAttribute("data-toggle","dropdown");
+					menuButton.innerHTML = langMenu[key];
 
-				divMenuGroup.appendChild(menuButton);
+					var divDropdown = document.createElement("div");
+					divDropdown.className = "dropdown-menu";
 
-				var divAll = document.createElement("a");
-				divAll.setAttribute("class","dropdown-item active");
-				divAll.setAttribute("href","#");
-				divAll.setAttribute("data-value","all");
-				divAll.setAttribute("data-type",key);
-				divAll.innerHTML = $translate.instant('site_network_toolbar_menu_all')+" "+langMenu[key];
+					divMenuGroup.appendChild(menuButton);
 
-				divDropdown.appendChild(divAll);
+					var divAll = document.createElement("a");
+					divAll.setAttribute("class","dropdown-item active");
+					divAll.setAttribute("href","#");
+					divAll.setAttribute("data-value","all");
+					divAll.setAttribute("data-type",key);
+					divAll.innerHTML = $translate.instant('site_network_toolbar_menu_all')+" "+langMenu[key];
 
-				divAll.onclick = function(e){
-					e.preventDefault();
-					e.stopPropagation();
-					var thisElem = $(e.target),
-						type = thisElem.data('type'),
-						value = "all",
-						isActive = !thisElem.hasClass('active');
-					thisElem.toggleClass('active');
-					if(isActive){
-						thisElem.siblings().addClass('active');
-					}else{
-						thisElem.siblings().removeClass('active');
-					}
-					toggleUpdateOverlay(type, map, isActive, value, opts);
-				};
+					divDropdown.appendChild(divAll);
 
-				angular.forEach(value.results, function(row){
-					var divSub = document.createElement("a");
-					divSub.setAttribute("class","dropdown-item active");
-					divSub.setAttribute("href","#");
-					divSub.setAttribute("data-value",row);
-					divSub.setAttribute("data-type",key);
-					divSub.innerHTML = row;
-
-					divSub.onclick = function(e){
+					divAll.onclick = function(e){
 						e.preventDefault();
 						e.stopPropagation();
-						var thisElem = $(e.target);
-						thisElem.toggleClass('active');
-						var group = thisElem.parent('.dropdown-menu'),
-							items = group.find('.dropdown-item'),
-							itemNonSelect = items.filter(":not(.active):not([data-value='all'])"),
-							itemAll = items.filter('[data-value="all"]'),
-							value = thisElem.data('value'),
+						var thisElem = $(e.target),
 							type = thisElem.data('type'),
-							isActive = thisElem.hasClass('active');
-
-						if(itemNonSelect.length<=0){
-							itemAll.addClass('active');
-						}else if(itemNonSelect.length<=parseInt(items.length-1)){
-							itemAll.removeClass('active');
+							value = "all",
+							isActive = !thisElem.hasClass('active');
+						thisElem.toggleClass('active');
+						if(isActive){
+							thisElem.siblings().addClass('active');
+						}else{
+							thisElem.siblings().removeClass('active');
 						}
 						toggleUpdateOverlay(type, map, isActive, value, opts);
 					};
-					divDropdown.appendChild(divSub);
-				});
-				divMenuGroup.appendChild(divDropdown);
-				div.appendChild(divMenuGroup);
+
+					angular.forEach(value.results, function(row){
+						var divSub = document.createElement("a");
+						divSub.setAttribute("class","dropdown-item active");
+						divSub.setAttribute("href","#");
+						divSub.setAttribute("data-value",row);
+						divSub.setAttribute("data-type",key);
+						divSub.innerHTML = row;
+
+						divSub.onclick = function(e){
+							e.preventDefault();
+							e.stopPropagation();
+							var thisElem = $(e.target);
+							thisElem.toggleClass('active');
+							var group = thisElem.parent('.dropdown-menu'),
+								items = group.find('.dropdown-item'),
+								itemNonSelect = items.filter(":not(.active):not([data-value='all'])"),
+								itemAll = items.filter('[data-value="all"]'),
+								value = thisElem.data('value'),
+								type = thisElem.data('type'),
+								isActive = thisElem.hasClass('active');
+
+							if(itemNonSelect.length<=0){
+								itemAll.addClass('active');
+							}else if(itemNonSelect.length<=parseInt(items.length-1)){
+								itemAll.removeClass('active');
+							}
+							toggleUpdateOverlay(type, map, isActive, value, opts);
+						};
+						divDropdown.appendChild(divSub);
+					});
+					divMenuGroup.appendChild(divDropdown);
+					div.appendChild(divMenuGroup);
+				}else{
+					divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
+					divMenuGroup.innerHTML = langMenu[key];
+
+					divMenuGroup.onclick = function(){
+						removeCoverage(map, opts);
+					};
+					div.appendChild(divMenuGroup);
+				}
+
 			});
 
 			// 添加DOM元素到地图中
@@ -648,8 +693,6 @@
 	*
 	*/
 	function updateStatusOverlay(map, status, value, opts){
-		//console.log(opts);
-		//console.log(status);
 		var markerInstance = opts.markerInstance;
 		if(!status && value==="all"){ //all & off
 			angular.forEach(opts.markers, function(element, i){
@@ -676,8 +719,6 @@
 	*
 	*/
 	function updateSensorOverlay(map, status, value, opts){
-		//console.log(opts);
-		//console.log(status);
 		var markerInstance = opts.markerInstance;
 		if(!status && value==="all"){ //all & off
 			angular.forEach(opts.markers, function(element, i){
@@ -800,7 +841,7 @@
 		return !!(elem.getContext && elem.getContext('2d'));
 	}
 
-	function redrawMarkers(map, previousMarkers, opts, $scope, modalService){
+	function redrawMarkers(map, $translate, previousMarkers, opts, $scope, modalService, apiService){
 		var points = [];
 		previousMarkers.forEach(function (item) {
 			var marker = item.marker;
@@ -818,8 +859,8 @@
 			var markerItem = createMarker(marker, new BMap.Point(marker.longitude, marker.latitude));
 
 			var infoButton = "<div class='btn-group'>";
-				infoButton += "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='View Info' id='baidu_marker_info'><i class='ti-info-alt'></i></button>";
-				infoButton += "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='View Data' id='baidu_marker_data'><i class='ti-stats-up'></i></button>";
+				infoButton += "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='"+$translate.instant('site_location_button_viewinfo')+"' id='baidu_marker_info'><i class='ti-info-alt'></i></button>";
+				infoButton += "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='"+$translate.instant('site_location_button_viewdata')+"' id='baidu_marker_data'><i class='ti-stats-up'></i></button>";
 				infoButton += "</div>";
 			points.push(new BMap.Point(marker.longitude, marker.latitude));
 			opts.markerInstance.push(markerItem);
@@ -836,6 +877,9 @@
 			var msg = '<p>' + (marker.title || '') + '</p><p>' + (marker.content || '') + '</p>';
 			if(opts.mapType==="map"){
 				msg += infoButton;
+			}else if(opts.mapType==="networkAnalysisMap"){
+				var coverageButton = "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='"+$translate.instant('site_network_map_button_coverage')+"' id='network_coverage_info'><i class='ti-target'></i></button>";
+				msg += coverageButton;
 			}
 
 			var infoWindowItem = new BMap.InfoWindow(msg, {
@@ -846,12 +890,20 @@
 				this.openInfoWindow(infoWindowItem);
 				var elData = document.getElementById("baidu_marker_data");
 				var elInfo = document.getElementById("baidu_marker_info");
-				if(angular.isDefined(modalService)){
+				var elCoverage = document.getElementById("network_coverage_info");
+				if(angular.isDefined(modalService) && modalService!==null){
 					elData.addEventListener("click", function(){
 						modalService.open(opts.modalUrl, opts.modalCtrl, marker);
 					});
 					elInfo.addEventListener("click", function(){
 						modalService.open(opts.modalUrlInfo, opts.modalCtrlInfo, marker);
+					});
+				}
+				if (typeof(elCoverage) !== 'undefined' && elCoverage !== null){
+					elCoverage.addEventListener("click", function(){
+						apiService.networkAnalysisCoverageApi(marker._id).then(function(response){
+							drawCoveragePipe(map, opts, true, marker, response.data);
+						});
 					});
 				}
 			};

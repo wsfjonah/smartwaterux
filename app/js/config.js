@@ -113,6 +113,28 @@
 				key: "gis"
 			}
 		})
+		.when('/network-analysis', {
+			templateUrl: __env.folder+'/app/modules/network/networkAnalysis.html',
+			controller: 'networkAnalysisController as vm',
+			restrictions: {
+				ensureAuthenticated: true,
+				loginRedirect: false
+			},
+			resolve: {
+				loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+					return $ocLazyLoad.load({
+						serie: true,
+						files: [
+							'app/modules/network/networkAnalysisCtrl.js'
+						]
+					});
+				}]
+			},
+			page_params: {
+				key: "networkAnalysis"
+			}
+		})
+
 		.when('/network-condition', {
 			templateUrl: __env.folder+'/app/modules/network/netcondition.html',
 			controller: 'networkCondtionController as vm',

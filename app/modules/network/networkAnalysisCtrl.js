@@ -1,9 +1,9 @@
 /* global angular */
 (function() {
 	'use strict';
-	var gis = angular.module('xProject.gis',[]);
-	gis.$inject = ['$scope'];
-	gis.controller('gisController', function cityOverviewController ($scope, apiService, $window, authService, $translate, commonService) {
+	var networkAnalysis = angular.module('xProject.networkAnalysis',[]);
+	networkAnalysis.$inject = ['$scope'];
+	networkAnalysis.controller('networkAnalysisController', function networkAnalysisController ($scope, apiService, $window, authService, $translate, commonService) {
 		var vm = this;
 		var longitude = 121.32521; //default longitude
 		var latitude = 31.099466; //default latitude
@@ -21,11 +21,11 @@
 			},
 			zoom: (angular.isDefined(defaultMapInfo)) ? defaultMapInfo.level : 13,
 			city: 'ShangHai',
-			mapType: "networkmap",
+			mapType: "networkAnalysisMap",
 			markers: [],
 			boundary: [],
-			heatMap: [],
 			pipes: [],
+			coveragePipes: [],
 			menus: {
 				pipes:{
 					label:"Pipes",
@@ -38,6 +38,9 @@
 				status:{
 					label:"Status",
 					results:["N","I","T","S","E"]
+				},
+				coverage:{
+					label:"Clear Coverage"
 				}
 			},
 			fullScreen: false
@@ -92,23 +95,23 @@
 		}
 		function getPipeData(){
 			var obj = {};
-			apiService.networkPipeApi().then(function(response){
+			apiService.networkAnalysisPipeApi().then(function(response){
 				angular.forEach(response.data, function(row){
 					obj = {};
-					var weight = row.diameter/250;
+					var weight = parseInt(row.optional.diameter)/250;
 					if(weight<=1){
 						weight = 1;
 					}
 					obj.color = getColorPipe(row);
 					obj.weight = weight;
 					obj.location = [];
-					obj.diameter = row.diameter;
-					obj.id = row.id;
-					obj.options = row.options;
+					obj.diameter = row.optional.diameter;
+					obj.id = row._id;
+					obj.tag = row.tag;
 					obj.type = row.type;
-					obj.subzone = row.subzone;
+					obj.subzone = row.tag.subzone;
 					obj.title = $translate.instant('site_network_info_pipe_title');
-					obj.content = '<div class="overflow:auto"><table class="table table-sm table-striped table-bordered table-responsive">';
+					obj.content = '<div class="overflow:auto"><table class="table table-sm table-striped table-bordered">';
 						obj.content += '<tbody>';
 							obj.content += '<tr>';
 								obj.content += '<td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_id')+':</td>';
@@ -124,14 +127,15 @@
 							obj.content += '</tr>';
 							obj.content += '<tr>';
 								obj.content += '<td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_others')+':</td>';
-								obj.content += '<td><pre>'+angular.toJson(obj.options, true)+'</pre></td>';
+								obj.content += '<td><pre>'+angular.toJson(obj.tag, true)+'</pre></td>';
 							obj.content += '</tr>';
 						obj.content += '</tbody>';
-					obj.content += '</table><div>';
-					angular.forEach(row.location, function(loc){
+					obj.content += '</table>';
+					obj.content += '<div>';
+					angular.forEach(row.junctions, function(loc){
 						obj.location.push({
-							latitude: loc.latitude,
-							longitude: loc.longitude
+							latitude: loc.lat,
+							longitude: loc.lng
 						});
 					});
 					vm.siteMapOptions.pipes.push(obj);
@@ -150,7 +154,7 @@
 			});
 		}
 		function getColorPipe(pipe){
-			var zone = pipe.options.subzone;
+			var zone = pipe.tag.subzone;
 			var setColor = "blue";
 			if(angular.isDefined(zone) && pipeColor.hasOwnProperty(zone)){
 				setColor = pipeColor[zone];

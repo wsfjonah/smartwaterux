@@ -6,7 +6,7 @@
 	*	百度账号：bangzhonggaofenzi@126.com，密码：banzan2004
 	*/
 	location.$inject = ['$scope','apiService'];
-	location.controller('locationController', function locationController ($scope, apiService,$mdDialog,dialogService,authService) {
+	location.controller('locationController', function locationController ($scope, apiService,$mdDialog,dialogService,authService,commonService) {
 		var vm = this;
 		var longitude = 121.324914; //default longitude
 		var latitude = 31.099573; //default latitude
@@ -38,13 +38,7 @@
 		};
 		/*	default marker config
 		*/
-		vm.defaultMarkerConfig = {
-			icon: 'assets/images/map/marker_n.png',
-			width: 30,
-			height: 38,
-			title: '',
-			content: ''
-		};
+		vm.defaultMarkerConfig = commonService.markerConfig();
 		vm.showAlert = function(ev) {
 			dialogService.alert(ev,{content:"Something went wrong!"});
 		};

@@ -28,6 +28,10 @@
 	window.__env.networkPipeUrl = window.__env.baseUrl+'map/pipe';
 	//network pipe summary - used for menu
 	window.__env.networkPipeSummaryUrl = window.__env.baseUrl+'map/pipesummary';
+	//network analysis pipe
+	window.__env.networkAnalysisPipeUrl = window.__env.baseUrl+'map/geo/pipe';
+	//network analysis coverage
+	window.__env.networkAnalysisSensorCoverageUrl = window.__env.baseUrl+'map/sensorcoverage';
 
 	//modal
 	window.__env.modalTimeSeriesUrl = window.__env.folder+'/app/modules/remote/modalTimeSeries.html';
@@ -43,7 +47,7 @@
 	window.__env.ignoreInterceptorRequest = ['uib/template/modal/window.html', window.__env.baseUrl+'user/login'];
 
 	//language reload page
-	window.__env.langReloadPath = ["/site","/gis"];
+	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location'];
 
 	//main page after user login
 	window.__env.pageMain = '/main';
