@@ -535,14 +535,15 @@
 		angular.forEach(opts.coveragePipes, function(row){
 			map.removeOverlay(row);
 		});
+		opts.coveragePipes.length = 0;
 	}
 
 	function drawCoveragePipe(map, opts, status, marker, results){
 		var isAdd = status || true;
 		var color = "red";
-		var junctions = [];
 		var centerPoints = [];
 		angular.forEach(results, function(row){
+			var junctions = [];
 			angular.forEach(row.junctions, function(element){
 				var p = new BMap.Point(element.lng, element.lat);
 				centerPoints.push({lng: element.lng, lat: element.lat});
