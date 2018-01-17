@@ -242,5 +242,19 @@
 				headers: headers
 			});
 		};
+		this.networkPumpApi = function(){
+			return $http({
+				method: 'GET',
+				url: __env.networkPumpUrl,
+				headers: headers
+			});
+		};
+		this.networkHydrantApi = function(mapcenter){
+			return $http({
+				method: 'GET',
+				url: __env.networkHydrantUrl+'?mapcenter='+mapcenter,
+				headers: headers
+			});
+		};
 	}
 })();

@@ -32,6 +32,10 @@
 	window.__env.networkAnalysisPipeUrl = window.__env.baseUrl+'map/geo/pipe';
 	//network analysis coverage
 	window.__env.networkAnalysisSensorCoverageUrl = window.__env.baseUrl+'map/sensorcoverage';
+	//network pump
+	window.__env.networkPumpUrl = window.__env.baseUrl+'map/pump';
+	//network hydrant
+	window.__env.networkHydrantUrl = window.__env.baseUrl+'map/hyrant';
 
 	//modal
 	window.__env.modalTimeSeriesUrl = window.__env.folder+'/app/modules/remote/modalTimeSeries.html';

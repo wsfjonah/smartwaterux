@@ -252,8 +252,8 @@
 	/* network map - gis
 	* updated - 4/1/2018
 	*/
-	xproNetworkMap.$inject = ['$translate','mapApi','apiService'];
-	function xproNetworkMap($translate, mapApi, apiService){
+	xproNetworkMap.$inject = ['$translate','mapApi','apiService','dialogService'];
+	function xproNetworkMap($translate, mapApi, apiService, dialogService){
 		return{
 			restrict: 'AE',
 			replace: 'true',
@@ -290,11 +290,15 @@
 					}, true);
 					//watch menus
 					scope.$watch('options.menus', function (/*newValue, oldValue*/) {
-						createNetworkMenu(map, opts, $translate);
+						createNetworkMenu(map, opts, $translate, apiService, dialogService);
 					}, true);
 					//watch pipe
 					scope.$watch('options.pipes', function (/*newValue, oldValue*/) {
 						drawPipeArea(map, opts, scope);
+					}, true);
+					//watch pump
+					scope.$watch('options.pumps', function (/*newValue, oldValue*/) {
+						drawPumps(map, opts, scope);
 					}, true);
 				};
 				mapApi.then(function () {
@@ -563,12 +567,14 @@
 		map.setViewport(points, {zoomFactor: -0.5});
 	}
 
-	function createNetworkMenu(map, opts, $translate){
+	function createNetworkMenu(map, opts, $translate, apiService, dialogService){
 		var menu = opts.menus;
 		var langMenu = {
 			pipes: $translate.instant('site_network_toolbar_pipes'),
 			sensors: $translate.instant('site_network_toolbar_sensors'),
 			status: $translate.instant('site_network_toolbar_status'),
+			pumps: $translate.instant('site_network_toolbar_pumps'),
+			hydrant: $translate.instant('site_network_toolbar_hydrant'),
 			coverage: $translate.instant('site_network_toolbar_coverage')
 		};
 		toggleNetworkMapButtons.prototype = new BMap.Control();
@@ -580,7 +586,7 @@
 			angular.forEach(menu, function(value, key) {
 				var divMenuGroup = document.createElement("button");
 
-				if(key!=="coverage"){
+				if(key!=="coverage" && key!=="hydrant"){
 					divMenuGroup = document.createElement("div");
 					divMenuGroup.className = "btn-group";
 					divMenuGroup.setAttribute("role","group");
@@ -622,12 +628,13 @@
 					};
 
 					angular.forEach(value.results, function(row){
+						var valName = row;
 						var divSub = document.createElement("a");
 						divSub.setAttribute("class","dropdown-item active");
 						divSub.setAttribute("href","#");
-						divSub.setAttribute("data-value",row);
+						divSub.setAttribute("data-value",valName);
 						divSub.setAttribute("data-type",key);
-						divSub.innerHTML = row;
+						divSub.innerHTML = valName;
 
 						divSub.onclick = function(e){
 							e.preventDefault();
@@ -653,7 +660,7 @@
 					});
 					divMenuGroup.appendChild(divDropdown);
 					div.appendChild(divMenuGroup);
-				}else{
+				}else if(key==="coverage"){
 					divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
 					divMenuGroup.innerHTML = langMenu[key];
 
@@ -661,8 +668,15 @@
 						removeCoverage(map, opts);
 					};
 					div.appendChild(divMenuGroup);
-				}
+				}else if(key==="hydrant"){
+					divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
+					divMenuGroup.innerHTML = langMenu[key];
 
+					divMenuGroup.onclick = function(){
+						getHydrantData(map, opts, apiService, dialogService, $translate);
+					};
+					div.appendChild(divMenuGroup);
+				}
 			});
 
 			// 添加DOM元素到地图中
@@ -676,6 +690,36 @@
 		map.addControl(myCtrl);
 	}
 
+	/* get hydrant marker
+	*
+	*/
+	function getHydrantData(map, opts, apiService, dialogService, $translate){
+		var mapcenter = map.getCenter();
+		var mapZoom = map.getZoom();
+		var minZoom = 13;
+		if(mapZoom<minZoom){
+			map.setZoom(minZoom);
+			mapcenter = map.getCenter();
+		}
+		apiService.networkHydrantApi(mapcenter.lat+","+mapcenter.lng).then(function(response){
+			opts.hydrant.length = 0;  
+			if(response.data.length){
+				angular.forEach(response.data, function(row){
+					var p = row.location[0];
+					var location = {
+						longitude: p.longitude,
+						latitude: p.latitude
+					};
+					opts.hydrant.push(location);
+				});
+				
+			}else{
+				dialogService.alert(null,{title: $translate.instant('site_network_toolbar_hydrant'), content: $translate.instant('site_network_hydrant_no_found'), ok: $translate.instant('site_login_error_noted')});
+			}
+			drawHydrant(map, opts);
+		});
+	}
+
 	/* toggle update overlay
 	*
 	*/
@@ -687,6 +731,34 @@
 			updatePipeOverlay(map, status, value, opts);
 		}else if(type==="status"){
 			updateStatusOverlay(map, status, value, opts);
+		}else if(type==="pumps"){
+			updatePumpOverlay(map, status, value, opts);
+		}
+	}
+
+	/* update pump marker overlap
+	*
+	*/
+	function updatePumpOverlay(map, status, value, opts){
+		var pumpInstance = opts.pumpInstance;
+		if(!status && value==="all"){ //all & off
+			angular.forEach(opts.pumps, function(element, i){
+				map.removeOverlay(pumpInstance[i]);
+			});
+		}else if(status && value==="all"){ //all & on
+			angular.forEach(opts.pumps, function(element, i){
+				map.addOverlay(pumpInstance[i]);
+			});
+		}else if(value!=="all"){
+			angular.forEach(opts.pumps, function(element, i){
+				if(element.name===value.toString()){
+					if(status){
+						map.addOverlay(pumpInstance[i]);
+					}else{
+						map.removeOverlay(pumpInstance[i]);
+					}
+				}
+			});
 		}
 	}
 
@@ -766,6 +838,66 @@
 				}
 			});
 		}
+	}
+
+	/* draw hydrant
+	*
+	*/
+	function drawHydrant(map, opts){
+		var centerPoints = [];
+		var existHydrant = (opts.hasOwnProperty('hydrantInstance') && opts.hydrantInstance.length);
+		if(existHydrant){
+			angular.forEach(opts.hydrantInstance, function(element, i){
+				map.removeOverlay(element);
+			});
+			opts.hydrantInstance.length = 0;
+		}
+		opts.hydrantInstance = [];
+		opts.hydrant.forEach(function (row) {
+			var marker = {
+				icon: 'assets/images/map/marker_hydrant.png',
+				width: 25,
+				height: 30,
+				title: '',
+				content: ''
+			}
+			var markerItem = createMarker(marker, new BMap.Point(row.longitude, row.latitude));
+			//markerItem.setTop(true);
+			centerPoints.push({lng: row.longitude, lat: row.latitude});
+			opts.hydrantInstance.push(markerItem);
+			// add marker to the map
+			map.addOverlay(markerItem);
+			markerItem.setLabel("");
+		});
+		/* move to center of highlight pipe
+		*/
+		var points = [];
+		centerPoints.forEach(function (loc) {
+			points.push(new BMap.Point(loc.lng, loc.lat));
+		});
+		map.setViewport(points);
+	}
+
+	/* draw pumps
+	*
+	*/
+	function drawPumps(map, opts){
+		opts.pumpInstance = [];
+		opts.pumps.forEach(function (row) {
+			var marker = {
+				icon: 'assets/images/map/marker_pump.png',
+				width: 38,
+				height: 46,
+				title: '',
+				content: ''
+			}
+			var markerItem = createMarker(marker, new BMap.Point(row.longitude, row.latitude));
+			markerItem.setTop(true);
+			opts.pumpInstance.push(markerItem);
+			// add marker to the map
+			map.addOverlay(markerItem);
+			markerItem.setLabel("");
+		});
 	}
 
 

@@ -58,6 +58,8 @@
 	"site_city_heatmap_toolbar_sensor" : "传感器",
 	"site_network_toolbar_pipes" : "水管",
 	"site_network_toolbar_sensors" : "传感器",
+	"site_network_toolbar_pumps" : "水泵",
+	"site_network_toolbar_hydrant" : "消防栓",
 	"site_network_toolbar_status" : "状态",
 	"site_network_toolbar_coverage" : "清除覆盖范围",
 	"site_network_toolbar_menu_all" : "全部",
@@ -70,5 +72,6 @@
 	"site_network_table_field_layer" : "层",
 	"site_network_table_field_subzone" : "分区",
 	"site_network_table_field_diameter" : "直径",
-	"site_network_table_field_others" : "其他"
+	"site_network_table_field_others" : "其他",
+	"site_network_hydrant_no_found" : "消火栓没有找到!"
 }

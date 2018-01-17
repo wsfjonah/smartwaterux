@@ -24,7 +24,9 @@
 			mapType: "networkAnalysisMap",
 			markers: [],
 			boundary: [],
+			pumps: [],
 			pipes: [],
+			hydrant: [],
 			coveragePipes: [],
 			menus: {
 				pipes:{
@@ -39,6 +41,14 @@
 					label:"Status",
 					results:["N","I","T","S","E"]
 				},
+				pumps:{
+					label:"Pumps",
+					results:[]
+				},
+				hydrant:{
+					label:"Hydrant",
+					results:[]
+				},
 				coverage:{
 					label:"Clear Coverage"
 				}
@@ -50,6 +60,7 @@
 		getPipeSummary();
 		getSensorData();
 		getPipeData();
+		getPumpData();
 
 		function getSensorData(){
 			var obj = {};
@@ -151,6 +162,17 @@
 						vm.siteMapOptions.menus.sensors.results.push(zone);
 					});
 				}
+			});
+		}
+		function getPumpData(){
+			var obj = {};
+			apiService.networkPumpApi().then(function(response){
+				angular.forEach(response.data, function(row){
+					if(angular.isDefined(row.location) && row.location.length){
+						vm.siteMapOptions.pumps.push(row.location[0]);
+						vm.siteMapOptions.menus.pumps.results.push(row.location[0].name);
+					}
+				});
 			});
 		}
 		function getColorPipe(pipe){
