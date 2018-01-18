@@ -8,7 +8,7 @@
 		.service('apiService', apiService);
 
 	authService.$inject = ['$http','localStorageService','$httpParamSerializerJQLike'];
-	apiService.$inject = ['$http','localStorageService','$httpParamSerializerJQLike'];
+	apiService.$inject = ['$http','localStorageService','$httpParamSerializerJQLike','authService'];
 
 	function authService($http, localStorageService, $httpParamSerializerJQLike) {
 		var _authentication_info = { //default object
@@ -92,7 +92,7 @@
 	function commonService(){
 		this.getColors = function() {
 			return ["#FF1493","#FFA500","#0f7ca8","#3867c4","#96137c","#696969","#f9b49d","#c60303","#008066","#823f5e","#687759","#d14959","#703e7f","#000000"];
-		}
+		};
 		this.markerConfig = function(){
 			return {
 				icon: 'assets/images/map/marker_n.png',
@@ -101,10 +101,10 @@
 				title: '',
 				content: ''
 			};
-		}
+		};
 	}
 
-	function apiService($http, localStorageService, $httpParamSerializerJQLike){
+	function apiService($http, localStorageService, $httpParamSerializerJQLike, authService){
 		var apiBaseURL = __env.baseUrl;
 		var headers = {'Pragma': undefined, 'Cache-Control': undefined, 'X-Requested-With': undefined, 'If-Modified-Since': undefined, 'Content-Type': 'application/json'};
 		//var headers = {'Content-Type': 'application/json'};
@@ -143,6 +143,23 @@
 				method: 'GET',
 				url: __env.timeSeriesRangeUrl+"/"+datapointId+"/"+resolution+"/"+from+"/"+to,
 				headers: headers
+			});
+		};
+
+		this.batchTimeSeriesApi = function(datapointIds){
+			var params = {datapoints: datapointIds,
+				resolution: "1n",
+				from: "1516106340000",
+				to: "1516192740000",
+				token: authService.getAuthentication().token
+			};
+			console.log('#params');
+			console.log(params);
+			return $http({
+				method: 'POST',
+				url: __env.batchTimeSeriesUrl,
+				data: $httpParamSerializerJQLike(params),
+				headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
 			});
 		};
 

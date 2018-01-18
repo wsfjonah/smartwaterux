@@ -1,12 +1,11 @@
-
 <div class="row page-titles m-b-0">
 	<div class="col-md-5 align-self-center">
-		<h3 class="text-white" translate="site_menu_city_overview"></h3>
+		<h3 class="text-white" translate="site_menu_network_data"></h3>
 	</div>
 	<div class="col-md-7 align-self-center">
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="javascript:void(0)" translate="site_menu_main"></a></li>
-			<li class="breadcrumb-item active" translate="site_menu_city_overview"></li>
+			<li class="breadcrumb-item active" translate="site_menu_network_data"></li>
 		</ol>
 	</div>
 </div>
@@ -15,7 +14,8 @@
 		<div class="col-12">
 			<div class="card m-b-0">
 				<div class="card-body p-0">
-					<xpro-heatmap id="heatmap" options="vm.siteMapOptions" style="width: 100%; height: 500px;display: block;"></xpro-heatmap>
+					<!-- <xpro-heatmap id="heatmap" options="vm.siteMapOptions" style="width: 100%; height: 500px;display: block;"></xpro-heatmap> -->
+					<xpro-network-map id="networkmap" options="vm.siteMapOptions" style="width: 100%; height: 500px;display: block;"></xpro-network-map>
 				</div>
 			</div>
 		</div>

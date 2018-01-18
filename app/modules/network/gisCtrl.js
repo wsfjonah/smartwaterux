@@ -62,6 +62,7 @@
 		function getSensorData(){
 			var obj = {};
 			apiService.networkSensorApi().then(function(response){
+				console.log(response.data);
 				angular.forEach(response.data, function(row){
 					var point = row.geo_latlng;
 					obj = angular.extend({},row,vm.defaultMarkerConfig);

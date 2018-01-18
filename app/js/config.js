@@ -134,10 +134,9 @@
 				key: "networkAnalysis"
 			}
 		})
-
-		.when('/network-condition', {
-			templateUrl: __env.folder+'/app/modules/network/netcondition.html',
-			controller: 'networkCondtionController as vm',
+		.when('/network-data', {
+			templateUrl: __env.folder+'/app/modules/network/networkData.html',
+			controller: 'networkDataController as vm',
 			restrictions: {
 				ensureAuthenticated: true,
 				loginRedirect: false
@@ -145,30 +144,12 @@
 			resolve: {
 				loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
 					return $ocLazyLoad.load([
-						'app/modules/network/netconditionCrtl.js'
+						'app/modules/network/networkDataCtrl.js'
 					]);
 				}]
 			},
 			page_params: {
-				key: "network_condition"
-			}
-		})
-		.when('/network-alert', {
-			templateUrl: __env.folder+'/app/modules/network/netalert.html',
-			controller: 'networkAlertController as vm',
-			restrictions: {
-				ensureAuthenticated: true,
-				loginRedirect: false
-			},
-			resolve: {
-				loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-					return $ocLazyLoad.load([
-						'app/modules/network/netalertCtrl.js'
-					]);
-				}]
-			},
-			page_params: {
-				key: "network_alert"
+				key: "network_data"
 			}
 		})
 		.when('/login', {

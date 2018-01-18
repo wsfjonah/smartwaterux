@@ -231,6 +231,7 @@
 					scope.$watch('options.pipes', function (/*newValue, oldValue*/) {
 						drawPipeArea(map, opts, scope);
 					}, true);
+
 					//watch heatmap
 					scope.$watch('options.heatMap', function (newValue/*, oldValue*/) {
 						if(newValue.length){
@@ -249,7 +250,7 @@
 		};
 	}
 
-	/* network map - gis
+	/* network map - gis, network
 	* updated - 4/1/2018
 	*/
 	xproNetworkMap.$inject = ['$translate','mapApi','apiService','dialogService'];
@@ -293,13 +294,23 @@
 						createNetworkMenu(map, opts, $translate, apiService, dialogService);
 					}, true);
 					//watch pipe
-					scope.$watch('options.pipes', function (/*newValue, oldValue*/) {
-						drawPipeArea(map, opts, scope);
-					}, true);
+					if(angular.isDefined(opts.pipes)){
+						scope.$watch('options.pipes', function (/*newValue, oldValue*/) {
+							drawPipeArea(map, opts, scope);
+						}, true);
+					}
 					//watch pump
-					scope.$watch('options.pumps', function (/*newValue, oldValue*/) {
-						drawPumps(map, opts, scope);
-					}, true);
+					if(angular.isDefined(opts.pumps)){
+						scope.$watch('options.pumps', function (/*newValue, oldValue*/) {
+							drawPumps(map, opts, scope);
+						}, true);
+					}
+					//watch plotMarkers - network data
+					if(angular.isDefined(opts.plotMarkers)){
+						scope.$watch('options.plotMarkers', function (/*newValue, oldValue*/) {
+							createPlotMarkerCart(map, opts, scope);
+						}, true);
+					}
 				};
 				mapApi.then(function () {
 					scope.initialize();
@@ -362,18 +373,37 @@
 	}
 
 	function fullscreenControl(){
+		/*jshint validthis:true */
 		this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
 		this.defaultOffset = new BMap.Size(10, 10);
 	}
 
 	function toggleHeatMapButtons(){
+		/*jshint validthis:true */
 		this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
 		this.defaultOffset = new BMap.Size(50, 10);
 	}
 
 	function toggleNetworkMapButtons(){
+		/*jshint validthis:true */
 		this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
 		this.defaultOffset = new BMap.Size(10, 10);
+	}
+
+	/* create selected plot marker in the cart list
+	*/
+	function createPlotMarkerCart(map, opts, element){
+		console.log('#build plot markers');
+		console.log(opts.plotMarkers);
+		var html = "";
+		if(opts.plotMarkers.length){
+			html += "<ul class='list-group'>";
+			for(var i=0, len=opts.plotMarkers.length; i<len; i++){
+				html += "<li class='list-group-item'>"+opts.plotMarkers[i].name+"</li>";
+			}
+			html += "</ul>";
+		}
+		$('#cart_options_list').html(html);
 	}
 
 	function createHeatMapButtons(map, opts, element, $translate){
@@ -518,7 +548,7 @@
 		//map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP]}));   //添加地图类型控件
 		map.addControl(new BMap.NavigationControl());   //add navigate control
 		map.setCurrentCity(opts.city);          // 设置地图显示的城市 此项是必须设置的
-		map.enableScrollWheelZoom(true);
+		map.disableScrollWheelZoom(true);
 		createFullScreen(map, opts, element);
 		createHeatMapButtons(map, opts, element, $translate);
 		return map;
@@ -543,7 +573,7 @@
 	}
 
 	function drawCoveragePipe(map, opts, status, marker, results){
-		var isAdd = status || true;
+		//var isAdd = status || true;
 		var color = "red";
 		var centerPoints = [];
 		angular.forEach(results, function(row){
@@ -575,7 +605,8 @@
 			status: $translate.instant('site_network_toolbar_status'),
 			pumps: $translate.instant('site_network_toolbar_pumps'),
 			hydrant: $translate.instant('site_network_toolbar_hydrant'),
-			coverage: $translate.instant('site_network_toolbar_coverage')
+			coverage: $translate.instant('site_network_toolbar_coverage'),
+			cart: 'Plot Cart'
 		};
 		toggleNetworkMapButtons.prototype = new BMap.Control();
 		toggleNetworkMapButtons.prototype.initialize = function(map){
@@ -585,19 +616,20 @@
 
 			angular.forEach(menu, function(value, key) {
 				var divMenuGroup = document.createElement("button");
-
-				if(key!=="coverage" && key!=="hydrant"){
+				var menuButton = document.createElement("button");
+				var divDropdown = document.createElement("div");
+				if(key!=="coverage" && key!=="hydrant" && key!=="cart"){
 					divMenuGroup = document.createElement("div");
 					divMenuGroup.className = "btn-group";
 					divMenuGroup.setAttribute("role","group");
 
-					var menuButton = document.createElement("button");
+					menuButton = document.createElement("button");
 					menuButton.className = "btn btn-secondary btn-outline btn-sm";
 					menuButton.setAttribute("type","button");
 					menuButton.setAttribute("data-toggle","dropdown");
 					menuButton.innerHTML = langMenu[key];
 
-					var divDropdown = document.createElement("div");
+					divDropdown = document.createElement("div");
 					divDropdown.className = "dropdown-menu";
 
 					divMenuGroup.appendChild(menuButton);
@@ -669,12 +701,80 @@
 					};
 					div.appendChild(divMenuGroup);
 				}else if(key==="hydrant"){
-					divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
-					divMenuGroup.innerHTML = langMenu[key];
+					divMenuGroup = document.createElement("div");
+					divMenuGroup.className = "btn-group";
+					divMenuGroup.setAttribute("role","group");
 
-					divMenuGroup.onclick = function(){
+					menuButton = document.createElement("button");
+					menuButton.className = "btn btn-secondary btn-outline btn-sm";
+					menuButton.setAttribute("type","button");
+					menuButton.setAttribute("data-toggle","dropdown");
+					menuButton.innerHTML = langMenu[key];
+
+					divDropdown = document.createElement("div");
+					divDropdown.className = "dropdown-menu";
+
+					divMenuGroup.appendChild(menuButton);
+
+					var divSearch = document.createElement("a");
+					divSearch.setAttribute("class","dropdown-item");
+					divSearch.setAttribute("href","#");
+					divSearch.setAttribute("data-value","all");
+					divSearch.setAttribute("data-type",key);
+					divSearch.innerHTML = $translate.instant('site_network_toolbar_menu_search');
+					divDropdown.appendChild(divSearch);
+
+					divSearch.onclick = function(e){
+						e.preventDefault();
 						getHydrantData(map, opts, apiService, dialogService, $translate);
 					};
+
+					var divClear = document.createElement("a");
+					divClear.setAttribute("class","dropdown-item");
+					divClear.setAttribute("href","#");
+					divClear.setAttribute("data-value","clear");
+					divClear.setAttribute("data-type",key);
+					divClear.innerHTML = $translate.instant('site_network_toolbar_menu_remove');
+					divDropdown.appendChild(divClear);
+
+					divClear.onclick = function(e){
+						e.preventDefault();
+						clearHydrant(map, opts);
+					};
+					divMenuGroup.appendChild(divDropdown);
+					div.appendChild(divMenuGroup);
+				}else if(key==="cart"){
+					divMenuGroup = document.createElement("div");
+					divMenuGroup.className = "btn-group cart-group";
+
+					menuButton = document.createElement("button");
+					menuButton.className = "btn btn-secondary btn-outline btn-sm";
+					menuButton.setAttribute("type","button");
+					menuButton.innerHTML = langMenu[key];
+
+					divMenuGroup.appendChild(menuButton);
+
+					menuButton.onclick = function(e){
+						$(e.target).toggleClass('active').parent().toggleClass('active');
+					};
+					var cartDiv = document.createElement("div");
+					cartDiv.className = "cart-list card scale-up";
+
+					var cartHeader = document.createElement("div");
+					cartHeader.className = "card-header";
+
+					var cartHeaderTitle = document.createElement("h4");
+					cartHeaderTitle.className = "m-b-0";
+					cartHeaderTitle.innerHTML = "Plot Lists";
+
+					var cartBody = document.createElement("div");
+					cartBody.className = "card-body";
+					cartBody.setAttribute("id","cart_options_list");
+
+					cartHeader.appendChild(cartHeaderTitle);
+					cartDiv.appendChild(cartHeader);
+					cartDiv.appendChild(cartBody);
+					divMenuGroup.appendChild(cartDiv);
 					div.appendChild(divMenuGroup);
 				}
 			});
@@ -702,7 +802,7 @@
 			mapcenter = map.getCenter();
 		}
 		apiService.networkHydrantApi(mapcenter.lat+","+mapcenter.lng).then(function(response){
-			opts.hydrant.length = 0;  
+			opts.hydrant.length = 0;
 			if(response.data.length){
 				angular.forEach(response.data, function(row){
 					var p = row.location[0];
@@ -712,7 +812,6 @@
 					};
 					opts.hydrant.push(location);
 				});
-				
 			}else{
 				dialogService.alert(null,{title: $translate.instant('site_network_toolbar_hydrant'), content: $translate.instant('site_network_hydrant_no_found'), ok: $translate.instant('site_login_error_noted')});
 			}
@@ -723,7 +822,6 @@
 	/* toggle update overlay
 	*
 	*/
-
 	function toggleUpdateOverlay(type, map, status, value, opts){
 		if(type==="sensors"){
 			updateSensorOverlay(map, status, value, opts);
@@ -840,6 +938,18 @@
 		}
 	}
 
+	/* clear hydrant
+	*
+	*/
+	function clearHydrant(map, opts){
+		if(opts.hydrantInstance.length){
+			angular.forEach(opts.hydrantInstance, function(element/*, i*/){
+				map.removeOverlay(element);
+			});
+		}
+		opts.hydrantInstance.length = 0;
+	}
+
 	/* draw hydrant
 	*
 	*/
@@ -847,20 +957,17 @@
 		var centerPoints = [];
 		var existHydrant = (opts.hasOwnProperty('hydrantInstance') && opts.hydrantInstance.length);
 		if(existHydrant){
-			angular.forEach(opts.hydrantInstance, function(element, i){
-				map.removeOverlay(element);
-			});
-			opts.hydrantInstance.length = 0;
+			clearHydrant(map, opts);
 		}
 		opts.hydrantInstance = [];
 		opts.hydrant.forEach(function (row) {
 			var marker = {
 				icon: 'assets/images/map/marker_hydrant.png',
-				width: 25,
-				height: 30,
+				width: 15,
+				height: 15,
 				title: '',
 				content: ''
-			}
+			};
 			var markerItem = createMarker(marker, new BMap.Point(row.longitude, row.latitude));
 			//markerItem.setTop(true);
 			centerPoints.push({lng: row.longitude, lat: row.latitude});
@@ -890,7 +997,7 @@
 				height: 46,
 				title: '',
 				content: ''
-			}
+			};
 			var markerItem = createMarker(marker, new BMap.Point(row.longitude, row.latitude));
 			markerItem.setTop(true);
 			opts.pumpInstance.push(markerItem);
@@ -1013,6 +1120,9 @@
 			}else if(opts.mapType==="networkAnalysisMap"){
 				var coverageButton = "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='"+$translate.instant('site_network_map_button_coverage')+"' id='network_coverage_info'><i class='ti-target'></i></button>";
 				msg += coverageButton;
+			}else if(opts.mapType==="networkmapData"){
+				var cartButton = "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='Add to Plot' id='network_data_addtocart'><i class='ti-plus'></i></button>";
+				msg = '<p>' + (marker.title || '') + '</p>'+cartButton+'<p>' + (marker.content || '') + '</p>';
 			}
 
 			var infoWindowItem = new BMap.InfoWindow(msg, {
@@ -1024,6 +1134,7 @@
 				var elData = document.getElementById("baidu_marker_data");
 				var elInfo = document.getElementById("baidu_marker_info");
 				var elCoverage = document.getElementById("network_coverage_info");
+				var elCart = document.getElementById("network_data_addtocart");
 				if(angular.isDefined(modalService) && modalService!==null){
 					elData.addEventListener("click", function(){
 						modalService.open(opts.modalUrl, opts.modalCtrl, marker);
@@ -1037,6 +1148,14 @@
 						apiService.networkAnalysisCoverageApi(marker._id).then(function(response){
 							drawCoveragePipe(map, opts, true, marker, response.data);
 						});
+					});
+				}
+				if (typeof(elCart) !== 'undefined' && elCart !== null){
+					elCart.addEventListener("click", function(){
+						$scope.$apply(function() {
+							$scope.options.plotMarkers.push(marker);
+						});
+						map.closeInfoWindow();
 					});
 				}
 			};

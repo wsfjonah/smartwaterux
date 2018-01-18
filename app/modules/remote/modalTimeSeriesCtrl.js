@@ -8,7 +8,8 @@
 		vm.selected = {
 			item: vm.items[0]
 		};
-		//console.log(vm.items);
+		vm.plotData = (angular.isArray(items)) ? items : [items];
+		console.log(vm.plotData);
 		vm.ok = function () {
 			$uibModalInstance.close(vm.selected.item);
 		};
@@ -20,7 +21,7 @@
 		*	by default "auto"
 		*/
 		vm.typeTimeSeries = "auto";
-		vm.updateTypeTimeSeries = function(type){
+		vm.updateTypeTimeSeries = function(type){ //TODO - make allowed array
 			/*	if type not equal to current and type equal to auto
 			*	fetch data only when "custom" switch to "auto" - fetch time series any data
 			*/
@@ -89,8 +90,19 @@
 		vm.chartTimeSeries = {
 			line: []
 		};
+		vm.multiChartTimeSeries = [];
+		angular.forEach(vm.plotData, function(){
+			vm.multiChartTimeSeries.push({
+				type: "line",
+				xValueType: "dateTime",
+				xValueFormatString:"YYYY MM DD HH:mm",
+				dataPoints: []
+			});
+		});
+		vm.multChartData = [];
 		vm.chartData = [];
 		vm.eventData = [];
+		console.log(vm.multiChartTimeSeries);
 
 		/* modal unable to get DOM when initial loaded. used rendered or timeout to achieved.
 		*/
@@ -243,6 +255,7 @@
 		/* get time series ANY data
 		*/
 		function getTimeSeriesAnyData(){
+			console.log('#get series');
 			var id = vm.items.datapoint.pressure._id;
 			if(angular.isDefined(id)){
 				apiService.timeSeriesAnyApi(id).then(function(response){
@@ -257,6 +270,45 @@
 						updateEvent(response.data.event);
 					});
 				}
+			}else{
+				dialogService.alert(null,{content:$translate.instant('site_common_something_wrong')});
+			}
+		}
+		function getId(){
+			var ids = [];
+			if(vm.plotData.length){
+				ids.push("5a1240275f99687ba0a11a0c-pressure"); //for test
+				//5a4c3bedb7bfe387f744c09b-pressure,5a1240275f99687ba0a11a0c-pressure
+				angular.forEach(vm.plotData, function(value){
+					ids.push(value.datapoint.pressure._id);
+				});
+			}
+			return ids;
+		}
+		getTimeSeriesBatchData();
+		/* get time series batch query data
+		*/
+		function getTimeSeriesBatchData(){
+			console.log('#get batch series');
+			var ids = getId().join(","); //vm.items.datapoint.pressure._id;
+			if(ids!==""){
+				console.log(ids);
+				//apiService.timeSeriesRangeApi(id, vm.resolutions.model ,res_date.start, res_date.end).then(function(response){
+				apiService.batchTimeSeriesApi(ids).then(function(response){
+					console.log('#success');
+					console.log(response.data);
+					//vm.chartData.length = 0;
+					angular.forEach(response.data, function(value, key){
+						//console.log(key);
+						//vm.chartData.push({x: parseInt(key), y: parseFloat(value)});
+					});
+					//vm.chart.render();
+				});
+				/*if(vm.switchEvent.status){
+					apiService.eventAnyApi().then(function(response){
+						updateEvent(response.data.event);
+					});
+				}*/
 			}else{
 				dialogService.alert(null,{content:$translate.instant('site_common_something_wrong')});
 			}

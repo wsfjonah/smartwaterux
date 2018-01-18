@@ -20,6 +20,8 @@
 	window.__env.eventDurationUrl = window.__env.baseUrl+'tsevent/search';
 	window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query';
 	window.__env.eventDetailsUrl = window.__env.baseUrl+'tsevent/get';
+	//batch query time series
+	window.__env.batchTimeSeriesUrl = window.__env.baseUrl+'tsda/batchquery'; //TODO: make it post method key - ///1n/1516106340000/1516192740000
 
 	//network sensor
 	window.__env.siteSearchUrl = window.__env.baseUrl+'site/search';
