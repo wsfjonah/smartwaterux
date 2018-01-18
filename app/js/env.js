@@ -53,7 +53,7 @@
 	window.__env.ignoreInterceptorRequest = ['uib/template/modal/window.html', window.__env.baseUrl+'user/login'];
 
 	//language reload page
-	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location'];
+	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location','/network-data'];
 
 	//main page after user login
 	window.__env.pageMain = '/main';

@@ -283,11 +283,11 @@
 					var map = createMapInstance(opts, elem, $translate);
 					var previousMarkers = [];
 					//create markers
-					redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService);
+					redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService, dialogService);
 
 					//watch markers
 					scope.$watch('options.markers', function (/*newValue, oldValue*/) {
-						redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService);
+						redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService, dialogService);
 					}, true);
 					//watch menus
 					scope.$watch('options.menus', function (/*newValue, oldValue*/) {
@@ -308,7 +308,7 @@
 					//watch plotMarkers - network data
 					if(angular.isDefined(opts.plotMarkers)){
 						scope.$watch('options.plotMarkers', function (/*newValue, oldValue*/) {
-							createPlotMarkerCart(map, opts, scope);
+							createPlotMarkerCart(map, opts, scope, $translate);
 						}, true);
 					}
 				};
@@ -392,18 +392,59 @@
 
 	/* create selected plot marker in the cart list
 	*/
-	function createPlotMarkerCart(map, opts, element){
-		console.log('#build plot markers');
-		console.log(opts.plotMarkers);
+	function createPlotMarkerCart(map, opts, scope, $translate){
+		var container = $('#cart_options_list');
+		var lenMarker = opts.plotMarkers.length;
 		var html = "";
-		if(opts.plotMarkers.length){
+		if(lenMarker){
 			html += "<ul class='list-group'>";
-			for(var i=0, len=opts.plotMarkers.length; i<len; i++){
-				html += "<li class='list-group-item'>"+opts.plotMarkers[i].name+"</li>";
+			for(var i=0, len=lenMarker; i<len; i++){
+				html += "<li class='list-group-item'>"+opts.plotMarkers[i].name+"<a class='remove-cart' data-toggle='remove_cart' data-id='"+opts.plotMarkers[i].datapoint.pressure._id+"' href='JavaScript:void(0);'><i class='ti-close'></i></a></li>";
 			}
 			html += "</ul>";
+			html += "<div class='footer-action'>";
+				html += "<div class='btn-group'>";
+					html += "<button type='button' class='btn btn-secondary' data-toggle='empty_cart'><i class='ti-trash'></i></button>";
+					html += "<button type='button' class='btn btn-primary'><i class='ti-stats-up'></i></button>";
+				html += "</div>";
+			html += "</div>";
+		}else{
+			html += "<h3 class='text-center m-t-20 text-muted'>"+$translate.instant('site_network_data_plot_no_sensor_found')+"</h3>";
 		}
-		$('#cart_options_list').html(html);
+		container.html(html);
+		var count = document.getElementById('count_badge');
+		count.innerHTML = lenMarker;
+		container.off().on('click','[data-toggle="remove_cart"]', function(){
+			removePlotMarker(map, opts, scope, $(this).data('id'));
+		}).on('click','[data-toggle="empty_cart"]', function(){
+			removePlotMarker(map, opts, scope);
+		});
+	}
+	/* remove plot marker cart
+	*/
+	function removePlotMarker(map, opts, $scope, id){
+		var isDelete = false;
+		console.log('#removed');
+		console.log(opts.plotMarkers);
+		if(angular.isDefined(id)){
+			angular.forEach(opts.plotMarkers, function(value, index){
+				if(value.datapoint.pressure._id===id){
+					opts.plotMarkerInstance[index].setAnimation(null);
+					$scope.$apply(function() {
+						opts.plotMarkerInstance.splice(index, 1);
+						$scope.options.plotMarkers.splice(index, 1);
+					});
+				}
+			});
+		}else{
+			angular.forEach(opts.plotMarkerInstance, function(value, index){
+				value.setAnimation(null);
+			});
+			$scope.$apply(function() {
+				opts.plotMarkerInstance.length = 0;
+				$scope.options.plotMarkers.length = 0;
+			});
+		}
 	}
 
 	function createHeatMapButtons(map, opts, element, $translate){
@@ -606,7 +647,7 @@
 			pumps: $translate.instant('site_network_toolbar_pumps'),
 			hydrant: $translate.instant('site_network_toolbar_hydrant'),
 			coverage: $translate.instant('site_network_toolbar_coverage'),
-			cart: 'Plot Cart'
+			cart: $translate.instant('site_network_data_plot_plotlist')
 		};
 		toggleNetworkMapButtons.prototype = new BMap.Control();
 		toggleNetworkMapButtons.prototype.initialize = function(map){
@@ -752,6 +793,12 @@
 					menuButton.setAttribute("type","button");
 					menuButton.innerHTML = langMenu[key];
 
+					var badgeDiv = document.createElement("span");
+					badgeDiv.className = "badge badge-primary m-l-5";
+					badgeDiv.setAttribute("id","count_badge");
+					badgeDiv.innerHTML = "0";
+
+					menuButton.appendChild(badgeDiv);
 					divMenuGroup.appendChild(menuButton);
 
 					menuButton.onclick = function(e){
@@ -765,7 +812,7 @@
 
 					var cartHeaderTitle = document.createElement("h4");
 					cartHeaderTitle.className = "m-b-0";
-					cartHeaderTitle.innerHTML = "Plot Lists";
+					cartHeaderTitle.innerHTML = $translate.instant('site_network_data_plot_plotlist');
 
 					var cartBody = document.createElement("div");
 					cartBody.className = "card-body";
@@ -1080,8 +1127,18 @@
 		var elem = document.createElement('canvas');
 		return !!(elem.getContext && elem.getContext('2d'));
 	}
-
-	function redrawMarkers(map, $translate, previousMarkers, opts, $scope, modalService, apiService){
+	function validateUniquMarker(oldArr, newArr){
+		var isUnique = true;
+		if(oldArr.length){
+			angular.forEach(oldArr, function(value){
+				if(value.datapoint.pressure._id===newArr.datapoint.pressure._id){
+					isUnique = false;
+				}
+			});
+		}
+		return isUnique;
+	}
+	function redrawMarkers(map, $translate, previousMarkers, opts, $scope, modalService, apiService, dialogService){
 		var points = [];
 		previousMarkers.forEach(function (item) {
 			var marker = item.marker;
@@ -1121,7 +1178,7 @@
 				var coverageButton = "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='"+$translate.instant('site_network_map_button_coverage')+"' id='network_coverage_info'><i class='ti-target'></i></button>";
 				msg += coverageButton;
 			}else if(opts.mapType==="networkmapData"){
-				var cartButton = "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='Add to Plot' id='network_data_addtocart'><i class='ti-plus'></i></button>";
+				var cartButton = "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='Add to Plot' id='network_data_addtocart'><i class='ti-plus'></i> "+$translate.instant('site_network_data_plot_addtoplot')+"</button>";
 				msg = '<p>' + (marker.title || '') + '</p>'+cartButton+'<p>' + (marker.content || '') + '</p>';
 			}
 
@@ -1152,10 +1209,34 @@
 				}
 				if (typeof(elCart) !== 'undefined' && elCart !== null){
 					elCart.addEventListener("click", function(){
-						$scope.$apply(function() {
-							$scope.options.plotMarkers.push(marker);
-						});
-						map.closeInfoWindow();
+						var isUnique = validateUniquMarker(opts.plotMarkers, marker);
+						var totalSelected = opts.plotMarkers.length;
+						var max = 10;
+						if(!opts.hasOwnProperty('plotMarkerInstance')){
+							opts.plotMarkerInstance = [];
+						}
+						if(totalSelected<max){
+							if(isUnique){
+								opts.plotMarkerInstance.push(markerItem);
+								markerItem.setAnimation(BMAP_ANIMATION_BOUNCE);
+								$scope.$apply(function() {
+									$scope.options.plotMarkers.push(marker);
+								});
+								map.closeInfoWindow();
+							}else{
+								dialogService.alert(null,{
+									title: $translate.instant('site_network_data_plot_title'), 
+									content: $translate.instant('site_network_data_plot_sensor_exists'), 
+									ok: $translate.instant('site_login_error_noted')
+								});
+							}
+						}else{
+							dialogService.alert(null,{
+								title: $translate.instant('site_network_data_plot_title'),
+								content: $translate.instant('site_network_data_plot_warning_limit'), 
+								ok: $translate.instant('site_login_error_noted')
+							});
+						}
 					});
 				}
 			};

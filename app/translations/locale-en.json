@@ -76,5 +76,11 @@
 	"site_network_table_field_subzone" : "Subzone",
 	"site_network_table_field_diameter" : "Diameter",
 	"site_network_table_field_others" : "Others",
-	"site_network_hydrant_no_found" : "Hydrant no found!"
+	"site_network_hydrant_no_found" : "Hydrant no found!",
+	"site_network_data_plot_title" : "Plot Information",
+	"site_network_data_plot_addtoplot" : "Add to list",
+	"site_network_data_plot_plotlist" : "Plot List",
+	"site_network_data_plot_warning_limit" : "You have reached maximum of selected sensors",
+	"site_network_data_plot_sensor_exists" : "This sensor has been added to plot list",
+	"site_network_data_plot_no_sensor_found" : "No sensor found!"
 }

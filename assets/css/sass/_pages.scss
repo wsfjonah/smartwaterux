@@ -644,10 +644,28 @@ network data - cart
 		height: 250px;
 		background-color:#fff;
 		border:1px solid #ddd;
-		padding:10px;
+		padding:0;
 		right: 0;
 		top: 100%;
-		transition: 5s all;
+		transition: 1s all;
+	}
+	.list-group-item{
+		position: relative;
+		.remove-cart{
+			position: absolute;
+			right: 8px;
+			top: 7px;
+		}
+	}
+	.footer-action{
+		border-top:1px solid #ddd;
+		position: absolute;
+		left: 0;
+		bottom:0;
+		padding:5px;
+		background-color:#eee;
+		text-align: right;
+		width: 100%;
 	}
 	&.active .cart-list{
 		display: block;
@@ -660,6 +678,9 @@ network data - cart
 			padding: 5px 10px;
 			font-size: 14px;
 		}
+	}
+	.badge{
+		font-size:12px;
 	}
 }
 
