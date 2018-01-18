@@ -82,5 +82,6 @@
 	"site_network_data_plot_plotlist" : "Plot List",
 	"site_network_data_plot_warning_limit" : "You have reached maximum of selected sensors",
 	"site_network_data_plot_sensor_exists" : "This sensor has been added to plot list",
+	"site_network_data_plot_sensor_error" : "Something went wrong for this sensor",
 	"site_network_data_plot_no_sensor_found" : "No sensor found!"
 }

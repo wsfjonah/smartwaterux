@@ -1131,7 +1131,7 @@
 		var isUnique = true;
 		if(oldArr.length){
 			angular.forEach(oldArr, function(value){
-				if(value.datapoint.pressure._id===newArr.datapoint.pressure._id){
+				if(angular.isDefined(value.datapoint.pressure) && value.datapoint.pressure._id===newArr.datapoint.pressure._id){
 					isUnique = false;
 				}
 			});
@@ -1212,28 +1212,36 @@
 						var isUnique = validateUniquMarker(opts.plotMarkers, marker);
 						var totalSelected = opts.plotMarkers.length;
 						var max = 10;
-						if(!opts.hasOwnProperty('plotMarkerInstance')){
-							opts.plotMarkerInstance = [];
-						}
-						if(totalSelected<max){
-							if(isUnique){
-								opts.plotMarkerInstance.push(markerItem);
-								markerItem.setAnimation(BMAP_ANIMATION_BOUNCE);
-								$scope.$apply(function() {
-									$scope.options.plotMarkers.push(marker);
-								});
-								map.closeInfoWindow();
+						if(angular.isDefined(marker.datapoint.pressure)){
+							if(!opts.hasOwnProperty('plotMarkerInstance')){
+								opts.plotMarkerInstance = [];
+							}
+							if(totalSelected<max){
+								if(isUnique){
+									opts.plotMarkerInstance.push(markerItem);
+									markerItem.setAnimation(BMAP_ANIMATION_BOUNCE);
+									$scope.$apply(function() {
+										$scope.options.plotMarkers.push(marker);
+									});
+									map.closeInfoWindow();
+								}else{
+									dialogService.alert(null,{
+										title: $translate.instant('site_network_data_plot_title'), 
+										content: $translate.instant('site_network_data_plot_sensor_exists'), 
+										ok: $translate.instant('site_login_error_noted')
+									});
+								}
 							}else{
 								dialogService.alert(null,{
-									title: $translate.instant('site_network_data_plot_title'), 
-									content: $translate.instant('site_network_data_plot_sensor_exists'), 
+									title: $translate.instant('site_network_data_plot_title'),
+									content: $translate.instant('site_network_data_plot_warning_limit'), 
 									ok: $translate.instant('site_login_error_noted')
 								});
 							}
 						}else{
 							dialogService.alert(null,{
 								title: $translate.instant('site_network_data_plot_title'),
-								content: $translate.instant('site_network_data_plot_warning_limit'), 
+								content: $translate.instant('site_network_data_plot_sensor_error'), 
 								ok: $translate.instant('site_login_error_noted')
 							});
 						}

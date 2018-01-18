@@ -82,5 +82,6 @@
 	"site_network_data_plot_plotlist" : "绘制列表",
 	"site_network_data_plot_warning_limit" : "您已达到所选传感器的最大数量",
 	"site_network_data_plot_sensor_exists" : "这个传感器已被添加到列表",
+	"site_network_data_plot_sensor_error" : "这个传感器出了点问题",
 	"site_network_data_plot_no_sensor_found" : "找不到传感器！"
 }
