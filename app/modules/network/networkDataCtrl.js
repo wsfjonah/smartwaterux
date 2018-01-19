@@ -1,4 +1,4 @@
-/* global angular */
+/* global angular, __env */
 (function() {
 	'use strict';
 	var networkData = angular.module('xProject.networkData',[]);
@@ -25,8 +25,13 @@
 			city: 'ShangHai',
 			mapType: "networkmapData",
 			markers: [],
+			pipes: [],
 			plotMarkers: [],
 			menus: {
+				status:{
+					label:"Status",
+					results:["N","I","T","S","E"]
+				},
 				cart:{
 					label:"Cart",
 					results:[]
@@ -37,6 +42,7 @@
 		vm.defaultMarkerConfig = commonService.markerConfig();
 
 		getSensorData();
+		getPipeData();
 
 		function getSensorData(){
 			var obj = {};
@@ -79,6 +85,68 @@
 				});
 			}).catch(function(/*err*/){
 			});
+		}
+		function getPipeData(){
+			var obj = {};
+			apiService.networkAnalysisPipeApi().then(function(response){
+				angular.forEach(response.data, function(row){
+					obj = {};
+					var weight = parseInt(row.optional.diameter)/250;
+					if(weight<=1){
+						weight = 1;
+					}
+					obj.color = getColorPipe(row);
+					obj.weight = weight;
+					obj.location = [];
+					obj.diameter = row.optional.diameter;
+					obj.id = row._id;
+					obj.tag = row.tag;
+					obj.type = row.type;
+					obj.subzone = row.tag.subzone;
+					obj.title = $translate.instant('site_network_info_pipe_title');
+					obj.content = '<div class="overflow:auto"><table class="table table-sm table-striped table-bordered">';
+						obj.content += '<tbody>';
+							obj.content += '<tr>';
+								obj.content += '<td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_id')+':</td>';
+								obj.content += '<td>'+obj.id+'</td>';
+							obj.content += '</tr>';
+							obj.content += '<tr>';
+								obj.content += '<td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_type')+':</td>';
+								obj.content += '<td>'+obj.type+'</td>';
+							obj.content += '</tr>';
+							obj.content += '<tr>';
+								obj.content += '<td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_diameter')+':</td>';
+								obj.content += '<td>'+obj.diameter+'</td>';
+							obj.content += '</tr>';
+							obj.content += '<tr>';
+								obj.content += '<td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_others')+':</td>';
+								obj.content += '<td><pre>'+angular.toJson(obj.tag, true)+'</pre></td>';
+							obj.content += '</tr>';
+						obj.content += '</tbody>';
+					obj.content += '</table>';
+					obj.content += '<div>';
+					angular.forEach(row.junctions, function(loc){
+						obj.location.push({
+							latitude: loc.lat,
+							longitude: loc.lng
+						});
+					});
+					vm.siteMapOptions.pipes.push(obj);
+				});
+			}).catch(function(/*err*/){
+			});
+		}
+		function getColorPipe(pipe){
+			var zone = pipe.tag.subzone;
+			var setColor = "blue";
+			if(angular.isDefined(zone) && pipeColor.hasOwnProperty(zone)){
+				setColor = pipeColor[zone];
+			}else if(angular.isDefined(zone) && !pipeColor.hasOwnProperty(zone) && colorSet.length){
+				pipeColor[zone] = colorSet[0];
+				setColor = pipeColor[zone];
+				colorSet.shift();
+			}
+			return setColor;
 		}
 	});
 })();

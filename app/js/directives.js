@@ -1072,7 +1072,7 @@
 
 			/* info window
 			*/
-			if (!row.title && !row.content) {
+			if ((!row.title && !row.content) || opts.mapType==="networkmapData") {
 				return;
 			}
 			//info window msg
