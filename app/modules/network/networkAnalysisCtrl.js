@@ -27,6 +27,7 @@
 			pumps: [],
 			pipes: [],
 			hydrant: [],
+			pipeDetails: [],
 			coveragePipes: [],
 			menus: {
 				pipes:{
@@ -47,6 +48,10 @@
 				},
 				hydrant:{
 					label:"Hydrant",
+					results:[]
+				},
+				pipeDetails:{
+					label:"Pipe Details",
 					results:[]
 				},
 				coverage:{
@@ -165,7 +170,6 @@
 			});
 		}
 		function getPumpData(){
-			var obj = {};
 			apiService.networkPumpApi().then(function(response){
 				angular.forEach(response.data, function(row){
 					if(angular.isDefined(row.location) && row.location.length){

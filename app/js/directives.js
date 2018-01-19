@@ -645,6 +645,7 @@
 			status: $translate.instant('site_network_toolbar_status'),
 			pumps: $translate.instant('site_network_toolbar_pumps'),
 			hydrant: $translate.instant('site_network_toolbar_hydrant'),
+			pipeDetails: $translate.instant('site_network_toolbar_pipe_details'),
 			coverage: $translate.instant('site_network_toolbar_coverage'),
 			cart: $translate.instant('site_network_data_plot_plotlist')
 		};
@@ -658,7 +659,7 @@
 				var divMenuGroup = document.createElement("button");
 				var menuButton = document.createElement("button");
 				var divDropdown = document.createElement("div");
-				if(key!=="coverage" && key!=="hydrant" && key!=="cart"){
+				if(key!=="coverage" && key!=="hydrant" && key!=="cart" && key!=="pipeDetails"){
 					divMenuGroup = document.createElement("div");
 					divMenuGroup.className = "btn-group";
 					divMenuGroup.setAttribute("role","group");
@@ -740,7 +741,7 @@
 						removeCoverage(map, opts);
 					};
 					div.appendChild(divMenuGroup);
-				}else if(key==="hydrant"){
+				}else if(key==="hydrant" || key==="pipeDetails"){
 					divMenuGroup = document.createElement("div");
 					divMenuGroup.className = "btn-group";
 					divMenuGroup.setAttribute("role","group");
@@ -766,7 +767,11 @@
 
 					divSearch.onclick = function(e){
 						e.preventDefault();
-						getHydrantData(map, opts, apiService, dialogService, $translate);
+						if(key==="hydrant"){
+							getHydrantData(map, opts, apiService, dialogService, $translate);
+						}else{
+							getPipeDetailsData(map, opts, apiService, dialogService, $translate);
+						}
 					};
 
 					var divClear = document.createElement("a");
@@ -779,7 +784,12 @@
 
 					divClear.onclick = function(e){
 						e.preventDefault();
-						clearHydrant(map, opts);
+						if(key==="hydrant"){
+							clearHydrant(map, opts);
+						}else{
+							clearPipeDetails(map, opts);
+						}
+
 					};
 					divMenuGroup.appendChild(divDropdown);
 					div.appendChild(divMenuGroup);
@@ -862,6 +872,42 @@
 				dialogService.alert(null,{title: $translate.instant('site_network_toolbar_hydrant'), content: $translate.instant('site_network_hydrant_no_found'), ok: $translate.instant('site_login_error_noted')});
 			}
 			drawHydrant(map, opts);
+		});
+	}
+
+	/* get pipe details marker
+	*
+	*/
+	function getPipeDetailsData(map, opts, apiService, dialogService, $translate){
+		var mapcenter = map.getCenter();
+		var mapZoom = map.getZoom();
+		var minZoom = 13;
+		if(mapZoom<minZoom){
+			map.setZoom(minZoom);
+			mapcenter = map.getCenter();
+		}
+		apiService.networkPipeDetailsApi(mapcenter.lat+","+mapcenter.lng).then(function(response){
+			opts.pipeDetails.length = 0;
+			if(response.data.length){
+				var results = {};
+				angular.forEach(response.data, function(row){
+					var junctions = row.junctions;
+					var weight = parseInt(row.optional.diameter)/250;
+					results = {};
+					results.weight = weight;
+					results.location = [];
+					angular.forEach(junctions, function(element){
+						results.location.push({
+							latitude: element.lat,
+							longitude: element.lng,
+						});
+					});
+					opts.pipeDetails.push(results);
+				});
+			}else{
+				dialogService.alert(null,{title: $translate.instant('site_network_toolbar_pipe_details'), content: $translate.instant('site_network_pipe_details_no_found'), ok: $translate.instant('site_login_error_noted')});
+			}
+			drawPipeDetails(map, opts);
 		});
 	}
 
@@ -996,6 +1042,18 @@
 		opts.hydrantInstance.length = 0;
 	}
 
+	/* clear pipe details
+	*
+	*/
+	function clearPipeDetails(map, opts){
+		if(opts.pipeDetailsInstance.length){
+			angular.forEach(opts.pipeDetailsInstance, function(element/*, i*/){
+				map.removeOverlay(element);
+			});
+		}
+		opts.pipeDetailsInstance.length = 0;
+	}
+
 	/* draw hydrant
 	*
 	*/
@@ -1021,6 +1079,36 @@
 			// add marker to the map
 			map.addOverlay(markerItem);
 			markerItem.setLabel("");
+		});
+		/* move to center of highlight pipe
+		*/
+		var points = [];
+		centerPoints.forEach(function (loc) {
+			points.push(new BMap.Point(loc.lng, loc.lat));
+		});
+		map.setViewport(points);
+	}
+
+	/* draw pipe details
+	*
+	*/
+	function drawPipeDetails(map, opts){
+		var centerPoints = [];
+		var existInstance = (opts.hasOwnProperty('pipeDetailsInstance') && opts.pipeDetailsInstance.length);
+		if(existInstance){
+			clearPipeDetails(map, opts);
+		}
+		opts.pipeDetailsInstance = [];
+		opts.pipeDetails.forEach(function (row) {
+			var pipeArr = [];
+			row.location.forEach(function (loc) {
+				var pt = new BMap.Point(loc.longitude, loc.latitude);
+				pipeArr.push(pt);
+				centerPoints.push({lng: loc.longitude, lat: loc.latitude});
+			});
+			var pipeOverlay = new BMap.Polyline(pipeArr, {strokeColor: "#000000", strokeWeight: row.weight, strokeOpacity:1});
+			opts.pipeDetailsInstance.push(pipeOverlay);
+			map.addOverlay(pipeOverlay);
 		});
 		/* move to center of highlight pipe
 		*/

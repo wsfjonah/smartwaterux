@@ -92,7 +92,7 @@
 	function commonService(){
 		/*jshint validthis: true */
 		this.getColors = function() {
-			return ["#FF1493","#FFA500","#0f7ca8","#3867c4","#96137c","#696969","#f9b49d","#c60303","#008066","#823f5e","#687759","#d14959","#703e7f","#000000"];
+			return ["#FF1493","#FFA500","#0f7ca8","#3867c4","#96137c","#b79494","#f9b49d","#c60303","#008066","#823f5e","#687759","#d14959","#703e7f","#000000"];
 		};
 		this.markerConfig = function(){
 			return {
@@ -271,6 +271,13 @@
 			return $http({
 				method: 'GET',
 				url: __env.networkHydrantUrl+'?mapcenter='+mapcenter,
+				headers: headers
+			});
+		};
+		this.networkPipeDetailsApi = function(mapcenter){
+			return $http({
+				method: 'GET',
+				url: __env.networkPipeDetailsUrl+'?mapcenter='+mapcenter,
 				headers: headers
 			});
 		};

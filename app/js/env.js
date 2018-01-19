@@ -38,6 +38,8 @@
 	window.__env.networkPumpUrl = window.__env.baseUrl+'map/pump';
 	//network hydrant
 	window.__env.networkHydrantUrl = window.__env.baseUrl+'map/hyrant';
+	//network pipe end details
+	window.__env.networkPipeDetailsUrl = window.__env.baseUrl+'map/geo/pipe/detail';
 
 	//modal
 	window.__env.modalTimeSeriesUrl = window.__env.folder+'/app/modules/remote/modalTimeSeries.html';
