@@ -30,6 +30,9 @@
 			pipeDetails: [],
 			coveragePipes: [],
 			menus: {
+				search:{
+					label:"Search"
+				},
 				pipes:{
 					label:"Pipes",
 					results:[]

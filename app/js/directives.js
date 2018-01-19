@@ -640,6 +640,7 @@
 	function createNetworkMenu(map, opts, $translate, apiService, dialogService){
 		var menu = opts.menus;
 		var langMenu = {
+			search: 'Search',
 			pipes: $translate.instant('site_network_toolbar_pipes'),
 			sensors: $translate.instant('site_network_toolbar_sensors'),
 			status: $translate.instant('site_network_toolbar_status'),
@@ -659,7 +660,7 @@
 				var divMenuGroup = document.createElement("button");
 				var menuButton = document.createElement("button");
 				var divDropdown = document.createElement("div");
-				if(key!=="coverage" && key!=="hydrant" && key!=="cart" && key!=="pipeDetails"){
+				if(key!=="coverage" && key!=="hydrant" && key!=="cart" && key!=="pipeDetails" && key!=="search"){
 					divMenuGroup = document.createElement("div");
 					divMenuGroup.className = "btn-group";
 					divMenuGroup.setAttribute("role","group");
@@ -736,9 +737,15 @@
 				}else if(key==="coverage"){
 					divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
 					divMenuGroup.innerHTML = langMenu[key];
-
 					divMenuGroup.onclick = function(){
 						removeCoverage(map, opts);
+					};
+					div.appendChild(divMenuGroup);
+				}else if(key==="search"){
+					divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
+					divMenuGroup.innerHTML = langMenu[key];
+					divMenuGroup.onclick = function(){
+						searchSensor(map, opts);
 					};
 					div.appendChild(divMenuGroup);
 				}else if(key==="hydrant" || key==="pipeDetails"){
@@ -844,6 +851,14 @@
 		var myCtrl = new toggleNetworkMapButtons();
 		// 添加到地图当中
 		map.addControl(myCtrl);
+	}
+
+	/* search sensor data - device_ref, name, address
+	*/
+	function searchSensor(map, opts){
+		var userValue = "中久3路";
+		console.log(opts);
+		console.log(opts.markers);
 	}
 
 	/* get hydrant marker
