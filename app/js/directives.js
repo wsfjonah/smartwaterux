@@ -745,7 +745,7 @@
 					divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
 					divMenuGroup.innerHTML = langMenu[key];
 					divMenuGroup.onclick = function(){
-						searchSensor(map, opts);
+						searchSensor(map, opts, dialogService);
 					};
 					div.appendChild(divMenuGroup);
 				}else if(key==="hydrant" || key==="pipeDetails"){
@@ -855,10 +855,40 @@
 
 	/* search sensor data - device_ref, name, address
 	*/
-	function searchSensor(map, opts){
-		var userValue = "中久3路";
+	function searchSensor(map, opts, dialogService){
+		var userValue = "新镇路";
+		var fields = ["device_ref","name","geo_address"];
+		var matchArr = [];
+		var searchMarker = "assets/images/map/marker_i.png";
+
 		console.log(opts);
 		console.log(opts.markers);
+		angular.forEach(opts.markers, function(element, index){
+			for(var key in element){
+				//console.log('key :'+key);
+				//console.log(element[key]);
+				//TODO:: as long as same row key is found, we can skip and continue next row
+				if($.inArray(key, fields)!==-1 && element[key].toLowerCase().indexOf(userValue.toLowerCase()) > -1){
+					var res = element;
+					res.position = index;
+					matchArr.push(res);
+				}
+			}
+		});
+		console.log('#match result');
+		console.log(matchArr);
+		angular.forEach(opts.markerInstance, function(element){
+			element.hide();
+		});
+		angular.forEach(matchArr, function(element){
+			var selected = opts.markerInstance[element.position];
+			selected.show();
+		});
+		dialogService.alert(null,{
+			title: 'Search', 
+			content: (!matchArr.length) ? 'No found!' : "We have found "+matchArr.length+" record(s).", 
+			ok: "Noted"//$translate.instant('site_login_error_noted')
+		});
 	}
 
 	/* get hydrant marker

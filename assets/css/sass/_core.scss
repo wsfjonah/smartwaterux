@@ -1926,6 +1926,29 @@ mapmenu
 		position: absolute;
 		font-size: 14px!important;
 	}
+	.btn-search{
+		position: relative;
+		width:35px;
+		i{
+			position: absolute;
+			left: 12px;
+			top: 8px;
+		}
+		input{
+			display: none;
+		}
+	}
+	.multi-group{
+		&.active .btn-trigger{
+			display: none;
+		}
+		&.active .sub-group{
+			display: block;
+		}
+	}
+	.sub-group{
+		display: none;
+	}
 }
 
 /*******************
