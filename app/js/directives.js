@@ -1,4 +1,4 @@
-/* global angular, BMap, xpro, __env, BMapLib, BMAP_ANCHOR_TOP_RIGHT */
+/* global angular, BMap, xpro, __env, BMapLib, BMAP_ANCHOR_TOP_RIGHT, BMAP_ANIMATION_BOUNCE */
 (function() {
 	'use strict';
 	angular
@@ -253,8 +253,8 @@
 	/* network map - gis, network
 	* updated - 4/1/2018
 	*/
-	xproNetworkMap.$inject = ['$translate','mapApi','apiService','dialogService'];
-	function xproNetworkMap($translate, mapApi, apiService, dialogService){
+	xproNetworkMap.$inject = ['$translate','mapApi','apiService','dialogService','modalService'];
+	function xproNetworkMap($translate, mapApi, apiService, dialogService, modalService){
 		return{
 			restrict: 'AE',
 			replace: 'true',
@@ -308,7 +308,7 @@
 					//watch plotMarkers - network data
 					if(angular.isDefined(opts.plotMarkers)){
 						scope.$watch('options.plotMarkers', function (/*newValue, oldValue*/) {
-							createPlotMarkerCart(map, opts, scope, $translate);
+							createPlotMarkerCart(map, opts, scope, $translate, modalService);
 						}, true);
 					}
 				};
@@ -392,7 +392,7 @@
 
 	/* create selected plot marker in the cart list
 	*/
-	function createPlotMarkerCart(map, opts, scope, $translate){
+	function createPlotMarkerCart(map, opts, scope, $translate, modalService){
 		var container = $('#cart_options_list');
 		var lenMarker = opts.plotMarkers.length;
 		var html = "";
@@ -405,7 +405,7 @@
 			html += "<div class='footer-action'>";
 				html += "<div class='btn-group'>";
 					html += "<button type='button' class='btn btn-secondary' data-toggle='empty_cart'><i class='ti-trash'></i></button>";
-					html += "<button type='button' class='btn btn-primary'><i class='ti-stats-up'></i></button>";
+					html += "<button type='button' class='btn btn-primary' data-toggle='modal_plot'><i class='ti-stats-up'></i></button>";
 				html += "</div>";
 			html += "</div>";
 		}else{
@@ -418,14 +418,13 @@
 			removePlotMarker(map, opts, scope, $(this).data('id'));
 		}).on('click','[data-toggle="empty_cart"]', function(){
 			removePlotMarker(map, opts, scope);
+		}).on('click','[data-toggle="modal_plot"]', function(){
+			modalService.open(opts.modalUrl, opts.modalCtrl, opts.plotMarkers);
 		});
 	}
 	/* remove plot marker cart
 	*/
 	function removePlotMarker(map, opts, $scope, id){
-		var isDelete = false;
-		console.log('#removed');
-		console.log(opts.plotMarkers);
 		if(angular.isDefined(id)){
 			angular.forEach(opts.plotMarkers, function(value, index){
 				if(value.datapoint.pressure._id===id){
@@ -437,7 +436,7 @@
 				}
 			});
 		}else{
-			angular.forEach(opts.plotMarkerInstance, function(value, index){
+			angular.forEach(opts.plotMarkerInstance, function(value){
 				value.setAnimation(null);
 			});
 			$scope.$apply(function() {
@@ -599,7 +598,7 @@
 		var newMarker = new BMap.Marker(point);
 		if (marker.icon) {
 			var icon = new BMap.Icon(marker.icon, new BMap.Size(marker.width, marker.height),{
-				 anchor: new BMap.Size(15, marker.height),
+				 anchor: new BMap.Size(15, marker.height)
 			});
 			newMarker = new BMap.Marker(point, { icon: icon });
 		}
@@ -1089,6 +1088,51 @@
 		});
 	}
 
+	/* add to cart animation
+	*/
+	var cart_timer = null;
+	function addToCartAnimation(elem){
+		var cart = $('.cart-group>button');
+		var imgtodrag = elem.find('img');
+		if (imgtodrag) {
+			var imgclone = imgtodrag.clone()
+			.offset({
+				top: imgtodrag.offset().top,
+				left: imgtodrag.offset().left
+			})
+			.css({
+				'opacity': '0.5',
+				'position': 'absolute',
+				'height': '150px',
+				'width': '150px',
+				'z-index': '100'
+			})
+			.appendTo($('body'))
+			.animate({
+				'top': cart.offset().top + 10,
+				'left': cart.offset().left + 10,
+				'width': 75,
+				'height': 75
+			}, 1000/*, 'easeInOutExpo'*/);
+
+			clearTimeout(cart_timer);
+			cart.removeClass('bounce');
+			cart_timer = setTimeout(function () {
+				cart.addClass('bounce');
+				setTimeout(function(){
+					cart.removeClass('bounce');
+				},2000);
+			}, 1500);
+
+			imgclone.animate({
+				'width': 0,
+				'height': 0
+			}, function () {
+				$(this).detach();
+			});
+		}
+	}
+
 	/* draw a project area line
 	*
 	*/
@@ -1208,7 +1252,7 @@
 					});
 				}
 				if (typeof(elCart) !== 'undefined' && elCart !== null){
-					elCart.addEventListener("click", function(){
+					elCart.addEventListener("click", function(/*e*/){
 						var isUnique = validateUniquMarker(opts.plotMarkers, marker);
 						var totalSelected = opts.plotMarkers.length;
 						var max = 10;
@@ -1223,25 +1267,28 @@
 									$scope.$apply(function() {
 										$scope.options.plotMarkers.push(marker);
 									});
+									if(markerItem.hasOwnProperty('Ac')){ //hack to get selected marker element
+										addToCartAnimation($(markerItem.Ac));
+									}
 									map.closeInfoWindow();
 								}else{
 									dialogService.alert(null,{
-										title: $translate.instant('site_network_data_plot_title'), 
-										content: $translate.instant('site_network_data_plot_sensor_exists'), 
+										title: $translate.instant('site_network_data_plot_title'),
+										content: $translate.instant('site_network_data_plot_sensor_exists'),
 										ok: $translate.instant('site_login_error_noted')
 									});
 								}
 							}else{
 								dialogService.alert(null,{
 									title: $translate.instant('site_network_data_plot_title'),
-									content: $translate.instant('site_network_data_plot_warning_limit'), 
+									content: $translate.instant('site_network_data_plot_warning_limit'),
 									ok: $translate.instant('site_login_error_noted')
 								});
 							}
 						}else{
 							dialogService.alert(null,{
 								title: $translate.instant('site_network_data_plot_title'),
-								content: $translate.instant('site_network_data_plot_sensor_error'), 
+								content: $translate.instant('site_network_data_plot_sensor_error'),
 								ok: $translate.instant('site_login_error_noted')
 							});
 						}

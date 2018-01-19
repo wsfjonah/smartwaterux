@@ -30,7 +30,7 @@
 						<li class="nav-item">
 							<a class="nav-link active" href="javascript:void(0)">{{'site_location_modal_lowrate' | translate}}</a>
 						</li>
-						<li class="action-right">
+						<li class="action-right" ng-if="vm.isBatchRequest===false">
 							<md-switch ng-model="vm.switchEvent.status" ng-change="vm.onChangeEvent(vm.switchEvent.status)" class="md-primary inline pull-right">
 							{{'site_location_modal_view_event' | translate}}
 							</md-switch>

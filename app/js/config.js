@@ -144,7 +144,11 @@
 			resolve: {
 				loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
 					return $ocLazyLoad.load([
-						'app/modules/network/networkDataCtrl.js'
+						'app/modules/network/networkDataCtrl.js',
+						'app/vendors/angular-daterangepicker.min.js',
+						'app/modules/remote/modalEventDetailsCtrl.js',
+						'app/modules/remote/modalTimeSeriesCtrl.js',
+						'app/modules/remote/modalHighRateCtrl.js'
 					]);
 				}]
 			},

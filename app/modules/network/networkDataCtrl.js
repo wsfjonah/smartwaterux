@@ -11,7 +11,7 @@
 		var defaultMapInfo = vm.projectInfo.current_project.map;
 		var pipeColor = {};
 		var colorSet = commonService.getColors();
-		/* 	initial map configuration option
+		/* 	initial map configuration options
 		*	markers will be fetch by api
 		*/
 		vm.siteMapOptions = {
@@ -20,6 +20,8 @@
 				latitude: (angular.isDefined(defaultMapInfo)) ? defaultMapInfo.lat : latitude
 			},
 			zoom: (angular.isDefined(defaultMapInfo)) ? defaultMapInfo.level : 13,
+			modalUrl: __env.modalTimeSeriesUrl,
+			modalCtrl: 'modalTimeSeriesCtrl as vm',
 			city: 'ShangHai',
 			mapType: "networkmapData",
 			markers: [],
@@ -39,7 +41,6 @@
 		function getSensorData(){
 			var obj = {};
 			apiService.networkSensorApi().then(function(response){
-				console.log(response.data);
 				angular.forEach(response.data, function(row){
 					var point = row.geo_latlng;
 					obj = angular.extend({},row,vm.defaultMarkerConfig);
