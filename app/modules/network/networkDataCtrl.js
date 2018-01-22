@@ -28,13 +28,16 @@
 			pipes: [],
 			plotMarkers: [],
 			menus: {
-				status:{
-					label:"Status",
-					results:["N","I","T","S","E"]
+				search:{
+					label:"Search"
 				},
 				cart:{
 					label:"Cart",
 					results:[]
+				},
+				status:{
+					label:"Status",
+					results:["N","I","T","S","E"]
 				}
 			},
 			fullScreen: false

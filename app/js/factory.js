@@ -4,36 +4,48 @@
 	angular
 		.module('xProject.factory', [])
 		.factory('dialogService', dialogService)
+		.factory('notify', notify)
 		.factory('modalService', modalService);
 
-	function dialogService($rootScope, $mdDialog) {
+	function dialogService($mdDialog) {
 			var dialogService = {};
 			// create an array of alerts available globally
 			dialogService.alert = function(ev, opts){
 				var config = {
 					title: "Information",
 					content : "Something went wrong! Please try again",
-					ok: "Got It!"
+					ok: "Got It!",
+					clickOutsideToClose: true,
+					callback: null
 				};
 				var opt_config = angular.extend({}, config, opts);
 				$mdDialog.show(
 					$mdDialog.alert()
 					.parent(angular.element(document.querySelector('#popupContainer')))
-						.clickOutsideToClose(true)
+						.clickOutsideToClose(opt_config.clickOutsideToClose)
 						.title(opt_config.title)
 						.textContent(opt_config.content)
 						.ariaLabel(opt_config.title)
 						.ok(opt_config.ok)
 						.targetEvent(ev)
-				);
+				).then(function(){
+					opt_config.callback();
+				});
 			};
-			dialogService.notify = function(ev, opts){
-				$mdDialog.show(
-					$mdDialog.alert()
-
-				);
-			}
 			return dialogService;
+	}
+
+	function notify($mdToast){
+		var toastService = {};
+		toastService.info = function(){
+			$mdToast.show(
+		      $mdToast.simple()
+		        .textContent('Simple Toast!')
+		        .position('top right')
+		        .hideDelay(3000)
+		    );
+		};
+	    return toastService;
 	}
 
 	function modalService($uibModal){
@@ -57,6 +69,6 @@
 					//$log.info('Modal dismissed at: ' + new Date());
 				});
 			}
-		}
+		};
 	}
 })();

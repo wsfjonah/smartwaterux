@@ -253,8 +253,8 @@
 	/* network map - gis, network
 	* updated - 4/1/2018
 	*/
-	xproNetworkMap.$inject = ['$translate','mapApi','apiService','dialogService','modalService'];
-	function xproNetworkMap($translate, mapApi, apiService, dialogService, modalService){
+	xproNetworkMap.$inject = ['$translate','mapApi','apiService','dialogService','modalService','notify'];
+	function xproNetworkMap($translate, mapApi, apiService, dialogService, modalService, notify){
 		return{
 			restrict: 'AE',
 			replace: 'true',
@@ -291,7 +291,7 @@
 					}, true);
 					//watch menus
 					scope.$watch('options.menus', function (/*newValue, oldValue*/) {
-						createNetworkMenu(map, opts, $translate, apiService, dialogService);
+						createNetworkMenu(map, opts, $translate, apiService, dialogService, notify);
 					}, true);
 					//watch pipe
 					if(angular.isDefined(opts.pipes)){
@@ -630,17 +630,13 @@
 		map.closeInfoWindow();
 		/* move to center of highlight pipe
 		*/
-		var points = [];
-		centerPoints.forEach(function (loc) {
-			points.push(new BMap.Point(loc.lng, loc.lat));
-		});
-		map.setViewport(points, {zoomFactor: -0.5});
+		moveTargetToCenter(map, centerPoints);
 	}
 
 	function createNetworkMenu(map, opts, $translate, apiService, dialogService){
 		var menu = opts.menus;
 		var langMenu = {
-			search: 'Search',
+			search: $translate.instant('site_network_toolbar_search'),
 			pipes: $translate.instant('site_network_toolbar_pipes'),
 			sensors: $translate.instant('site_network_toolbar_sensors'),
 			status: $translate.instant('site_network_toolbar_status'),
@@ -690,7 +686,6 @@
 				searchDropdown.appendChild(searchInput);
 
 				searchToggle.onclick = function(){
-					console.log('toggle');
 					var elem = $(this),
 						group = elem.parents('.group-search'),
 						isActive = group.hasClass('on-search'),
@@ -698,6 +693,7 @@
 						input = group.find('input'),
 						prevVal = (typeof input.data('value')!=="undefined") ? input.data('value') : "";
 
+					removeActiveClass(["cart","multi"]);
 					if(isActive){
 						group.removeClass('on-search');
 					}else{
@@ -716,37 +712,86 @@
 
 					group.removeClass('on-search').removeClass('on-keyword');
 					input.data('value','');
-					searchSensor(map, opts, "", dialogService);
+					searchSensor(map, opts, "", dialogService, $translate);
 				};
 				searchInput.onkeyup = function(e){
 					var elem = $(this),
 						group = elem.parents('.group-search'),
-						value = $.trim(elem.val());
+						value = $.trim(elem.val()),
+						prevVal = (typeof elem.data('value')!=="undefined") ? elem.data('value') : "";
 
-					if(e.keyCode === 13 && value!==""){
+					if(e.keyCode === 13 && value!=="" && value!==prevVal){
 					 	group.addClass('on-keyword');
 					 	elem.data('value', value);
-					 	//TODO:: search - keyword
-					 	searchSensor(map, opts, value, dialogService);
+					 	searchSensor(map, opts, value, dialogService, $translate);
 					}
 				};
 				searchInput.onblur = function(){
 					var elem = $(this),
 						group = elem.parents('.group-search');
+
 					setTimeout(function(){
 						group.removeClass('on-search');
 					},500);
 				};
 
-
-				/*divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
-				divMenuGroup.innerHTML = langMenu[key];
-				divMenuGroup.onclick = function(){
-					searchSensor(map, opts, dialogService);
-				};*/
 				divSearch.appendChild(searchToggle);
 				divSearch.appendChild(searchDropdown);
 				div.appendChild(divSearch);
+			}
+
+			if(menu.hasOwnProperty('cart')){
+				var divCartGroup = document.createElement("div");
+				divCartGroup.className = "btn-group cart-group";
+
+				var cartMenuButton = document.createElement("button");
+				cartMenuButton.className = "btn btn-secondary btn-outline btn-sm";
+				cartMenuButton.setAttribute("type","button");
+				cartMenuButton.innerHTML = langMenu.cart;
+
+				var badgeDiv = document.createElement("span");
+				badgeDiv.className = "badge badge-primary m-l-5";
+				badgeDiv.setAttribute("id","count_badge");
+				badgeDiv.innerHTML = "0";
+
+				cartMenuButton.appendChild(badgeDiv);
+				divCartGroup.appendChild(cartMenuButton);
+
+				cartMenuButton.onclick = function(e){
+					var elem = $(e.target),
+						pr = elem.parents('.cart-group'),
+						isActive = elem.hasClass('active'),
+						classActive = "active";
+
+					removeActiveClass(["search","multi"]);
+					if(isActive){
+						elem.removeClass(classActive);
+						pr.removeClass(classActive)
+					}else{
+						elem.addClass(classActive);
+						pr.addClass(classActive);
+					}
+				};
+
+				var cartDiv = document.createElement("div");
+				cartDiv.className = "cart-list card scale-up";
+
+				var cartHeader = document.createElement("div");
+				cartHeader.className = "card-header";
+
+				var cartHeaderTitle = document.createElement("h4");
+				cartHeaderTitle.className = "m-b-0";
+				cartHeaderTitle.innerHTML = $translate.instant('site_network_data_plot_plotlist');
+
+				var cartBody = document.createElement("div");
+				cartBody.className = "card-body";
+				cartBody.setAttribute("id","cart_options_list");
+
+				cartHeader.appendChild(cartHeaderTitle);
+				cartDiv.appendChild(cartHeader);
+				cartDiv.appendChild(cartBody);
+				divCartGroup.appendChild(cartDiv);
+				div.appendChild(divCartGroup);
 			}
 
 			var divGroup = document.createElement("div");
@@ -767,6 +812,8 @@
 					group = elem.parents('.multi-group'),
 					isActive = group.hasClass('active'),
 					classActive = "active";
+
+				removeActiveClass(["cart","search"]);
 				if(isActive){
 					group.removeClass(classActive);
 				}else{
@@ -915,45 +962,6 @@
 					};
 					divMenuGroup.appendChild(divDropdown);
 					divSubGroup.appendChild(divMenuGroup);
-				}else if(key==="cart"){
-					divMenuGroup = document.createElement("div");
-					divMenuGroup.className = "btn-group cart-group";
-
-					menuButton = document.createElement("button");
-					menuButton.className = "btn btn-secondary btn-outline btn-sm";
-					menuButton.setAttribute("type","button");
-					menuButton.innerHTML = langMenu[key];
-
-					var badgeDiv = document.createElement("span");
-					badgeDiv.className = "badge badge-primary m-l-5";
-					badgeDiv.setAttribute("id","count_badge");
-					badgeDiv.innerHTML = "0";
-
-					menuButton.appendChild(badgeDiv);
-					divMenuGroup.appendChild(menuButton);
-
-					menuButton.onclick = function(e){
-						$(e.target).toggleClass('active').parent().toggleClass('active');
-					};
-					var cartDiv = document.createElement("div");
-					cartDiv.className = "cart-list card scale-up";
-
-					var cartHeader = document.createElement("div");
-					cartHeader.className = "card-header";
-
-					var cartHeaderTitle = document.createElement("h4");
-					cartHeaderTitle.className = "m-b-0";
-					cartHeaderTitle.innerHTML = $translate.instant('site_network_data_plot_plotlist');
-
-					var cartBody = document.createElement("div");
-					cartBody.className = "card-body";
-					cartBody.setAttribute("id","cart_options_list");
-
-					cartHeader.appendChild(cartHeaderTitle);
-					cartDiv.appendChild(cartHeader);
-					cartDiv.appendChild(cartBody);
-					divMenuGroup.appendChild(cartDiv);
-					divSubGroup.appendChild(divMenuGroup);
 				}
 
 				//END - create multi group - without search
@@ -973,36 +981,56 @@
 		map.addControl(myCtrl);
 	}
 
+	/* remove main menu active class
+	*/
+	function removeActiveClass(arr){
+		var menu = $('#map_menu'),
+			list = {
+				"cart":".cart-group",
+				"search":".group-search",
+				"multi":".multi-group"
+			},
+			classActive = "active";
+
+		angular.forEach(arr, function(value){
+			var opt = list[value];
+			if(value==="search" || value==="multi"){
+				if(menu.find(opt).length){
+						menu.find(opt).removeClass(classActive);
+				}
+			}else if(value==="cart"){
+				if(menu.find(opt).length){
+					menu.find(opt).removeClass(classActive).find('>button').removeClass(classActive);
+				}
+			}
+		});
+	}
+
 	/* search sensor data - device_ref, name, address
 	*/
-	function searchSensor(map, opts, keyword, dialogService){
+	function searchSensor(map, opts, keyword, dialogService, $translate){
 		var userValue = keyword;
 		var fields = ["device_ref","name","geo_address"];
 		var matchArr = [];
 		var cloneInstance = opts.markerInstance;
-
-		console.log(opts);
-		console.log(opts.markers);
+		var centerpoint = [];
+		opts.onSearch = true;
 
 		angular.forEach(opts.markers, function(element, index){
 			for(var key in element){
-				//console.log('key :'+key);
-				//console.log(element[key]);
-				//TODO:: as long as same row key is found, we can skip and continue next row
 				if($.inArray(key, fields)!==-1 && element[key].toLowerCase().indexOf(userValue.toLowerCase()) > -1){
 					var res = element;
 					res.position = index;
 					matchArr.push(res);
+					centerpoint.push({
+						lat: res.geo_latlng.split(',')[0],
+						lng: res.geo_latlng.split(',')[1]
+					});
 					break;
 				}
 			}
 		});
 
-		console.log('#match result');
-		//console.log(matchArr);
-		console.log('value : '+userValue);
-		console.log('match len : '+matchArr.length);
-		console.log('total instance : '+opts.markerInstance.length);
 		angular.forEach(cloneInstance, function(element){
 			element.hide();
 		});
@@ -1010,11 +1038,35 @@
 
 		angular.forEach(matchArr, function(element){
 			var selectedInstance = cloneInstance[element.position];
-			console.log(selectedInstance);
 			selectedInstance.show();
 		});
-		//alert for search result
-		//https://material.angularjs.org/latest/demo/toast
+
+		//if matched = moved to center
+		if(matchArr.length){
+			moveTargetToCenter(map, centerpoint);
+		}
+
+		dialogService.alert(null, {
+			title: $translate.instant('site_network_search_result_title'),
+			content: $translate.instant('site_network_search_result_content', {num: matchArr.length}),
+			ok: $translate.instant('site_login_error_noted'),
+			clickOutsideToClose: false,
+			callback: function(){
+				opts.onSearch = false;
+			}
+		});
+	}
+
+	/* move to map center
+	*/
+	function moveTargetToCenter(map, res){
+		/* move to center of highlight pipe
+		*/
+		var points = [];
+		res.forEach(function (loc) {
+			points.push(new BMap.Point(loc.lng, loc.lat));
+		});
+		map.setViewport(points);
 	}
 
 
@@ -1257,11 +1309,7 @@
 		});
 		/* move to center of highlight pipe
 		*/
-		var points = [];
-		centerPoints.forEach(function (loc) {
-			points.push(new BMap.Point(loc.lng, loc.lat));
-		});
-		map.setViewport(points);
+		moveTargetToCenter(map, centerPoints);
 	}
 
 	/* draw pipe details
@@ -1290,11 +1338,7 @@
 		});
 		/* move to center of highlight pipe
 		*/
-		var points = [];
-		centerPoints.forEach(function (loc) {
-			points.push(new BMap.Point(loc.lng, loc.lat));
-		});
-		map.setViewport(points);
+		moveTargetToCenter(map, centerPoints);
 	}
 
 	/* draw pumps
@@ -1450,6 +1494,9 @@
 	}
 	function redrawMarkers(map, $translate, previousMarkers, opts, $scope, modalService, apiService, dialogService){
 		var points = [];
+		if(opts.hasOwnProperty('onSearch') && opts.onSearch){
+			return;
+		}
 		previousMarkers.forEach(function (item) {
 			var marker = item.marker;
 			var listener = item.listener;
@@ -1461,7 +1508,6 @@
 		if (!opts.markers) {
 			return;
 		}
-		console.log('#redraw marker');
 		if(!opts.hasOwnProperty('markerInstance')){
 			opts.markerInstance = [];
 		}else{
@@ -1493,7 +1539,7 @@
 				var coverageButton = "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='"+$translate.instant('site_network_map_button_coverage')+"' id='network_coverage_info'><i class='ti-target'></i></button>";
 				msg = '<p>' + (marker.title || '') + '</p>'+coverageButton+'<p>' + (marker.content || '') + '</p>';
 			}else if(opts.mapType==="networkmapData"){
-				var cartButton = "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='Add to Plot' id='network_data_addtocart'><i class='ti-plus'></i> "+$translate.instant('site_network_data_plot_addtoplot')+"</button>";
+				var cartButton = "<button type='button' class='btn btn-secondary' data-trigger='hover' id='network_data_addtocart'><i class='ti-plus'></i> "+$translate.instant('site_network_data_plot_addtoplot')+"</button>";
 				msg = '<p>' + (marker.title || '') + '</p>'+cartButton+'<p>' + (marker.content || '') + '</p>';
 			}
 
