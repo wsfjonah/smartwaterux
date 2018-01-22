@@ -657,11 +657,11 @@
 			div.setAttribute("role","group");
 
 			if(menu.hasOwnProperty('search')){
-				var divSearch = document.createElement("button");
+				var divSearch = document.createElement("div");
 
 				divSearch.className = "btn-group group-search";
 
-				var searchToggle = document.createElement("div");
+				var searchToggle = document.createElement("button");
 				searchToggle.className = "btn-toggle btn-link";
 
 				var searchIcon = document.createElement('i');
