@@ -283,7 +283,7 @@
 					var map = createMapInstance(opts, elem, $translate);
 					var previousMarkers = [];
 					//create markers
-					redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService, dialogService);
+					//redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService, dialogService);
 
 					//watch markers
 					scope.$watch('options.markers', function (/*newValue, oldValue*/) {
@@ -650,16 +650,138 @@
 			coverage: $translate.instant('site_network_toolbar_coverage'),
 			cart: $translate.instant('site_network_data_plot_plotlist')
 		};
+		if($('#map_menu').length){
+			$('#map_menu').remove();
+		}
 		toggleNetworkMapButtons.prototype = new BMap.Control();
 		toggleNetworkMapButtons.prototype.initialize = function(map){
 			var div = document.createElement("div");
 			div.className = "btn-group map-menu";
+			div.setAttribute("id","map_menu");
 			div.setAttribute("role","group");
+
+			if(menu.hasOwnProperty('search')){
+				var divSearch = document.createElement("button");
+
+				divSearch.className = "btn-group group-search";
+
+				var searchToggle = document.createElement("div");
+				searchToggle.className = "btn-toggle btn-link";
+
+				var searchIcon = document.createElement('i');
+				searchIcon.className = "ti-search";
+
+				var searchDropdown = document.createElement("div");
+				searchDropdown.className = "dropdown-search";
+
+				var searchClear = document.createElement("a");
+				searchClear.className = "remove";
+
+				var clearIcon = document.createElement('i');
+				clearIcon.className = 'ti-close';
+
+				var searchInput = document.createElement("input");
+				searchInput.setAttribute("type","text");
+				searchInput.setAttribute("placeholder","search");
+
+				searchClear.appendChild(clearIcon);
+				searchToggle.appendChild(searchIcon);
+				searchDropdown.appendChild(searchClear);
+				searchDropdown.appendChild(searchInput);
+
+				searchToggle.onclick = function(){
+					console.log('toggle');
+					var elem = $(this),
+						group = elem.parents('.group-search'),
+						isActive = group.hasClass('on-search'),
+						isKeyword = group.hasClass('on-keyword'),
+						input = group.find('input'),
+						prevVal = (typeof input.data('value')!=="undefined") ? input.data('value') : "";
+
+					if(isActive){
+						group.removeClass('on-search');
+					}else{
+						group.addClass('on-search');
+						if(!isKeyword){
+							input.val('');
+						}
+						input.val(prevVal).focus();
+					}
+				};
+				searchClear.onclick = function(e){
+					e.preventDefault();
+					var elem = $(this),
+						group = elem.parents('.group-search'),
+						input = group.find('input');
+
+					group.removeClass('on-search').removeClass('on-keyword');
+					input.data('value','');
+					searchSensor(map, opts, "", dialogService);
+				};
+				searchInput.onkeyup = function(e){
+					var elem = $(this),
+						group = elem.parents('.group-search'),
+						value = $.trim(elem.val());
+
+					if(e.keyCode === 13 && value!==""){
+					 	group.addClass('on-keyword');
+					 	elem.data('value', value);
+					 	//TODO:: search - keyword
+					 	searchSensor(map, opts, value, dialogService);
+					}
+				};
+				searchInput.onblur = function(){
+					var elem = $(this),
+						group = elem.parents('.group-search');
+					setTimeout(function(){
+						group.removeClass('on-search');
+					},500);
+				};
+
+
+				/*divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
+				divMenuGroup.innerHTML = langMenu[key];
+				divMenuGroup.onclick = function(){
+					searchSensor(map, opts, dialogService);
+				};*/
+				divSearch.appendChild(searchToggle);
+				divSearch.appendChild(searchDropdown);
+				div.appendChild(divSearch);
+			}
+
+			var divGroup = document.createElement("div");
+			divGroup.className = "btn-group multi-group";
+			var divButtonTrigger = document.createElement("div");
+			divButtonTrigger.className = "btn btn-secondary btn-outline btn-sm btn-trigger";
+			var divButtonTriggerIcon = document.createElement("i");
+			divButtonTriggerIcon.className = "ti-menu";
+			var divSubGroup = document.createElement("div");
+			divSubGroup.className = "sub-group";
+
+
+			divButtonTrigger.appendChild(divButtonTriggerIcon);
+			divGroup.appendChild(divButtonTrigger);
+
+			divButtonTrigger.onclick = function(){
+				var elem = $(this),
+					group = elem.parents('.multi-group'),
+					isActive = group.hasClass('active'),
+					classActive = "active";
+				if(isActive){
+					group.removeClass(classActive);
+				}else{
+					group.addClass(classActive);
+				}
+			};
+
 
 			angular.forEach(menu, function(value, key) {
 				var divMenuGroup = document.createElement("button");
 				var menuButton = document.createElement("button");
 				var divDropdown = document.createElement("div");
+
+
+
 				if(key!=="coverage" && key!=="hydrant" && key!=="cart" && key!=="pipeDetails" && key!=="search"){
 					divMenuGroup = document.createElement("div");
 					divMenuGroup.className = "btn-group";
@@ -733,21 +855,14 @@
 						divDropdown.appendChild(divSub);
 					});
 					divMenuGroup.appendChild(divDropdown);
-					div.appendChild(divMenuGroup);
+					divSubGroup.appendChild(divMenuGroup);
 				}else if(key==="coverage"){
 					divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
 					divMenuGroup.innerHTML = langMenu[key];
 					divMenuGroup.onclick = function(){
 						removeCoverage(map, opts);
 					};
-					div.appendChild(divMenuGroup);
-				}else if(key==="search"){
-					divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
-					divMenuGroup.innerHTML = langMenu[key];
-					divMenuGroup.onclick = function(){
-						searchSensor(map, opts, dialogService);
-					};
-					div.appendChild(divMenuGroup);
+					divSubGroup.appendChild(divMenuGroup);
 				}else if(key==="hydrant" || key==="pipeDetails"){
 					divMenuGroup = document.createElement("div");
 					divMenuGroup.className = "btn-group";
@@ -799,7 +914,7 @@
 
 					};
 					divMenuGroup.appendChild(divDropdown);
-					div.appendChild(divMenuGroup);
+					divSubGroup.appendChild(divMenuGroup);
 				}else if(key==="cart"){
 					divMenuGroup = document.createElement("div");
 					divMenuGroup.className = "btn-group cart-group";
@@ -838,9 +953,14 @@
 					cartDiv.appendChild(cartHeader);
 					cartDiv.appendChild(cartBody);
 					divMenuGroup.appendChild(cartDiv);
-					div.appendChild(divMenuGroup);
+					divSubGroup.appendChild(divMenuGroup);
 				}
+
+				//END - create multi group - without search
 			});
+
+			divGroup.appendChild(divSubGroup);
+			div.appendChild(divGroup);
 
 			// 添加DOM元素到地图中
 			map.getContainer().appendChild(div);
@@ -855,14 +975,15 @@
 
 	/* search sensor data - device_ref, name, address
 	*/
-	function searchSensor(map, opts, dialogService){
-		var userValue = "新镇路";
+	function searchSensor(map, opts, keyword, dialogService){
+		var userValue = keyword;
 		var fields = ["device_ref","name","geo_address"];
 		var matchArr = [];
-		var searchMarker = "assets/images/map/marker_i.png";
+		var cloneInstance = opts.markerInstance;
 
 		console.log(opts);
 		console.log(opts.markers);
+
 		angular.forEach(opts.markers, function(element, index){
 			for(var key in element){
 				//console.log('key :'+key);
@@ -872,24 +993,30 @@
 					var res = element;
 					res.position = index;
 					matchArr.push(res);
+					break;
 				}
 			}
 		});
+
 		console.log('#match result');
-		console.log(matchArr);
-		angular.forEach(opts.markerInstance, function(element){
+		//console.log(matchArr);
+		console.log('value : '+userValue);
+		console.log('match len : '+matchArr.length);
+		console.log('total instance : '+opts.markerInstance.length);
+		angular.forEach(cloneInstance, function(element){
 			element.hide();
 		});
+		//上海市浦东新区琼阁路
+
 		angular.forEach(matchArr, function(element){
-			var selected = opts.markerInstance[element.position];
-			selected.show();
+			var selectedInstance = cloneInstance[element.position];
+			console.log(selectedInstance);
+			selectedInstance.show();
 		});
-		dialogService.alert(null,{
-			title: 'Search', 
-			content: (!matchArr.length) ? 'No found!' : "We have found "+matchArr.length+" record(s).", 
-			ok: "Noted"//$translate.instant('site_login_error_noted')
-		});
+		//alert for search result
+		//https://material.angularjs.org/latest/demo/toast
 	}
+
 
 	/* get hydrant marker
 	*
@@ -1106,9 +1233,12 @@
 		var centerPoints = [];
 		var existHydrant = (opts.hasOwnProperty('hydrantInstance') && opts.hydrantInstance.length);
 		if(existHydrant){
-			clearHydrant(map, opts);
+			//clearHydrant(map, opts);
 		}
-		opts.hydrantInstance = [];
+		if(!opts.hasOwnProperty('hydrantInstance')){
+			opts.hydrantInstance = [];
+		}
+		//opts.hydrantInstance = [];
 		opts.hydrant.forEach(function (row) {
 			var marker = {
 				icon: 'assets/images/map/marker_hydrant.png',
@@ -1141,9 +1271,12 @@
 		var centerPoints = [];
 		var existInstance = (opts.hasOwnProperty('pipeDetailsInstance') && opts.pipeDetailsInstance.length);
 		if(existInstance){
-			clearPipeDetails(map, opts);
+			//clearPipeDetails(map, opts);
 		}
-		opts.pipeDetailsInstance = [];
+		if(!opts.hasOwnProperty('pipeDetailsInstance')){
+			opts.pipeDetailsInstance = [];
+		}
+		//opts.pipeDetailsInstance = [];
 		opts.pipeDetails.forEach(function (row) {
 			var pipeArr = [];
 			row.location.forEach(function (loc) {
@@ -1328,7 +1461,12 @@
 		if (!opts.markers) {
 			return;
 		}
-		opts.markerInstance = [];
+		console.log('#redraw marker');
+		if(!opts.hasOwnProperty('markerInstance')){
+			opts.markerInstance = [];
+		}else{
+			opts.markerInstance.length = 0;
+		}
 		opts.markers.forEach(function (marker) {
 			var markerItem = createMarker(marker, new BMap.Point(marker.longitude, marker.latitude));
 
@@ -1353,7 +1491,7 @@
 				msg += infoButton;
 			}else if(opts.mapType==="networkAnalysisMap"){
 				var coverageButton = "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='"+$translate.instant('site_network_map_button_coverage')+"' id='network_coverage_info'><i class='ti-target'></i></button>";
-				msg += coverageButton;
+				msg = '<p>' + (marker.title || '') + '</p>'+coverageButton+'<p>' + (marker.content || '') + '</p>';
 			}else if(opts.mapType==="networkmapData"){
 				var cartButton = "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='Add to Plot' id='network_data_addtocart'><i class='ti-plus'></i> "+$translate.instant('site_network_data_plot_addtoplot')+"</button>";
 				msg = '<p>' + (marker.title || '') + '</p>'+cartButton+'<p>' + (marker.content || '') + '</p>';

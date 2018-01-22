@@ -27,6 +27,12 @@
 						.targetEvent(ev)
 				);
 			};
+			dialogService.notify = function(ev, opts){
+				$mdDialog.show(
+					$mdDialog.alert()
+
+				);
+			}
 			return dialogService;
 	}
 

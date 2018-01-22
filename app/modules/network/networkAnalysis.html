@@ -13,17 +13,22 @@
 <div class="container-fluid full-fluid">
 	<div class="row">
 		<div class="col-12">
-
-
 			<!-- dropdown -->
-			<div class="btn-group map-menu BMap_noprint anchorTR m-r-20 hide" role="group" style="position: absolute; z-index: 10; text-size-adjust: none; bottom: auto; right: 10px; top: 10px; left: auto;">
-				<button class="btn btn-secondary btn-outline btn-sm btn-search">
+			<div class="btn-group map-menu BMap_noprint anchorTR m-r-20 m-t-20 hide " role="group" style="position: absolute; z-index: 10; text-size-adjust: none; bottom: auto; right: 10px; top: 10px; left: auto;">
+				<!-- <button class="btn btn-secondary btn-outline btn-sm btn-search">
 					<i class="ti-search"></i>
 					<input type="input" placeholder="search">
-				</button>
+				</button> -->
+				<div class="btn-group group-search">
+					<div class="btn-toggle btn-link"><i class="ti-search"></i></div>
+					<div class="dropdown-search">
+						<a href="javascript:void(0);" class="remove"><i class="ti-close"></i></a>
+						<input type="text" placeholder="search">
+					</div>
+				</div>
 				<div class="btn-group multi-group">
 					<button class="btn btn-secondary btn-outline btn-sm btn-trigger"><i class="ti-menu"></i></button>
-					<div class="btn-group sub-group">
+					<div class="sub-group">
 						<div class="btn-group" role="group">
 							<button class="btn btn-secondary btn-outline btn-sm" type="button" data-toggle="dropdown" aria-expanded="false">Pipes</button>
 							<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
