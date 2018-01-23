@@ -316,7 +316,7 @@
 			// Use global document since Angular's $document is weak
 			var script = document.createElement('script');
 			// script.src = "http://api.map.baidu.com/api?v=2.0&ak=您的密钥&callback=init";
-			script.src = 'http://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4&callback=initMap';
+			script.src = 'https://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4&callback=initMap';
 			document.body.appendChild(script);
 		}
 
