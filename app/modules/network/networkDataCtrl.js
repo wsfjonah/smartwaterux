@@ -1,9 +1,9 @@
-/* global angular */
+/* global angular, __env */
 (function() {
 	'use strict';
-	var gis = angular.module('xProject.gis',[]);
-	gis.$inject = ['$scope'];
-	gis.controller('gisController', function cityOverviewController ($scope, apiService, $window, authService, $translate, commonService) {
+	var networkData = angular.module('xProject.networkData',[]);
+	networkData.$inject = ['$scope'];
+	networkData.controller('networkDataController', function networkDataController ($scope, apiService, $window, authService, $translate, commonService) {
 		var vm = this;
 		var longitude = 121.32521; //default longitude
 		var latitude = 31.099466; //default latitude
@@ -11,7 +11,7 @@
 		var defaultMapInfo = vm.projectInfo.current_project.map;
 		var pipeColor = {};
 		var colorSet = commonService.getColors();
-		/* 	initial map configuration option
+		/* 	initial map configuration options
 		*	markers will be fetch by api
 		*/
 		vm.siteMapOptions = {
@@ -20,47 +20,32 @@
 				latitude: (angular.isDefined(defaultMapInfo)) ? defaultMapInfo.lat : latitude
 			},
 			zoom: (angular.isDefined(defaultMapInfo)) ? defaultMapInfo.level : 13,
+			modalUrl: __env.modalTimeSeriesUrl,
+			modalCtrl: 'modalTimeSeriesCtrl as vm',
 			city: 'ShangHai',
-			mapType: "networkmap",
+			mapType: "networkmapData",
 			markers: [],
-			boundary: [],
-			heatMap: [],
-			pumps: [],
 			pipes: [],
-			hydrant: [],
+			plotMarkers: [],
 			menus: {
 				search:{
 					label:"Search"
 				},
-				pipes:{
-					label:"Pipes",
-					results:[]
-				},
-				sensors:{
-					label:"Sensors",
+				cart:{
+					label:"Cart",
 					results:[]
 				},
 				status:{
 					label:"Status",
 					results:["N","I","T","S","E"]
-				},
-				pumps:{
-					label:"Pumps",
-					results:[]
-				},
-				hydrant:{
-					label:"Hydrant",
-					results:[]
 				}
 			},
 			fullScreen: false
 		};
 		vm.defaultMarkerConfig = commonService.markerConfig();
 
-		getPipeSummary();
 		getSensorData();
 		getPipeData();
-		getPumpData();
 
 		function getSensorData(){
 			var obj = {};
@@ -106,23 +91,23 @@
 		}
 		function getPipeData(){
 			var obj = {};
-			apiService.networkPipeApi().then(function(response){
+			apiService.networkAnalysisPipeApi().then(function(response){
 				angular.forEach(response.data, function(row){
 					obj = {};
-					var weight = row.diameter/250;
+					var weight = parseInt(row.optional.diameter)/250;
 					if(weight<=1){
 						weight = 1;
 					}
 					obj.color = getColorPipe(row);
 					obj.weight = weight;
 					obj.location = [];
-					obj.diameter = row.diameter;
-					obj.id = row.id;
-					obj.options = row.options;
+					obj.diameter = row.optional.diameter;
+					obj.id = row._id;
+					obj.tag = row.tag;
 					obj.type = row.type;
-					obj.subzone = row.subzone;
+					obj.subzone = row.tag.subzone;
 					obj.title = $translate.instant('site_network_info_pipe_title');
-					obj.content = '<div class="overflow:auto"><table class="table table-sm table-striped table-bordered table-responsive">';
+					obj.content = '<div class="overflow:auto"><table class="table table-sm table-striped table-bordered">';
 						obj.content += '<tbody>';
 							obj.content += '<tr>';
 								obj.content += '<td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_id')+':</td>';
@@ -138,14 +123,15 @@
 							obj.content += '</tr>';
 							obj.content += '<tr>';
 								obj.content += '<td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_others')+':</td>';
-								obj.content += '<td><pre>'+angular.toJson(obj.options, true)+'</pre></td>';
+								obj.content += '<td><pre>'+angular.toJson(obj.tag, true)+'</pre></td>';
 							obj.content += '</tr>';
 						obj.content += '</tbody>';
-					obj.content += '</table><div>';
-					angular.forEach(row.location, function(loc){
+					obj.content += '</table>';
+					obj.content += '<div>';
+					angular.forEach(row.junctions, function(loc){
 						obj.location.push({
-							latitude: loc.latitude,
-							longitude: loc.longitude
+							latitude: loc.lat,
+							longitude: loc.lng
 						});
 					});
 					vm.siteMapOptions.pipes.push(obj);
@@ -153,29 +139,8 @@
 			}).catch(function(/*err*/){
 			});
 		}
-		function getPipeSummary(){
-			apiService.networkPipeSummaryApi().then(function(response){
-				if(angular.isDefined(response.data)){
-					angular.forEach(response.data.subzones, function(zone){
-						vm.siteMapOptions.menus.pipes.results.push(zone);
-						vm.siteMapOptions.menus.sensors.results.push(zone);
-					});
-				}
-			});
-		}
-		function getPumpData(){
-			var obj = {};
-			apiService.networkPumpApi().then(function(response){
-				angular.forEach(response.data, function(row){
-					if(angular.isDefined(row.location) && row.location.length){
-						vm.siteMapOptions.pumps.push(row.location[0]);
-						vm.siteMapOptions.menus.pumps.results.push(row.location[0].name);
-					}
-				});
-			});
-		}
 		function getColorPipe(pipe){
-			var zone = pipe.options.subzone;
+			var zone = pipe.tag.subzone;
 			var setColor = "blue";
 			if(angular.isDefined(zone) && pipeColor.hasOwnProperty(zone)){
 				setColor = pipeColor[zone];

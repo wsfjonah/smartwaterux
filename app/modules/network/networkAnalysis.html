@@ -13,9 +13,88 @@
 <div class="container-fluid full-fluid">
 	<div class="row">
 		<div class="col-12">
+			<!-- dropdown -->
+			<div class="btn-group map-menu BMap_noprint anchorTR m-r-20 m-t-20 hide " role="group" style="position: absolute; z-index: 10; text-size-adjust: none; bottom: auto; right: 10px; top: 10px; left: auto;">
+				<!-- <button class="btn btn-secondary btn-outline btn-sm btn-search">
+					<i class="ti-search"></i>
+					<input type="input" placeholder="search">
+				</button> -->
+				<div class="btn-group group-search">
+					<div class="btn-toggle btn-link"><i class="ti-search"></i></div>
+					<div class="dropdown-search">
+						<a href="javascript:void(0);" class="remove"><i class="ti-close"></i></a>
+						<input type="text" placeholder="search">
+					</div>
+				</div>
+				<div class="btn-group multi-group">
+					<button class="btn btn-secondary btn-outline btn-sm btn-trigger"><i class="ti-menu"></i></button>
+					<div class="sub-group">
+						<div class="btn-group" role="group">
+							<button class="btn btn-secondary btn-outline btn-sm" type="button" data-toggle="dropdown" aria-expanded="false">Pipes</button>
+							<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+								<a class="dropdown-item" href="#" data-value="all" data-type="pipes">All Pipes</a>
+								<a class="dropdown-item" href="#" data-value="p1c" data-type="pipes">p1c</a>
+								<a class="dropdown-item" href="#" data-value="p1a" data-type="pipes">p1a</a>
+								<a class="dropdown-item" href="#" data-value="p2" data-type="pipes">p2</a>
+								<a class="dropdown-item" href="#" data-value="p3" data-type="pipes">p3</a>
+								<a class="dropdown-item" href="#" data-value="p4" data-type="pipes">p4</a>
+								<a class="dropdown-item" href="#" data-value="p5" data-type="pipes">p5</a>
+							</div>
+						</div>
+						<div class="btn-group" role="group">
+							<button class="btn btn-secondary btn-outline btn-sm" type="button" data-toggle="dropdown" aria-expanded="false">Sensors</button>
+							<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+								<a class="dropdown-item" href="#" data-value="all" data-type="sensors">All Sensors</a>
+								<a class="dropdown-item" href="#" data-value="p1c" data-type="sensors">p1c</a>
+								<a class="dropdown-item" href="#" data-value="p1a" data-type="sensors">p1a</a>
+								<a class="dropdown-item" href="#" data-value="p2" data-type="sensors">p2</a>
+								<a class="dropdown-item" href="#" data-value="p3" data-type="sensors">p3</a>
+								<a class="dropdown-item" href="#" data-value="p4" data-type="sensors">p4</a>
+								<a class="dropdown-item" href="#" data-value="p5" data-type="sensors">p5</a>
+							</div>
+						</div>
+						<div class="btn-group" role="group">
+							<button class="btn btn-secondary btn-outline btn-sm" type="button" data-toggle="dropdown">Status</button>
+							<div class="dropdown-menu">
+								<a class="dropdown-item active" href="#" data-value="all" data-type="status">All Status</a>
+								<a class="dropdown-item active" href="#" data-value="N" data-type="status">N</a>
+								<a class="dropdown-item active" href="#" data-value="I" data-type="status">I</a>
+								<a class="dropdown-item active" href="#" data-value="T" data-type="status">T</a>
+								<a class="dropdown-item active" href="#" data-value="S" data-type="status">S</a>
+								<a class="dropdown-item active" href="#" data-value="E" data-type="status">E</a>
+							</div>
+						</div>
+						<div class="btn-group" role="group">
+							<button class="btn btn-secondary btn-outline btn-sm" type="button" data-toggle="dropdown">Pumps</button>
+							<div class="dropdown-menu">
+								<a class="dropdown-item active" href="#" data-value="all" data-type="pumps">All Pumps</a>
+								<a class="dropdown-item active" href="#" data-value="1416" data-type="pumps">1416</a>
+							</div>
+						</div>
+						<div class="btn-group" role="group">
+							<button class="btn btn-secondary btn-outline btn-sm" type="button" data-toggle="dropdown">Hydrant</button>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="#" data-value="all" data-type="hydrant">Search</a>
+								<a class="dropdown-item" href="#" data-value="clear" data-type="hydrant">Remove</a>
+							</div>
+						</div>
+						<div class="btn-group" role="group">
+							<button class="btn btn-secondary btn-outline btn-sm" type="button" data-toggle="dropdown">Pipe Details</button>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="#" data-value="all" data-type="pipeDetails">Search</a>
+								<a class="dropdown-item" href="#" data-value="clear" data-type="pipeDetails">Remove</a>
+							</div>
+						</div>
+						<button class="btn btn-secondary btn-outline btn-sm">Clear Coverage</button>
+					</div>
+				</div>
+			</div>
+			<!-- //dropdown -->
+
+
+
 			<div class="card m-b-0">
 				<div class="card-body p-0">
-					<!-- <xpro-heatmap id="heatmap" options="vm.siteMapOptions" style="width: 100%; height: 500px;display: block;"></xpro-heatmap> -->
 					<xpro-network-map id="networkmap" options="vm.siteMapOptions" style="width: 100%; height: 500px;display: block;"></xpro-network-map>
 				</div>
 			</div>
