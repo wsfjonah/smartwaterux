@@ -20,6 +20,8 @@
 	window.__env.eventDurationUrl = window.__env.baseUrl+'tsevent/search';
 	window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query';
 	window.__env.eventDetailsUrl = window.__env.baseUrl+'tsevent/get';
+	//batch query time series
+	window.__env.batchTimeSeriesUrl = window.__env.baseUrl+'tsda/batchquery'; //TODO: make it post method key - ///1n/1516106340000/1516192740000
 
 	//network sensor
 	window.__env.siteSearchUrl = window.__env.baseUrl+'site/search';
@@ -32,6 +34,12 @@
 	window.__env.networkAnalysisPipeUrl = window.__env.baseUrl+'map/geo/pipe';
 	//network analysis coverage
 	window.__env.networkAnalysisSensorCoverageUrl = window.__env.baseUrl+'map/sensorcoverage';
+	//network pump
+	window.__env.networkPumpUrl = window.__env.baseUrl+'map/pump';
+	//network hydrant
+	window.__env.networkHydrantUrl = window.__env.baseUrl+'map/hyrant';
+	//network pipe end details
+	window.__env.networkPipeDetailsUrl = window.__env.baseUrl+'map/geo/pipe/detail';
 
 	//modal
 	window.__env.modalTimeSeriesUrl = window.__env.folder+'/app/modules/remote/modalTimeSeries.html';
@@ -47,7 +55,7 @@
 	window.__env.ignoreInterceptorRequest = ['uib/template/modal/window.html', window.__env.baseUrl+'user/login'];
 
 	//language reload page
-	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location'];
+	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location','/network-data'];
 
 	//main page after user login
 	window.__env.pageMain = '/main';

@@ -8,7 +8,7 @@
 		.service('apiService', apiService);
 
 	authService.$inject = ['$http','localStorageService','$httpParamSerializerJQLike'];
-	apiService.$inject = ['$http','localStorageService','$httpParamSerializerJQLike'];
+	apiService.$inject = ['$http','localStorageService','$httpParamSerializerJQLike','authService'];
 
 	function authService($http, localStorageService, $httpParamSerializerJQLike) {
 		var _authentication_info = { //default object
@@ -90,9 +90,10 @@
 	}
 
 	function commonService(){
+		/*jshint validthis: true */
 		this.getColors = function() {
-			return ["#FF1493","#FFA500","#0f7ca8","#3867c4","#96137c","#696969","#f9b49d","#c60303","#008066","#823f5e","#687759","#d14959","#703e7f","#000000"];
-		}
+			return ["#FF1493","#FFA500","#0f7ca8","#3867c4","#96137c","#b79494","#f9b49d","#c60303","#008066","#823f5e","#687759","#d14959","#703e7f","#000000"];
+		};
 		this.markerConfig = function(){
 			return {
 				icon: 'assets/images/map/marker_n.png',
@@ -101,10 +102,10 @@
 				title: '',
 				content: ''
 			};
-		}
+		};
 	}
 
-	function apiService($http, localStorageService, $httpParamSerializerJQLike){
+	function apiService($http, localStorageService, $httpParamSerializerJQLike, authService){
 		var apiBaseURL = __env.baseUrl;
 		var headers = {'Pragma': undefined, 'Cache-Control': undefined, 'X-Requested-With': undefined, 'If-Modified-Since': undefined, 'Content-Type': 'application/json'};
 		//var headers = {'Content-Type': 'application/json'};
@@ -138,11 +139,28 @@
 			});
 		};
 
-		this.timeSeriesRangeApi = function(datapointId, resolution,  from, to){
+		this.timeSeriesRangeApi = function(params){
 			return $http({
 				method: 'GET',
-				url: __env.timeSeriesRangeUrl+"/"+datapointId+"/"+resolution+"/"+from+"/"+to,
+				url: __env.timeSeriesRangeUrl+"/"+params.datapoints+"/"+params.resolution+"/"+params.from+"/"+params.to,
 				headers: headers
+			});
+		};
+
+		this.batchTimeSeriesApi = function(params){
+			var defaultParams = {
+				datapoints: "",
+				resolution: "1n",
+				from: "1498875720000", //july
+				to: "1515549960000", //jan 2018
+				token: authService.getAuthentication().token
+			};
+			var userParams = $.extend(true, defaultParams, params);
+			return $http({
+				method: 'POST',
+				url: __env.batchTimeSeriesUrl,
+				data: $httpParamSerializerJQLike(userParams),
+				headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
 			});
 		};
 
@@ -239,6 +257,27 @@
 			return $http({
 				method: 'GET',
 				url: __env.networkAnalysisSensorCoverageUrl+'?site='+id,
+				headers: headers
+			});
+		};
+		this.networkPumpApi = function(){
+			return $http({
+				method: 'GET',
+				url: __env.networkPumpUrl,
+				headers: headers
+			});
+		};
+		this.networkHydrantApi = function(mapcenter){
+			return $http({
+				method: 'GET',
+				url: __env.networkHydrantUrl+'?mapcenter='+mapcenter,
+				headers: headers
+			});
+		};
+		this.networkPipeDetailsApi = function(mapcenter){
+			return $http({
+				method: 'GET',
+				url: __env.networkPipeDetailsUrl+'?mapcenter='+mapcenter,
 				headers: headers
 			});
 		};

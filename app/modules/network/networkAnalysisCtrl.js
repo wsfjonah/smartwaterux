@@ -24,9 +24,15 @@
 			mapType: "networkAnalysisMap",
 			markers: [],
 			boundary: [],
+			pumps: [],
 			pipes: [],
+			hydrant: [],
+			pipeDetails: [],
 			coveragePipes: [],
 			menus: {
+				search:{
+					label:"Search"
+				},
 				pipes:{
 					label:"Pipes",
 					results:[]
@@ -39,6 +45,18 @@
 					label:"Status",
 					results:["N","I","T","S","E"]
 				},
+				pumps:{
+					label:"Pumps",
+					results:[]
+				},
+				hydrant:{
+					label:"Hydrant",
+					results:[]
+				},
+				pipeDetails:{
+					label:"Pipe Details",
+					results:[]
+				},
 				coverage:{
 					label:"Clear Coverage"
 				}
@@ -50,6 +68,65 @@
 		getPipeSummary();
 		getSensorData();
 		getPipeData();
+		getPumpData();
+
+		//testing menu JS
+		$('.map-menu').on('click', '.btn-toggle', function(){
+			var elem = $(this),
+				group = elem.parents('.group-search'),
+				isActive = group.hasClass('on-search'),
+				isKeyword = group.hasClass('on-keyword'),
+				input = group.find('input'),
+				prevVal = (typeof input.data('value')!=="undefined") ? input.data('value') : "";
+			console.log('test toggle');
+			if(isActive){
+				group.removeClass('on-search');
+			}else{
+				group.addClass('on-search');
+				if(!isKeyword){
+					input.val('');
+				}
+				input.val(prevVal).focus();
+			}
+		}).on('click', '.remove', function(){
+			var elem = $(this),
+				group = elem.parents('.group-search'),
+				input = group.find('input');
+
+			group.removeClass('on-search').removeClass('on-keyword');
+			input.data('value','');
+			//TODO:: search - all
+		}).on('keyup', 'input', function(e){
+			var elem = $(this),
+				group = elem.parents('.group-search'),
+				value = $.trim(elem.val());
+
+			if(e.keyCode === 13 && value!==""){
+			 	group.addClass('on-keyword');
+			 	elem.data('value', value);
+			 	//TODO:: search - keyword
+			}
+		}).on('blur', 'input', function(e){
+			var elem = $(this),
+				group = elem.parents('.group-search');
+
+			group.removeClass('on-search');
+		}).on('click', '.btn-trigger', function(){
+			var elem = $(this),
+				group = elem.parents('.multi-group'),
+				isActive = group.hasClass('active'),
+				classActive = "active";
+			if(isActive){
+				group.removeClass(classActive);
+			}else{
+				group.addClass(classActive);
+			}
+		});
+		$("body").click(function(e) {
+			if(!$(e.target).hasClass('btn-trigger') && !$(e.target).parents(".multi-group").length){
+				$('.multi-group').removeClass('active');
+			}
+		});
 
 		function getSensorData(){
 			var obj = {};
@@ -151,6 +228,16 @@
 						vm.siteMapOptions.menus.sensors.results.push(zone);
 					});
 				}
+			});
+		}
+		function getPumpData(){
+			apiService.networkPumpApi().then(function(response){
+				angular.forEach(response.data, function(row){
+					if(angular.isDefined(row.location) && row.location.length){
+						vm.siteMapOptions.pumps.push(row.location[0]);
+						vm.siteMapOptions.menus.pumps.results.push(row.location[0].name);
+					}
+				});
 			});
 		}
 		function getColorPipe(pipe){

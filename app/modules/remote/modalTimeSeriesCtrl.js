@@ -2,25 +2,26 @@
 (function() {
 	'use strict';
 	var modalTimeSeriesModule = angular.module('modal.remote',['daterangepicker','modal.event','modal.highrate']);
-	modalTimeSeriesModule.controller('modalTimeSeriesCtrl', function ($uibModalInstance, items, apiService, modalService, $scope, $translate) {
+	modalTimeSeriesModule.controller('modalTimeSeriesCtrl', function ($uibModalInstance, items, apiService, modalService, $scope, $translate, commonService) {
 		var vm = this;
 		vm.items = items;
 		vm.selected = {
 			item: vm.items[0]
 		};
-		//console.log(vm.items);
+		vm.isBatchRequest = (angular.isArray(items)); //single or batch request
+		vm.plotData = (vm.isBatchRequest) ? items : [items];
 		vm.ok = function () {
 			$uibModalInstance.close(vm.selected.item);
 		};
 		vm.cancel = function () {
 			$uibModalInstance.dismiss('cancel');
 		};
-		vm.header = vm.items.name;
+		vm.header = (vm.isBatchRequest) ?  vm.plotData.length +" "+ $translate.instant('site_network_toolbar_sensors') : vm.items.name;
 		/*	type of auto data or custom filter result
 		*	by default "auto"
 		*/
 		vm.typeTimeSeries = "auto";
-		vm.updateTypeTimeSeries = function(type){
+		vm.updateTypeTimeSeries = function(type){ //TODO - make allowed array
 			/*	if type not equal to current and type equal to auto
 			*	fetch data only when "custom" switch to "auto" - fetch time series any data
 			*/
@@ -85,11 +86,20 @@
 			}
 		};
 
-		//declare chart and event data initially
-		vm.chartTimeSeries = {
-			line: []
-		};
-		vm.chartData = [];
+		/* loop plotdata (single or batch data) for config chart options
+		*/
+		vm.multiChartTimeSeries = [];
+		angular.forEach(vm.plotData, function(value, index){
+			vm.multiChartTimeSeries.push({
+				type: "line",
+				name: value.name,
+				color: commonService.getColors()[index],
+				showInLegend: true,
+				xValueType: "dateTime",
+				xValueFormatString:"YYYY MM DD HH:mm",
+				dataPoints: []
+			});
+		});
 		vm.eventData = [];
 
 		/* modal unable to get DOM when initial loaded. used rendered or timeout to achieved.
@@ -125,6 +135,8 @@
 					tickThickness:1,
 				},
 				legend:{
+					cursor: "pointer",
+					itemclick: toggleDataSeries,
 					horizontalAlign: "center",
 					verticalAlign: "bottom",
 					fontSize: 15
@@ -138,24 +150,14 @@
 						vm.chartToolbarOptions.max = max;
 					});
 				},
-				data: [
-					{
-						type: "line",
-						xValueType: "dateTime",
-						xValueFormatString:"YYYY MM DD HH:mm",
-						dataPoints: vm.chartData
-					}/*, {
-						type: "column",
-						visible: true,
-						axisYType: "secondary",
-						xValueType: "dateTime",
-						xValueFormatString:"YYYY MM DD HH:mm",
-						dataPoints: vm.eventData
-					}*/
-				]
+				data: vm.multiChartTimeSeries
 			});
 			vm.chart.render();
-			getTimeSeriesAnyData();
+			if(vm.isBatchRequest){
+				getTimeSeriesBatchData();
+			}else{
+				getTimeSeriesAnyData();
+			}
 		});
 
 		vm.chartToolbarOptions = {
@@ -165,12 +167,13 @@
 		};
 
 		vm.viewHighRate = function(){
+			var id = getId().join(",");
 			if(vm.chartToolbarOptions.min>0){
 				var params = {
 					from: vm.chartToolbarOptions.min,
 					to: vm.chartToolbarOptions.max,
-					id: vm.items.datapoint.pressure._id,
-					info: vm.items
+					id: id,
+					info: vm.plotData[0]
 				};
 				modalService.open(__env.modalHighRateUrl, 'modalHighRateCtrl as vm', params);
 			}
@@ -179,26 +182,44 @@
 		/* filter button
 		*/
 		vm.getTimeSeriesFilter = function(){
-			var res_date = getStartEndDate(),
-				id = vm.items.datapoint.pressure._id;
-			if(angular.isDefined(id)){
+			var params = getParams();
+			if(angular.isDefined(params) && params.datapoints!==""){
 				vm.typeTimeSeries = "custom";
 				/* get time series by resolution, start & end date
 				*/
-				apiService.timeSeriesRangeApi(id, vm.resolutions.model ,res_date.start, res_date.end).then(function(response){
-					if(angular.isDefined(response.data.data)){
-						vm.chartData.length = 0;
-						vm.eventData.length = 0;
-						angular.forEach(response.data.data, function(value, key){
-							vm.chartData.push({x: parseInt(key), y: parseFloat(value)});
+				if(vm.isBatchRequest){
+					apiService.batchTimeSeriesApi(params).then(function(response){
+						angular.forEach(response.data, function(row, index){
+							vm.multiChartTimeSeries[index].dataPoints.length = 0;
+							angular.forEach(row.data, function(value, key){
+								vm.multiChartTimeSeries[index].dataPoints.push({
+									x: parseInt(key),
+									y: parseFloat(value)
+								});
+							});
 						});
 						vm.chart.render();
-					}
-				});
+					});
+				}else{
+					apiService.timeSeriesRangeApi(params).then(function(response){
+						if(angular.isDefined(response.data.data)){
+							vm.eventData.length = 0;
+							vm.multiChartTimeSeries[0].dataPoints.length = 0;
+							angular.forEach(response.data.data, function(value, key){
+								vm.multiChartTimeSeries[0].dataPoints.push({
+									x: parseInt(key),
+									y: parseFloat(value)
+								});
+							});
+							vm.chart.render();
+						}
+					});
+				}
+
 				/* if event status is true - we need to get event data as well
 				*/
 				if(vm.switchEvent.status){
-					apiService.eventRangeApi(res_date.start, res_date.end).then(function(response){
+					apiService.eventRangeApi(params.from, params.to).then(function(response){
 						updateEvent(response.data.event);
 					});
 				}
@@ -206,6 +227,16 @@
 				dialogService.alert(null,{content: $translate.instant('site_common_something_wrong')});
 			}
 		};
+		/* toggle chart legend
+		*/
+		function toggleDataSeries(e) {
+			if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+				e.dataSeries.visible = false;
+			} else {
+				e.dataSeries.visible = true;
+			}
+			e.chart.render();
+		}
 		/* update event data to canvasjs from api
 		*/
 		function updateEvent(res){
@@ -243,12 +274,16 @@
 		/* get time series ANY data
 		*/
 		function getTimeSeriesAnyData(){
-			var id = vm.items.datapoint.pressure._id;
-			if(angular.isDefined(id)){
+			var id = getId().join(",");
+			if(angular.isDefined(id) && id!==""){
 				apiService.timeSeriesAnyApi(id).then(function(response){
-					vm.chartData.length = 0;
+					//vm.chartData.length = 0;
+					vm.multiChartTimeSeries[0].dataPoints.length = 0;
 					angular.forEach(response.data.data, function(value, key){
-						vm.chartData.push({x: parseInt(key), y: parseFloat(value)});
+						vm.multiChartTimeSeries[0].dataPoints.push({
+							x: parseInt(key),
+							y: parseFloat(value)
+						});
 					});
 					vm.chart.render();
 				});
@@ -257,6 +292,53 @@
 						updateEvent(response.data.event);
 					});
 				}
+			}else{
+				dialogService.alert(null,{content:$translate.instant('site_common_something_wrong')});
+			}
+		}
+		/* get all the plot data id and return as array
+		*/
+		function getId(){
+			var ids = [];
+			if(vm.plotData.length){
+				angular.forEach(vm.plotData, function(value){
+					ids.push(value.datapoint.pressure._id);
+				});
+			}
+			return ids;
+		}
+		/* get params
+		*/
+		function getParams(){
+			var params = {},
+				res_date = getStartEndDate(),
+				ids = getId().join(",");
+
+			params = {
+				datapoints: ids,
+				resolution: vm.resolutions.model,
+				from: res_date.start,
+				to: res_date.end
+			};
+			return params;
+		}
+		/* get time series batch query data
+		*/
+		function getTimeSeriesBatchData(){
+			var params = getParams();
+			if(angular.isDefined(params)){
+				apiService.batchTimeSeriesApi(params).then(function(response){
+					angular.forEach(response.data, function(row, index){
+						vm.multiChartTimeSeries[index].dataPoints.length = 0;
+						angular.forEach(row.data, function(value, key){
+							vm.multiChartTimeSeries[index].dataPoints.push({
+								x: parseInt(key),
+								y: parseFloat(value)
+							});
+						});
+					});
+					vm.chart.render();
+				});
 			}else{
 				dialogService.alert(null,{content:$translate.instant('site_common_something_wrong')});
 			}
