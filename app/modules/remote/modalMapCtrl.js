@@ -20,7 +20,7 @@
 		var longitude = parseFloat(vm.items.longitude);//121.324914; //default longitude
 		var latitude = parseFloat(vm.items.latitude);//31.099573; //default latitude
 		vm.ready = function(){
-			$ocLazyLoad.load('js!http://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4').then(function(){
+			$ocLazyLoad.load('js!https://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4').then(function(){
 				vm.mapInit();
 			});
 		};
