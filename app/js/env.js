@@ -16,7 +16,7 @@
 	window.__env.switchProjectUrl = window.__env.baseUrl+'user/switchproject';
 	window.__env.timeSeriesAnyUrl = window.__env.baseUrl+'tsda/query';
 	window.__env.timeSeriesRangeUrl = window.__env.baseUrl+'tsda/query';
-	window.__env.eventAnyUrl = window.__env.baseUrl+'tsevent/search/-1/10000000000000';
+	window.__env.eventAnyUrl = window.__env.baseUrl+'tsevent/search/-1/100000000';
 	window.__env.eventDurationUrl = window.__env.baseUrl+'tsevent/search';
 	window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query';
 	window.__env.eventDetailsUrl = window.__env.baseUrl+'tsevent/get';
@@ -37,7 +37,7 @@
 	//network pump
 	window.__env.networkPumpUrl = window.__env.baseUrl+'map/pump';
 	//network hydrant
-	window.__env.networkHydrantUrl = window.__env.baseUrl+'map/hyrant';
+	window.__env.networkHydrantUrl = window.__env.baseUrl+'map/hydrant';
 	//network pipe end details
 	window.__env.networkPipeDetailsUrl = window.__env.baseUrl+'map/geo/pipe/detail';
 
