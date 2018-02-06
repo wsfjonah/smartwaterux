@@ -49,6 +49,8 @@
 				}
 			}else{ //if status true, we need to fetch data and pass to event update
 				apiService.eventAnyApi().then(function(response){
+					console.log('#event');
+						console.log(response);
 					updateEvent(response.data.event);
 				});
 			}
@@ -289,6 +291,8 @@
 				});
 				if(vm.switchEvent.status){
 					apiService.eventAnyApi().then(function(response){
+						console.log('#event');
+						console.log(response);
 						updateEvent(response.data.event);
 					});
 				}

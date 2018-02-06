@@ -203,6 +203,62 @@
 	}
 }
 
+/*******************
+ Monitoring
+*******************/
+.monitoring{
+	.row-event{
+		border-bottom: 1px solid $border;
+		padding:10px;
+	}
+	.row-event:last-child{
+		border-bottom:none;
+	}
+	.event-badge{
+		border: 1px solid $border;
+		border-radius:100%;
+		width:60px;
+		height:60px;
+		display: inline-block;
+		text-align: center;
+		line-height: 60px;
+		float: left;
+		background-color:$white;
+		position: relative;
+		&.danger{
+			background-color:$red;
+			i{
+				color:$white;
+			}
+		}
+		&.warning{
+			background-color:$yellow;
+			i{
+				color:$white;
+			}
+		}
+		.notify{
+			position: absolute;
+			top: 10px;
+			left: 0;
+			right: auto;
+		}
+	}
+	.event-badge i{
+		padding:10px;
+	}
+	.event-info{
+		float: left;
+		margin: 10px 0 0 15px;
+	}
+	.load-more{
+		padding:20px 10px 10px;
+		text-align: center;
+		a{
+			text-transform: uppercase;
+		}
+	}
+}
 
 /*******************
  Breadcrumb and page title

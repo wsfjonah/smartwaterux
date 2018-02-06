@@ -6,6 +6,7 @@
 	"site_login_info_invalid" : "Username or Password invalid, Please try again",
 	"site_menu_label" : "Menu",
 	"site_menu_main" : "Dashboard",
+	"site_menu_monitor" : "Monitoring",
 	"site_menu_remote" : "Remote Site",
 	"site_menu_location" : "Location",
 	"site_menu_table" : "Information",

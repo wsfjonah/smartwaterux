@@ -8,6 +8,7 @@
 		vm.selected = {
 			item: vm.items[0]
 		};
+		console.log(vm.items);
 		//console.log(vm.items);
 		vm.ok = function () {
 			$uibModalInstance.close(vm.selected.item);

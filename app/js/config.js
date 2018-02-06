@@ -156,6 +156,24 @@
 				key: "network_data"
 			}
 		})
+		.when('/monitoring', {
+			templateUrl: __env.folder+'/app/modules/monitor/monitor.html',
+			controller: 'monitorController as vm',
+			restrictions: {
+				ensureAuthenticated: true,
+				loginRedirect: false
+			},
+			resolve: {
+				loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+					return $ocLazyLoad.load([
+						'app/modules/monitor/monitorCtrl.js'
+					]);
+				}]
+			},
+			page_params: {
+				key: "monitor"
+			}
+		})
 		.when('/login', {
 			templateUrl: __env.folder+'/app/modules/auth/login.html',
 			controller: 'authLoginController',
