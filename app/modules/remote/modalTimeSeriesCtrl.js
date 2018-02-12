@@ -48,33 +48,39 @@
 					vm.chart.render();
 				}
 			}else{ //if status true, we need to fetch data and pass to event update
-				apiService.eventAnyApi().then(function(response){
-					console.log('#event');
-						console.log(response);
-					updateEvent(response.data.event);
-				});
+				
+				if(vm.typeTimeSeries==="custom"){
+					var params = getParams();
+					apiService.eventRangeApi(params.from, params.to).then(function(response){
+						updateEvent(response.data.event);
+					});
+				}else{
+					apiService.eventAnyApi().then(function(response){
+						updateEvent(response.data.event);
+					});
+				}
 			}
 		};
 		/* option for resolution and model
 		*/
 		var t_min = $translate.instant('site_location_timeseries_minute'),
-		t_day = $translate.instant('site_location_timeseries_day'),
-		t_hour = $translate.instant('site_location_timeseries_hour'),
-		t_week = $translate.instant('site_location_timeseries_week'),
-		t_month = $translate.instant('site_location_timeseries_month');
-                    	vm.resolutions = {
-                    		model: null,
-                    		options: [{"label":"1 "+t_min,"value":"1n"},{"label":"5 "+t_min,"value":"5n"},{"label":"30 "+t_min,"value":"30n"},{"label":"1 "+t_hour,"value":"1h"},{"label":"6 "+t_hour,"value":"6h"},{"label":"12 "+t_hour,"value":"12h"},{"label":"1 "+t_day,"value":"1d"},{"label":"1 "+t_week,"value":"1w"},{"label":"1 "+t_month,"value":"1m"}]
-                    	};
-                    	/* set initial selected value in option
-                    	*/
-                    	vm.resolutions.model = vm.resolutions.options[0].value;
-                    	/* daterange picker for time series
-                    	*/
-                    	var start = moment().subtract(4, 'months');
-                    	var end = moment();
-                    	/* setup daterange picker for filtering
-                    	*/
+			t_day = $translate.instant('site_location_timeseries_day'),
+			t_hour = $translate.instant('site_location_timeseries_hour'),
+			t_week = $translate.instant('site_location_timeseries_week'),
+			t_month = $translate.instant('site_location_timeseries_month');
+	    	vm.resolutions = {
+	    		model: null,
+	    		options: [{"label":"1 "+t_min,"value":"1n"},{"label":"5 "+t_min,"value":"5n"},{"label":"30 "+t_min,"value":"30n"},{"label":"1 "+t_hour,"value":"1h"},{"label":"6 "+t_hour,"value":"6h"},{"label":"12 "+t_hour,"value":"12h"},{"label":"1 "+t_day,"value":"1d"},{"label":"1 "+t_week,"value":"1w"},{"label":"1 "+t_month,"value":"1m"}]
+	    	};
+    	/* set initial selected value in option
+    	*/
+    	vm.resolutions.model = vm.resolutions.options[0].value;
+    	/* daterange picker for time series
+    	*/
+    	var start = moment().subtract(4, 'months');
+    	var end = moment();
+    	/* setup daterange picker for filtering
+    	*/
 		vm.datePickerDate = {
 			date:{
 				startDate: start,
@@ -291,8 +297,6 @@
 				});
 				if(vm.switchEvent.status){
 					apiService.eventAnyApi().then(function(response){
-						console.log('#event');
-						console.log(response);
 						updateEvent(response.data.event);
 					});
 				}
