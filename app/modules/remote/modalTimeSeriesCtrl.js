@@ -47,11 +47,10 @@
 					vm.chart.options.data.splice(1, 1);
 					vm.chart.render();
 				}
-			}else{ //if status true, we need to fetch data and pass to event update
-				
+			}else{ //if status true, we need to fetch data and pass to event updateΩ
 				if(vm.typeTimeSeries==="custom"){
 					var params = getParams();
-					apiService.eventRangeApi(params.from, params.to).then(function(response){
+					apiService.eventSingleRangeApi(params.datapoints, params.from, params.to).then(function(response){
 						updateEvent(response.data.event);
 					});
 				}else{
@@ -227,7 +226,7 @@
 				/* if event status is true - we need to get event data as well
 				*/
 				if(vm.switchEvent.status){
-					apiService.eventRangeApi(params.from, params.to).then(function(response){
+					apiService.eventSingleRangeApi(params.datapoints, params.from, params.to).then(function(response){
 						updateEvent(response.data.event);
 					});
 				}
