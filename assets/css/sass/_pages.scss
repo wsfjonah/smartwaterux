@@ -223,15 +223,24 @@
 		text-align: center;
 		line-height: 60px;
 		float: left;
-		background-color:$white;
+		background-color:$green;
 		position: relative;
-		&.danger{
+		i{
+			color:$white;
+		}
+		&.high{
 			background-color:$red;
 			i{
 				color:$white;
 			}
 		}
-		&.warning{
+		&.medium{
+			background-color:$orange;
+			i{
+				color:$white;
+			}
+		}
+		&.low_medium{
 			background-color:$yellow;
 			i{
 				color:$white;

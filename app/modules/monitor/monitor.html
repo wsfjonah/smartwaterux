@@ -11,65 +11,44 @@
 	</div>
 </div>
 <div class="container-fluid">
-	<div class="card">
-		<div class="card-body">
-			<div class="monitoring">
-				<div class="row-event">
-					<div class="row">
-						<div class="col-md-5 clearfix">
-							<span class="event-badge"><i class="ti-light-bulb"></i></span>
-							<div class="event-info">
-								<div class="name">江山路妙香路<span class="datetime text-muted font-11 m-l-10" data-toggle="tooltip" title="27 Jan, 2018"><i class="ti-time"></i> 2 days ago</span></div>
-								<div class="address text-muted font-12"><i class="ti-location-pin"></i> 艾朗风电科技发展公司东北274米</div>
+	<div ng-cloak>
+		<div class="card">
+			<md-content>
+				<md-tabs md-dynamic-height md-border-bottom>
+					<md-tab label="Monitor">
+						<md-content class="md-padding">
+							<div class="monitoring">
+								<div class="row-event" ng-repeat="(key, value) in vm.monitor">
+									<div class="row">
+										<div class="col-md-5 clearfix">
+											<span class="event-badge {{ value.degree }}">
+												<i class="ti-light-bulb"></i>
+												<div class="notify" ng-show="value.degree == 'high'"><span class="heartbit"></span><span class="point"></span></div>
+											</span>
+											<div class="event-info">
+												<div class="name">{{ value.desc }}<span class="datetime text-muted font-11 m-l-10" data-toggle="tooltip" title="{{ value.timestamp | date:'MMM, dd yyyy - HH:mm'}}"><i class="ti-time"></i> {{ value.timestamp | fromNow}}</span></div>
+												<div class="address text-muted font-12"><i class="ti-location-pin"></i> {{ value.location }}</div>
+											</div>
+										</div>
+										<div class="col-md-7">
+											<div class="btn-group pull-right">
+				                         <button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Info"><i class="ti-info-alt"></i></button>
+												<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Location"><i class="ti-map-alt"></i></button>
+				                      </div>
+										</div>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="col-md-7">
-							<div class="btn-group pull-right">
-                         <button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Info"><i class="ti-info-alt"></i></button>
-								<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Location"><i class="ti-map-alt"></i></button>
-                      </div>
-						</div>
-					</div>
-				</div>
-				<div class="row-event">
-					<div class="row">
-						<div class="col-md-5 clearfix">
-							<span class="event-badge danger">
-								<i class="ti-light-bulb"></i>
-								<div class="notify"><span class="heartbit"></span><span class="point"></span></div>
-							</span>
-							<div class="event-info">
-								<div class="name">江山路妙香路<span class="datetime text-muted font-11 m-l-10" data-toggle="tooltip" title="27 Jan, 2018"><i class="ti-time"></i> 2 days ago</span></div>
-								<div class="address text-muted font-12"><i class="ti-location-pin"></i> 艾朗风电科技发展公司东北274米</div>
-							</div>
-						</div>
-						<div class="col-md-7">
-							<div class="btn-group pull-right">
-								<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Info"><i class="ti-info-alt"></i></button>
-								<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Location"><i class="ti-map-alt"></i></button>
-                     </div>
-						</div>
-					</div>
-				</div>
-				<div class="row-event">
-					<div class="row">
-						<div class="col-md-5 clearfix">
-							<span class="event-badge warning"><i class="ti-light-bulb"></i></span>
-							<div class="event-info">
-								<div class="name">江山路妙香路<span class="datetime text-muted font-11 m-l-10" data-toggle="tooltip" title="27 Jan, 2018"><i class="ti-time"></i> 2 days ago</span></div>
-								<div class="address text-muted font-12"><i class="ti-location-pin"></i> 艾朗风电科技发展公司东北274米</div>
-							</div>
-						</div>
-						<div class="col-md-7">
-							<div class="btn-group pull-right">
-								<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Info"><i class="ti-info-alt"></i></button>
-								<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Location"><i class="ti-map-alt"></i></button>
-                     </div>
-						</div>
-					</div>
-				</div>
-				<div class="load-more"><a href="#">load more</a></div>
-			</div>
+						<!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p> -->
+						</md-content>
+					</md-tab>
+					<md-tab label="Investigate">
+						<md-content class="md-padding">
+						<p>Investigate Mode Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p>
+						</md-content>
+					</md-tab>
+				</md-tabs>
+			</md-content>
 		</div>
 	</div>
 </div>
