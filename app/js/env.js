@@ -20,6 +20,7 @@
 	window.__env.eventDurationUrl = window.__env.baseUrl+'tsevent/search';
 	window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query';
 	window.__env.eventDetailsUrl = window.__env.baseUrl+'tsevent/get';
+	window.__env.eventSingleRangeUrl = window.__env.baseUrl+'tsevent/datapoint';
 	//batch query time series
 	window.__env.batchTimeSeriesUrl = window.__env.baseUrl+'tsda/batchquery'; //TODO: make it post method key - ///1n/1516106340000/1516192740000
 

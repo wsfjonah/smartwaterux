@@ -188,6 +188,14 @@
 			});
 		};
 
+		this.eventSingleRangeApi = function(datapointId, from, to){
+			return $http({
+				method: 'GET',
+				url: __env.eventSingleRangeUrl+"/"+datapointId+"/"+from+"/"+to,
+				headers: headers
+			});
+		};
+
 		this.eventDetailsApi = function(eventId){
 			return $http({
 				method: 'GET',
