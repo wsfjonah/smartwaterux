@@ -45,6 +45,7 @@
 	//modal
 	window.__env.modalTimeSeriesUrl = window.__env.folder+'/app/modules/remote/modalTimeSeries.html';
 	window.__env.modalEventDetailsUrl = window.__env.folder+'/app/modules/remote/modalEventDetails.html';
+	window.__env.modalMonitorEventDetailsUrl = window.__env.folder+'/app/modules/monitor/modalMonitorEventDetails.html';
 	window.__env.modalHighRateUrl = window.__env.folder+'/app/modules/remote/modalHighRate.html';
 	window.__env.modalInformationTableInfo = window.__env.folder+'/app/modules/remote/modalDetails.html';
 	window.__env.modalInformationTableMap = window.__env.folder+'/app/modules/remote/modalMap.html';

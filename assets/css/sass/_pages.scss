@@ -206,6 +206,11 @@
 /*******************
  Monitoring
 *******************/
+.monitor-filter{
+	background-color:#f8f8f8;
+	border-bottom:1px solid #ddd;
+	padding:20px;
+}
 .monitoring{
 	.row-event{
 		border-bottom: 1px solid $border;

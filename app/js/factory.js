@@ -52,7 +52,7 @@
 		var vm = this;
 		var modalInstance;
 		return{
-			open: function(url, ctrl, data){
+			open: function(url, ctrl, data, callback){
 				modalInstance = $uibModal.open({
 					templateUrl: url,
 					controller: ctrl,
@@ -67,6 +67,9 @@
 					vm.selected = selectedItem;
 				}, function () {
 					//$log.info('Modal dismissed at: ' + new Date());
+					if(angular.isDefined(callback)){
+						callback();
+					}
 				});
 			}
 		};
