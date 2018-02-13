@@ -13,42 +13,70 @@
 <div class="container-fluid">
 	<div ng-cloak>
 		<div class="card">
-			<md-content>
-				<md-tabs md-dynamic-height md-border-bottom>
-					<md-tab label="Monitor">
-						<md-content class="md-padding">
-							<div class="monitoring">
-								<div class="row-event" ng-repeat="(key, value) in vm.monitor">
-									<div class="row">
-										<div class="col-md-5 clearfix">
-											<span class="event-badge {{ value.degree }}">
-												<i class="ti-light-bulb"></i>
-												<div class="notify" ng-show="value.degree == 'high'"><span class="heartbit"></span><span class="point"></span></div>
-											</span>
-											<div class="event-info">
-												<div class="name">{{ value.desc }}<span class="datetime text-muted font-11 m-l-10" data-toggle="tooltip" title="{{ value.timestamp | date:'MMM, dd yyyy - HH:mm'}}"><i class="ti-time"></i> {{ value.timestamp | fromNow}}</span></div>
-												<div class="address text-muted font-12"><i class="ti-location-pin"></i> {{ value.location }}</div>
-											</div>
+			<div class="card-body p-0">
+				<ul class="nav nav-tabs customtab" role="tablist">
+					<li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#monitor" role="tab" ng-click="vm.switchMode('monitor')"><span class="hidden-sm-up"><i class="ti-world"></i></span> <span class="hidden-xs-down">Monitor</span></a></li>
+					<li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#investigate" role="tab" ng-click="vm.switchMode('investigate')"><span class="hidden-sm-up"><i class="ti-zoom-in"></i></span> <span class="hidden-xs-down">Investigate</span></a></li>
+				</ul>
+				<div class="tab-content p-10">
+					 <div class="tab-pane active" id="monitor" role="tabpanel">
+					 	<!-- content -->
+					 	<div class="monitoring">
+							<div ng-if="vm.isObjectEmpty(vm.monitor)">No Results</div>
+							<div class="row-event" ng-repeat="(key, value) in vm.monitor">
+								<div class="row">
+									<div class="col-md-5 clearfix">
+										<span class="event-badge {{ value.degree }}">
+											<i class="ti-light-bulb"></i>
+											<div class="notify" ng-show="value.degree == 'high'"><span class="heartbit"></span><span class="point"></span></div>
+										</span>
+										<div class="event-info">
+											<div class="name">{{ value.desc }}<span class="datetime text-muted font-11 m-l-10"><i class="ti-time"></i> {{ value.timestamp | fromNow}}</span></div>
+											<div class="address text-muted font-12"><i class="ti-location-pin"></i> {{ value.location }}</div>
 										</div>
-										<div class="col-md-7">
-											<div class="btn-group pull-right">
-				                         <button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Info"><i class="ti-info-alt"></i></button>
-												<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Location"><i class="ti-map-alt"></i></button>
-				                      </div>
-										</div>
+									</div>
+									<div class="col-md-7">
+										<div class="btn-group pull-right">
+			                        				 <button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Info"><i class="ti-info-alt"></i></button>
+											<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Location"><i class="ti-map-alt"></i></button>
+			                      			</div>
 									</div>
 								</div>
 							</div>
-						<!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p> -->
-						</md-content>
-					</md-tab>
-					<md-tab label="Investigate">
-						<md-content class="md-padding">
-						<p>Investigate Mode Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p>
-						</md-content>
-					</md-tab>
-				</md-tabs>
-			</md-content>
+						</div>
+						<!-- //END content -->
+					 </div>
+					 <div class="tab-pane" id="investigate" role="tabpanel">
+					 	<!-- content -->
+				 		<button type="button" class="btn btn-secondary" ng-click="vm.empty()">empty</button>
+						<button type="button" class="btn btn-secondary" ng-click="vm.restart()">restart</button>
+						<div infinite-scroll='vm.nextPage()' infinite-scroll-disabled='vm.investigate.busy' infinite-scroll-distance='2' class="monitoring" id="investigate_container">
+							<div class="row-event" fast-repeat="item in vm.invest.results">
+								<div class="row">
+									<div class="col-md-5 clearfix">
+										<span class="event-badge {{ item.degree }}">
+											<i class="ti-light-bulb"></i>
+											<div class="notify" ng-show="item.degree == 'high'"><span class="heartbit"></span><span class="point"></span></div>
+										</span>
+										<div class="event-info">
+											<div class="name">{{ item.desc }}<span class="datetime text-muted font-11 m-l-10"><i class="ti-time"></i> {{ item.timestamp | fromNow}}</span></div>
+											<div class="address text-muted font-12"><i class="ti-location-pin"></i> {{ item.location }}</div>
+										</div>
+									</div>
+									<div class="col-md-7">
+										<div class="btn-group pull-right">
+			                        				 <button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Info"><i class="ti-info-alt"></i></button>
+											<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Location"><i class="ti-map-alt"></i></button>
+			                      			</div>
+									</div>
+								</div>
+							</div>
+							<div ng-show='vm.investigate.busy'>Loading data...</div>
+						</div>
+					 	<!-- //END content -->
+					 </div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

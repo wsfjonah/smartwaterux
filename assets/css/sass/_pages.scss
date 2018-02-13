@@ -217,11 +217,11 @@
 	.event-badge{
 		border: 1px solid $border;
 		border-radius:100%;
-		width:60px;
-		height:60px;
+		width:40px;
+		height:40px;
 		display: inline-block;
 		text-align: center;
-		line-height: 60px;
+		line-height: 40px;
 		float: left;
 		background-color:$green;
 		position: relative;
@@ -258,7 +258,7 @@
 	}
 	.event-info{
 		float: left;
-		margin: 10px 0 0 15px;
+		margin: 0 0 0 15px;
 	}
 	.load-more{
 		padding:20px 10px 10px;

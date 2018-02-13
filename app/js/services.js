@@ -172,10 +172,26 @@
 			});
 		};
 
+		this.eventAnyApiPaging = function(page){
+			return $http({
+				method: 'GET',
+				url: __env.eventAnyUrl+"/"+page,
+				headers: headers
+			});
+		};
+
 		this.eventDurationApi = function(res){
 			return $http({
 				method: 'GET',
 				url: __env.eventDurationUrl+"/"+res.to+"/"+res.duration,
+				headers: headers
+			});
+		};
+
+		this.eventMonitorApi = function(id, time){
+			return $http({
+				method: 'GET',
+				url: __env.eventDurationUrl+"/"+id+"/"+time,
 				headers: headers
 			});
 		};

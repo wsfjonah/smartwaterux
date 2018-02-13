@@ -7,6 +7,8 @@ var xpro = (function () {
 	my.bindUiAction = function(){
 		controller.on('click','#sidebarnav li>a:not(.has-arrow)', function(){
 			$('body').removeClass('show-sidebar');
+		}).on('click', '.customtab>li>a', function(e){
+			e.preventDefault();
 		});
 		$(window).resize(function(){
 			my.resizeHeader();

@@ -166,6 +166,8 @@
 			resolve: {
 				loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
 					return $ocLazyLoad.load([
+						'app/vendors/fastRepeat.js',
+						'app/vendors/ng-infinite-scroll.min.js',
 						'app/modules/monitor/monitorCtrl.js'
 					]);
 				}]
