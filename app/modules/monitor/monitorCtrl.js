@@ -9,7 +9,8 @@
 *	- use api - api/tsevent/search/-1/100000000/0
 *	- with paging (infinite scroll)
 *	- view details
-*	- filtering - timerange, site, confidence, tags
+*	- filtering - enddate, duration, confidence, tags
+*	- If filtering enddate is today date, then assign -1 instead
 *
 *	- degree status
 *	(low - green), (low-medium - yellow), (medium - orange), (high - red)
@@ -35,11 +36,11 @@
 				model: null,
 				options:[
 					{
-						value: 'valve',
-						label: 'Valve'
+						id: 'valve',
+						name: 'Valve'
 					},{
-						value: 'burst',
-						label: 'Burst'
+						id: 'burst',
+						name: 'Burst'
 					}
 				]
 			},
@@ -47,11 +48,11 @@
 				model: null,
 				options:[
 					{
-						value: 'auto',
-						label: 'Auto'
+						id: 'auto',
+						name: 'Auto'
 					},{
-						value: 'adjusted',
-						label: 'Adjusted'
+						id: 'adjusted',
+						name: 'Adjusted'
 					}
 				]
 			},
@@ -59,31 +60,41 @@
 				model: null,
 				options:[
 					{
-						value: '1d',
-						label: 'Last 1 Day'
+						id: '1d',
+						name: 'Last 1 Day'
 					},{
-						value: '2d',
-						label: 'Last 2 Days'
+						id: '2d',
+						name: 'Last 2 Days'
 					}
 				]
-			} 
+			}
 		};
-		vm.filter.duration.model = vm.filter.duration.options[0].value;
-		vm.filter.tag.model = vm.filter.tag.options[0].value;
-		vm.filter.operation.model = vm.filter.operation.options[0].value;
-		var start = moment().subtract(4, 'months');
-    	var end = moment();
+		vm.filter.duration.model = vm.filter.duration.options[0];
+		vm.filter.tag.model = vm.filter.tag.options;
+		vm.filter.operation.model = vm.filter.operation.options;
+    		var start = moment();
 		vm.datePickerDate = {
 			date:{
-				startDate: start,
-				endDate: end
+				startDate: start
 			},
 			options:{
+				singleDatePicker: true,
 				applyClass: "btn-primary",
 				cancelClass: "btn-secondary",
 				timePicker: true,
 				maxDate: new Date()
 			}
+		};
+
+		vm.getFilterData = function(){
+			var res = {
+				tag: vm.filter.tag.model,
+				duration: vm.filter.duration.model,
+				operation: vm.filter.operation.model,
+				end: moment($("#date_filter_monitor").data('daterangepicker').startDate).format('x')
+			};
+			console.log(res);
+			return res;
 		};
 
 		vm.empty = function(){

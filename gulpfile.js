@@ -48,7 +48,8 @@ gulp.task('js-jquery-lib-concat', function(){
 	return gulp.src(['assets/js/jquery-3.1.1.min.js',
 		'assets/js/popper.min.js',
 		'assets/js/bootstrap-4.0.min.js',
-		'assets/js/pace.min.js'
+		'assets/js/pace.min.js',
+		'assets/js/bootstrap-select.min.js'
 	])
 	.pipe(gp_sourcemaps.init())
 	.pipe(gp_concat('jquery-lib.min.js'))

@@ -210,6 +210,10 @@
 	background-color:#f8f8f8;
 	border-bottom:1px solid #ddd;
 	padding:20px;
+	.bootstrap-select>button{
+		border-color:#ddd;
+		padding:10px 30px 10px 12px;
+	}
 }
 .monitoring{
 	.row-event{

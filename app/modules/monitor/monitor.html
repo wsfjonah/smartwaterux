@@ -19,9 +19,9 @@
 					<li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#investigate" role="tab" ng-click="vm.switchMode('investigate')"><span class="hidden-sm-up"><i class="ti-zoom-in"></i></span> <span class="hidden-xs-down">Investigate</span></a></li>
 				</ul>
 				<div class="tab-content p-0">
-					 <div class="tab-pane active p-20" id="monitor" role="tabpanel">
-					 	<!-- content -->
-					 	<div class="monitoring">
+					<div class="tab-pane active p-20" id="monitor" role="tabpanel">
+						<!-- content -->
+						<div class="monitoring">
 							<div ng-if="vm.isObjectEmpty(vm.monitor)" class="text-center p-20">
 								<i class="ti-info-alt newline font-30 m-b-10"></i>No Results
 							</div>
@@ -47,69 +47,66 @@
 							</div>
 						</div>
 						<!-- //END content -->
-					 </div>
-					 <div class="tab-pane" id="investigate" role="tabpanel">
-					 	<!-- content -->
-					 	<div class="monitor-filter clearfix">
-					 		<div class="input-group m-b-5">
-								<input date-range-picker class="form-control date-picker" type="text" ng-model="vm.datePickerDate.date" options="vm.datePickerDate.options" readonly="true" placeholder="Auto" id="daterange_timeseries" />
+					</div>
+					<div class="tab-pane" id="investigate" role="tabpanel">
+						<!-- content -->
+						<div class="monitor-filter clearfix">
+							<div class="input-group m-b-5">
+								<input date-range-picker class="form-control date-picker" type="text" ng-model="vm.datePickerDate.date" options="vm.datePickerDate.options" readonly="true" placeholder="Auto" id="date_filter_monitor" />
 								<span class="input-group-btn">
-									<select class="form-control custom-select" ng-model="vm.filter.duration.model">
-										<option ng-repeat="res in vm.filter.duration.options" value="{{res.value}}">{{res.label}}</option>
-									</select>
+									<select class="form-control selectpicker" data-select-watcher ng-model="vm.filter.duration.model" ng-options="res.name for res in vm.filter.duration.options track by res.id" data-actions-box="true">
+	  								</select>
 								</span>
 							</div>
 							<div class="input-group m-b-5">
-							  <div class="input-group-addon">
-							    <span class="input-group-text">Tag</span>
-							  </div>
-							  <select class="form-control custom-select" ng-model="vm.filter.tag.model">
-									<option ng-repeat="res in vm.filter.tag.options" value="{{res.value}}">{{res.label}}</option>
-								</select>
-							  <div class="input-group-addon">
-							    <span class="input-group-text">Operation</span>
-							  </div>
-							   <select class="form-control custom-select" ng-model="vm.filter.operation.model">
-									<option ng-repeat="res in vm.filter.operation.options" value="{{res.value}}">{{res.label}}</option>
-								</select>
+								<div class="input-group-addon">
+									<span class="input-group-text">Tag</span>
+								</div>
+								<select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.tag.model" ng-options="res.name for res in vm.filter.tag.options track by res.id" data-actions-box="true">
+  								</select>
+								<div class="input-group-addon">
+									<span class="input-group-text">Operation</span>
+								</div>
+								<select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.operation.model" ng-options="res.name for res in vm.filter.operation.options track by res.id" data-actions-box="true">
+  								</select>
 							</div>
 							<div class="btn-group pull-right">
 								<button class="btn btn-secondary waves-effect waves-dark" type="button">Reset</button>
-								<button class="btn btn-primary waves-effect waves-dark" type="button">{{'site_location_modal_filter_btn' | translate}}</button>
+								<button class="btn btn-primary waves-effect waves-dark" type="button" ng-click="vm.getFilterData()">{{'site_location_modal_filter_btn' | translate}}</button>
 							</div>
-					 	</div>
+						</div>
 				 		<!-- <button type="button" class="btn btn-secondary" ng-click="vm.empty()">empty</button>
-						<button type="button" class="btn btn-secondary" ng-click="vm.restart()">restart</button> -->
-						<div ng-if="vm.invest.results.length <= 0" class="text-center p-20">
-							<i class="ti-info-alt newline font-30 m-b-10"></i>No Results
-						</div>
-						<div infinite-scroll='vm.nextPage()' infinite-scroll-disabled='vm.investigate.busy' infinite-scroll-distance='2' class="monitoring p-20" id="investigate_container">
-							<div class="row-event" fast-repeat="item in vm.invest.results">
-								<div class="row">
-									<div class="col-md-5 clearfix">
-										<span class="event-badge {{ item.degree }}">
-											<i class="ti-light-bulb"></i>
-											<div class="notify" ng-show="item.degree == 'high'"><span class="heartbit"></span><span class="point"></span></div>
-										</span>
-										<div class="event-info">
-											<div class="name">{{ item.desc }}<span class="datetime text-muted font-11 m-l-10"><i class="ti-time"></i> {{ item.timestamp | fromNow}}</span></div>
-											<div class="address text-muted font-12"><i class="ti-location-pin"></i> {{ item.location }}</div>
-										</div>
-									</div>
-									<div class="col-md-7">
-										<div class="btn-group pull-right">
-											<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Info"  ng-click="vm.viewEventDetails(item.key)"><i class="ti-info-alt"></i></button>
-											<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Location"><i class="ti-map-alt"></i></button>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div ng-show='vm.investigate.busy'>Loading data...</div>
-						</div>
-					 	<!-- //END content -->
-					 </div>
+				 			<button type="button" class="btn btn-secondary" ng-click="vm.restart()">restart</button> -->
+				 			<div ng-if="vm.invest.results.length <= 0" class="text-center p-20">
+				 				<i class="ti-info-alt newline font-30 m-b-10"></i>No Results
+				 			</div>
+				 			<div infinite-scroll='vm.nextPage()' infinite-scroll-disabled='vm.investigate.busy' infinite-scroll-distance='2' class="monitoring p-20" id="investigate_container">
+				 				<div class="row-event" fast-repeat="item in vm.invest.results">
+				 					<div class="row">
+				 						<div class="col-md-5 clearfix">
+				 							<span class="event-badge {{ item.degree }}">
+				 								<i class="ti-light-bulb"></i>
+				 								<div class="notify" ng-show="item.degree == 'high'"><span class="heartbit"></span><span class="point"></span></div>
+				 							</span>
+				 							<div class="event-info">
+				 								<div class="name">{{ item.desc }}<span class="datetime text-muted font-11 m-l-10"><i class="ti-time"></i> {{ item.timestamp | fromNow}}</span></div>
+				 								<div class="address text-muted font-12"><i class="ti-location-pin"></i> {{ item.location }}</div>
+				 							</div>
+				 						</div>
+				 						<div class="col-md-7">
+				 							<div class="btn-group pull-right">
+				 								<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Info"  ng-click="vm.viewEventDetails(item.key)"><i class="ti-info-alt"></i></button>
+				 								<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Location"><i class="ti-map-alt"></i></button>
+				 							</div>
+				 						</div>
+				 					</div>
+				 				</div>
+				 				<div ng-show='vm.investigate.busy'>Loading data...</div>
+				 			</div>
+				 			<!-- //END content -->
+				 		</div>
+				 	</div>
+				 </div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>

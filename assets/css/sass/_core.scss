@@ -1282,7 +1282,8 @@ Buttons
 		font-size: 16px;
 	}
 }
-
+.btn-default,
+.btn-default.disabled,
 .btn-secondary,
 .btn-secondary.disabled {
 	box-shadow: $default-shadow;
