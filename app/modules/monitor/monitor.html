@@ -58,21 +58,33 @@
 	  								</select>
 								</span>
 							</div>
-							<div class="input-group m-b-5">
-								<div class="input-group-addon">
-									<span class="input-group-text">Tag</span>
+							<div class="m-b-5">
+								<div class="row">
+									<div class="col-md-5 p-r-0 filter-col">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<span class="input-group-text">Tag</span>
+											</div>
+											<select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.tag.model" ng-options="res.name for res in vm.filter.tag.options track by res.id" data-actions-box="true">
+			  								</select>
+										</div>
+									</div>
+									<div class="col-md-5 p-r-0 p-l-0 filter-col">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<span class="input-group-text">Operation</span>
+											</div>
+											<select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.operation.model" ng-options="res.name for res in vm.filter.operation.options track by res.id" data-actions-box="true">
+			  								</select>
+										</div>
+									</div>
+									<div class="col-md-2 p-l-0 filter-col">
+										<button class="btn btn-primary btn-block waves-effect waves-dark" type="button" ng-click="vm.getFilterData()">{{'site_location_modal_filter_btn' | translate}}</button>
+									</div>
 								</div>
-								<select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.tag.model" ng-options="res.name for res in vm.filter.tag.options track by res.id" data-actions-box="true">
-  								</select>
-								<div class="input-group-addon">
-									<span class="input-group-text">Operation</span>
-								</div>
-								<select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.operation.model" ng-options="res.name for res in vm.filter.operation.options track by res.id" data-actions-box="true">
-  								</select>
 							</div>
 							<div class="btn-group pull-right">
-								<button class="btn btn-secondary waves-effect waves-dark" type="button">Reset</button>
-								<button class="btn btn-primary waves-effect waves-dark" type="button" ng-click="vm.getFilterData()">{{'site_location_modal_filter_btn' | translate}}</button>
+
 							</div>
 						</div>
 				 		<!-- <button type="button" class="btn btn-secondary" ng-click="vm.empty()">empty</button>

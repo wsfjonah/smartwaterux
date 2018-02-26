@@ -103,6 +103,11 @@
  ============================================================== */
 
 @media(max-width:767px) {
+    .filter-col{
+        padding-right: 15px!important;
+        padding-left: 15px!important;
+        margin-bottom: 5px;
+    }
     .page-titles{
         margin: 0 120px 20px 75px;
         padding:0;

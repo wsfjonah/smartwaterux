@@ -10,7 +10,8 @@
 *	- with paging (infinite scroll)
 *	- view details
 *	- filtering - enddate, duration, confidence, tags
-*	- If filtering enddate is today date, then assign -1 instead
+*	- If filtering enddate is today date, then assign -1 instead - /api/tsevent/search/-1{end}/432000000{duration}/
+*	- filter duration formula - (1d) 24x3600x1000 - /api/tsevent/search/-1/432000000{duration}/
 *
 *	- degree status
 *	(low - green), (low-medium - yellow), (medium - orange), (high - red)
