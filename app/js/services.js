@@ -188,10 +188,10 @@
 			});
 		};
 
-		this.eventMonitorApi = function(id, time){
+		this.eventMonitorApi = function(res){
 			return $http({
 				method: 'GET',
-				url: __env.eventDurationUrl+"/"+id+"/"+time,
+				url: __env.eventDurationUrl+"/"+res.end+"/"+res.duration+res.filter,
 				headers: headers
 			});
 		};

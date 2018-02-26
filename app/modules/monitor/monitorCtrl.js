@@ -23,25 +23,31 @@
 	monitor.controller('monitorController', function monitorController ($scope, apiService, $window, $translate, $interval, modalService) {
 		var vm = this;
 		vm.timer = 30000; //30 seconds
-		vm.duration = 100000000000;
-		vm.monitor = {};
+		vm.duration = 2592000000; //10000000000 - 115days - 2592000000 - 30days
+		vm.monitor = [];
+		vm.monitorPage = {
+			limitTo: 500,
+			max: 0,
+			button: false
+		};
 		vm.isTimer = true;
 		vm.tabMode = "monitor";
 		vm.invest = {
 			paging: "-1",
 			busy: false,
-			results: []
+			results: [],
+			isFilter: false
 		};
 		vm.filter = {
 			tag:{
 				model: null,
 				options:[
 					{
-						id: 'valve',
-						name: 'Valve'
+						id: 'valve_open',
+						name: 'Valve Open'
 					},{
-						id: 'burst',
-						name: 'Burst'
+						id: 'valve_close',
+						name: 'Valve Close'
 					}
 				]
 			},
@@ -52,8 +58,8 @@
 						id: 'auto',
 						name: 'Auto'
 					},{
-						id: 'adjusted',
-						name: 'Adjusted'
+						id: 'manual',
+						name: 'Manual'
 					}
 				]
 			},
@@ -61,10 +67,10 @@
 				model: null,
 				options:[
 					{
-						id: '1d',
+						id: 1,
 						name: 'Last 1 Day'
 					},{
-						id: '2d',
+						id: 2,
 						name: 'Last 2 Days'
 					}
 				]
@@ -87,13 +93,36 @@
 			}
 		};
 
+		vm.loadmoreMonitor = function(){
+			if(vm.monitorPage.limitTo < vm.monitorPage.max){
+				vm.monitorPage.limitTo = vm.monitorPage.limitTo+500;
+				vm.monitorPage.button = true;
+			}else{
+				vm.monitorPage.button = false;
+			}
+		};
+
+		vm.showFilterMonitor = function(){
+			vm.invest.isFilter = true;
+			loadInvestigateEvent(true);
+		};
+
 		vm.getFilterData = function(){
+			var end = moment($("#date_filter_monitor").data('daterangepicker').startDate);
+			var isToday = moment(end).isSame(moment(), 'day');
+			var duration = parseInt(vm.filter.duration.model.id)*24*3600*1000;//(1d) 24x3600x1000
 			var res = {
-				tag: vm.filter.tag.model,
-				duration: vm.filter.duration.model,
-				operation: vm.filter.operation.model,
-				end: moment($("#date_filter_monitor").data('daterangepicker').startDate).format('x')
+				tag: [],
+				duration: duration,
+				operation: [],
+				end: (isToday) ? "-1" : end.format('x')
 			};
+			angular.forEach(vm.filter.operation.model, function(v){
+				res.operation.push(v.id);
+			});
+			angular.forEach(vm.filter.tag.model, function(v){
+				res.tag.push(v.id);
+			});
 			console.log(res);
 			return res;
 		};
@@ -114,22 +143,7 @@
 				return;
 			}
 			vm.invest.busy = true;
-			console.log('#paging : '+vm.invest.paging);
-			apiService.eventMonitorApi(vm.invest.paging, vm.duration).then(function(response){
-				var objKey = {};
-				for(var key in response.data.event){
-					objKey = response.data.event[key];
-					objKey.key = key;
-					vm.invest.results.push(objKey);
-				}
-				vm.invest.paging = (angular.isDefined(response.data.oldest)) ? response.data.oldest : null;
-				vm.invest.busy = false;
-				if(vm.isObjectEmpty(response.data.event)){
-					console.log('#STOP');
-					vm.invest.busy = true;
-				}
-				hidePace();
-			});
+			loadInvestigateEvent();
 		};
 
 		vm.switchMode = function(mode){
@@ -180,11 +194,64 @@
 		}
 		function loadAnyEvent(){
 			if(vm.tabMode==="monitor" && vm.isTimer){ //only monitor mode need to refresh the data
-				apiService.eventMonitorApi('-1', vm.duration).then(function(response){
-					vm.monitor = response.data.event;
+				vm.isTimer = false;
+				var params = {
+					end: "-1", 
+					duration: vm.duration,
+					filter: ""
+				};
+				apiService.eventMonitorApi(params).then(function(response){
+					var obj = {};
+					vm.monitor.length = 0;
+					angular.forEach(response.data.event, function(v, key){
+						obj = v;
+						obj.key = key
+						vm.monitor.push(obj);
+					})
 					hidePace();
+					if(vm.monitor.length){
+						vm.monitorPage.button = true;
+					}
+					vm.monitorPage.max = vm.monitor.length;
+					vm.monitorPage.limitTo = 500;
+					vm.isTimer = true;
 				});
 			}
+		}
+		function loadInvestigateEvent(init){
+			var getData = vm.getFilterData();
+			var params = {end: vm.invest.paging, duration: vm.duration, filter: ""};
+			if(vm.invest.isFilter){
+				params = {
+					end: (angular.isDefined(init)) ? getData.end : vm.invest.paging,
+					duration: getData.duration,
+					filter: ""
+				}
+				delete getData.end;
+				delete getData.duration;
+				params.filter = "/?filter="+encodeURIComponent(JSON.stringify(getData))
+				vm.invest.isFilter = true;
+			}
+			console.log(params);
+			apiService.eventMonitorApi(params).then(function(response){
+				var objKey = {};
+				if(angular.isDefined(init)){
+					vm.invest.results.length = 0;
+				}
+				console.log('total : '+Object.keys(response.data.event).length);
+				for(var key in response.data.event){
+					objKey = response.data.event[key];
+					objKey.key = key;
+					vm.invest.results.push(objKey);
+				}
+				vm.invest.paging = (angular.isDefined(response.data.oldest)) ? response.data.oldest : null;
+				vm.invest.busy = false;
+				if(vm.isObjectEmpty(response.data.event)){
+					console.log('#STOP');
+					vm.invest.busy = true;
+				}
+				hidePace();
+			});
 		}
 	});
 })();
