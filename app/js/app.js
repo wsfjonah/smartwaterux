@@ -96,6 +96,7 @@ app.controller('layoutCtrl', function layoutCtrl ($scope, $translate, authServic
 	};
 	$rootScope.$on('$translateChangeSuccess', function(event, data) {
 		$rootScope.lang = data.language;
+		moment.locale(data.language);
 		vm.currLang = vm.lang_trans[data.language];//vm.flag_img[data.language];
 	});
 

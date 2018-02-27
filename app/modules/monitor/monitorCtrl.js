@@ -23,7 +23,7 @@
 	monitor.controller('monitorController', function monitorController ($scope, apiService, $window, $translate, $interval, modalService) {
 		var vm = this;
 		vm.timer = 30000; //30 seconds
-		vm.duration = 2592000000; //10000000000 - 115days - 2592000000 - 30days
+		vm.duration = 86400000; //10000000000 - 115days - 86400000 - 1day
 		vm.monitor = [];
 		vm.monitorPage = {
 			limitTo: 500,
@@ -44,10 +44,19 @@
 				options:[
 					{
 						id: 'valve_open',
-						name: 'Valve Open'
+						name: $translate.instant('site_monitor_tag_opt_valve_open')
 					},{
 						id: 'valve_close',
-						name: 'Valve Close'
+						name: $translate.instant('site_monitor_tag_opt_valve_close')
+					},{
+						id: 'burst',
+						name: $translate.instant('site_monitor_tag_opt_burst')
+					},{
+						id: 'hammer',
+						name: $translate.instant('site_monitor_tag_opt_hammer')
+					},{
+						id: 'data_error',
+						name: $translate.instant('site_monitor_tag_opt_data_error')
 					}
 				]
 			},
@@ -56,10 +65,13 @@
 				options:[
 					{
 						id: 'auto',
-						name: 'Auto'
+						name: $translate.instant('site_monitor_operation_opt_auto')
 					},{
 						id: 'manual',
-						name: 'Manual'
+						name: $translate.instant('site_monitor_operation_opt_manual')
+					},{
+						id: 'adjusted',
+						name: $translate.instant('site_monitor_operation_opt_adjusted')
 					}
 				]
 			},
@@ -68,10 +80,16 @@
 				options:[
 					{
 						id: 1,
-						name: 'Last 1 Day'
+						name: $translate.instant('site_monitor_duration_opt_1d')
 					},{
 						id: 2,
-						name: 'Last 2 Days'
+						name: $translate.instant('site_monitor_duration_opt_2d')
+					},{
+						id: 5,
+						name: $translate.instant('site_monitor_duration_opt_5d')
+					},{
+						id: 7,
+						name: $translate.instant('site_monitor_duration_opt_7d')
 					}
 				]
 			}
@@ -205,11 +223,11 @@
 					vm.monitor.length = 0;
 					angular.forEach(response.data.event, function(v, key){
 						obj = v;
-						obj.key = key
+						obj.key = key;
 						vm.monitor.push(obj);
 					})
 					hidePace();
-					if(vm.monitor.length){
+					if(vm.monitor.length>500){
 						vm.monitorPage.button = true;
 					}
 					vm.monitorPage.max = vm.monitor.length;
