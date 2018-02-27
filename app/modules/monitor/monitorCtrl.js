@@ -92,10 +92,18 @@
 						name: $translate.instant('site_monitor_duration_opt_7d')
 					}
 				]
+			},
+			confidence:{
+				model: null,
+				options: {
+					min: 1,
+					max: 100
+				}
 			}
 		};
 		vm.filter.duration.model = vm.filter.duration.options[0];
 		vm.filter.tag.model = vm.filter.tag.options;
+		vm.filter.confidence.model = 50;
 		vm.filter.operation.model = vm.filter.operation.options;
     		var start = moment();
 		vm.datePickerDate = {
@@ -133,7 +141,8 @@
 				tag: [],
 				duration: duration,
 				operation: [],
-				end: (isToday) ? "-1" : end.format('x')
+				end: (isToday) ? "-1" : end.format('x'),
+				confidence: vm.filter.confidence.model
 			};
 			angular.forEach(vm.filter.operation.model, function(v){
 				res.operation.push(v.id);

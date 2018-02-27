@@ -108,5 +108,6 @@
 	"site_monitor_show_more" : "Show more",
 	"site_monitor_filter_tag" : "Tag",
 	"site_monitor_filter_operation" : "Operation",
+	"site_monitor_filter_confidence" : "Confidence",
 	"site_monitor_info" : "Info"
 }

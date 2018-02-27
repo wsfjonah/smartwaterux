@@ -62,7 +62,7 @@
 							</div>
 							<div class="m-b-5">
 								<div class="row">
-									<div class="col-md-5 p-r-0 filter-col">
+									<div class="col-md-6 filter-col" style="padding-right:4px">
 										<div class="input-group">
 											<div class="input-group-addon">
 												<span class="input-group-text">{{ "site_monitor_filter_tag" | translate }}</span>
@@ -71,7 +71,7 @@
 			  								</select>
 										</div>
 									</div>
-									<div class="col-md-5 p-r-0 p-l-0 filter-col">
+									<div class="col-md-6 p-l-0 filter-col">
 										<div class="input-group">
 											<div class="input-group-addon">
 												<span class="input-group-text">{{ "site_monitor_filter_operation" | translate }}</span>
@@ -80,14 +80,22 @@
 			  								</select>
 										</div>
 									</div>
-									<div class="col-md-2 p-l-0 filter-col">
-										<button class="btn btn-primary btn-block waves-effect waves-dark" type="button" ng-click="vm.showFilterMonitor()">{{'site_location_modal_filter_btn' | translate}}</button>
-									</div>
 								</div>
 							</div>
-							<div class="btn-group pull-right">
-
-							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-group">
+										<div class="input-group-addon">
+											<span class="input-group-text">{{ "site_monitor_filter_confidence" | translate }}</span>
+										</div>
+										<md-slider class="slider md-primary" flex md-discrete ng-model="vm.filter.confidence.model" step="{{vm.filter.confidence.options.min}}" min="{{vm.filter.confidence.options.min}}" max="{{vm.filter.confidence.options.max}}" aria-label="confidence">
+					      		</md-slider>
+					      		<span class="input-group-btn">
+					      			<button class="btn btn-primary btn-block waves-effect waves-dark" type="button" ng-click="vm.showFilterMonitor()">{{'site_location_modal_filter_btn' | translate}}</button>
+					      		</span>
+									</div>
+								</div>
+					    </div>
 						</div>
 				 		<!-- <button type="button" class="btn btn-secondary" ng-click="vm.empty()">empty</button>
 				 			<button type="button" class="btn btn-secondary" ng-click="vm.restart()">restart</button> -->

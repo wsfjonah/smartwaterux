@@ -217,6 +217,26 @@
 	.btn-primary{
 		padding: 10px 15px;
 	}
+	.slider{
+		border:1px solid #ddd;
+		margin:0;
+		height: 42px;
+		.md-thumb-container{
+			z-index: 10;
+		}
+		.md-track-container{
+			top:19px;
+		}
+		.md-thumb{
+			top:11px;
+		}
+		.md-sign{
+			top:-19px;
+		}
+	}
+	.md-slider-wrapper{
+		padding: 0 30px;
+	}
 }
 .monitoring{
 	.row-event{
