@@ -4,6 +4,8 @@
 	"site_login_error_noted" : "明白",
 	"site_login_error" : "登入错误",
 	"site_login_info_invalid" : "用户名或密码无效，请重试",
+	"site_server_notice" : "注意",
+	"site_server_error" : "服务器出现问题，请稍后重试",
 	"site_menu_label" : "菜单",
 	"site_menu_main" : "信息面板",
 	"site_menu_monitor" : "监控",

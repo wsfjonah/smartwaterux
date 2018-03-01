@@ -4,6 +4,8 @@
 	"site_login_error_noted" : "GOT IT",
 	"site_login_error" : "Login Error",
 	"site_login_info_invalid" : "Username or Password invalid, Please try again",
+	"site_server_notice" : "Notice",
+	"site_server_error" : "Something went wrong on the server, please try again later",
 	"site_menu_label" : "Menu",
 	"site_menu_main" : "Dashboard",
 	"site_menu_monitor" : "Monitoring",

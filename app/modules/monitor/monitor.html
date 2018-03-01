@@ -15,8 +15,9 @@
 		<div class="card">
 			<div class="card-body p-0">
 				<ul class="nav nav-tabs customtab" role="tablist">
-					<li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#monitor" role="tab" ng-click="vm.switchMode('monitor')"><span class="hidden-sm-up"><i class="ti-world"></i></span> <span class="hidden-xs-down">{{ "site_monitor_tab_monitor" | translate }}</span></a></li>
-					<li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#investigate" role="tab" ng-click="vm.switchMode('investigate')"><span class="hidden-sm-up"><i class="ti-zoom-in"></i></span> <span class="hidden-xs-down">{{ "site_monitor_tab_investigate" | translate }}</span></a></li>
+					<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#monitor" role="tab" ng-click="vm.switchMode('monitor')"><span class="hidden-sm-up"><i class="ti-world"></i></span> <span class="hidden-xs-down">{{ "site_monitor_tab_monitor" | translate }}</span></a></li>
+					<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#investigate" role="tab" ng-click="vm.switchMode('investigate')"><span class="hidden-sm-up"><i class="ti-zoom-in"></i></span> <span class="hidden-xs-down">{{ "site_monitor_tab_investigate" | translate }}</span></a></li>
+					<li class="monitor-filter-toggle" ng-if="vm.tabMode == 'investigate'"><button type="button" class="btn btn-secondary" ng-click="vm.toggleFilter()" ng-class="{active: vm.filterOn}"><i class="ti-filter"></i></button></li>
 				</ul>
 				<div class="tab-content p-0">
 					<div class="tab-pane active p-20" id="monitor" role="tabpanel">
@@ -25,21 +26,16 @@
 							<div ng-if="vm.isObjectEmpty(vm.monitor)" class="text-center p-20">
 								<i class="ti-info-alt newline font-30 m-b-10"></i>{{ "site_monitor_no_result" | translate }}
 							</div>
-							<div class="row-event" ng-repeat="item in vm.monitor | limitTo: vm.monitorPage.limitTo">
+							<div class="row-event" ng-repeat="item in vm.monitor | limitTo: vm.monitorPage.limitTo" ng-click="vm.viewEventDetails(item.key)">
 								<div class="row">
-									<div class="col-md-5 clearfix">
+									<div class="col-md-12 clearfix">
 										<span class="event-badge {{ item.degree }}">
 											<i class="ti-light-bulb"></i>
 											<div class="notify" ng-show="item.degree == 'high'"><span class="heartbit"></span><span class="point"></span></div>
 										</span>
 										<div class="event-info">
-											<div class="name">{{ item.desc }}<span class="datetime text-muted font-11 m-l-10"><i class="ti-time"></i> {{ item.timestamp | fromNow}}</span></div>
-											<div class="address text-muted font-12"><i class="ti-location-pin"></i> {{ item.location }}</div>
-										</div>
-									</div>
-									<div class="col-md-7">
-										<div class="btn-group pull-right">
-											<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="{{ 'site_monitor_info' | translate }}" ng-click="vm.viewEventDetails(item.key)"><i class="ti-info-alt"></i></button>
+											<div class="name">{{ item.desc }}<span class="datetime text-muted font-11 m-l-10"><i class="ti-time"></i> {{ item.timestamp | date: 'dd-MM-yyyy HH:mm:ss'}}</span></div>
+											<div class="address text-muted font-12"><i class="ti-location-pin"></i><span>{{ item.location }}</span><span>{{ item.confidence }}</span><span>{{ item.operation }}</span></div>
 										</div>
 									</div>
 								</div>
@@ -52,7 +48,7 @@
 					</div>
 					<div class="tab-pane" id="investigate" role="tabpanel">
 						<!-- content -->
-						<div class="monitor-filter clearfix">
+						<div class="monitor-filter clearfix" ng-show="vm.filterOn">
 							<div class="input-group m-b-5">
 								<input date-range-picker class="form-control date-picker" type="text" ng-model="vm.datePickerDate.date" options="vm.datePickerDate.options" readonly="true" placeholder="Auto" id="date_filter_monitor" />
 								<span class="input-group-btn">
@@ -97,34 +93,27 @@
 								</div>
 					    </div>
 						</div>
-				 		<!-- <button type="button" class="btn btn-secondary" ng-click="vm.empty()">empty</button>
-				 			<button type="button" class="btn btn-secondary" ng-click="vm.restart()">restart</button> -->
-				 			<div ng-if="vm.invest.results.length <= 0" class="text-center p-20">
-				 				<i class="ti-info-alt newline font-30 m-b-10"></i>{{ "site_monitor_no_result" | translate }}
-				 			</div>
-				 			<div infinite-scroll='vm.nextPage()' infinite-scroll-disabled='vm.investigate.busy' infinite-scroll-distance='2' class="monitoring p-20" id="investigate_container">
-				 				<div class="row-event" ng-repeat="item in vm.invest.results">
-				 					<div class="row">
-				 						<div class="col-md-5 clearfix">
-				 							<span class="event-badge {{ item.degree }}">
-				 								<i class="ti-light-bulb"></i>
-				 								<div class="notify" ng-show="item.degree == 'high'"><span class="heartbit"></span><span class="point"></span></div>
-				 							</span>
-				 							<div class="event-info">
-				 								<div class="name">{{ item.desc }}<span class="datetime text-muted font-11 m-l-10"><i class="ti-time"></i> {{ item.timestamp | fromNow}}</span></div>
-				 								<div class="address text-muted font-12"><i class="ti-location-pin"></i> {{ item.location }}</div>
-				 							</div>
-				 						</div>
-				 						<div class="col-md-7">
-				 							<div class="btn-group pull-right">
-				 								<button type="button" class="btn btn-secondary" data-toggle="tooltip" title="{{ 'site_monitor_info' | translate }}"  ng-click="vm.viewEventDetails(item.key)"><i class="ti-info-alt"></i></button>
-				 							</div>
-				 						</div>
-				 					</div>
-				 				</div>
-				 				<div ng-show='vm.investigate.busy'></div>
-				 			</div>
-				 			<!-- //END content -->
+			 			<div ng-if="vm.invest.results.length <= 0" class="text-center p-40">
+			 				<i class="ti-info-alt newline font-30 m-b-10"></i>{{ "site_monitor_no_result" | translate }}
+			 			</div>
+			 			<div infinite-scroll='vm.nextPage()' infinite-scroll-disabled='vm.investigate.busy' infinite-scroll-distance='2' class="monitoring" ng-class="{'p-20': vm.invest.results.length > 0}" id="investigate_container">
+			 				<div class="row-event" ng-repeat="item in vm.invest.results" ng-click="vm.viewEventDetails(item.key)">
+			 					<div class="row">
+			 						<div class="col-md-12 clearfix">
+			 							<span class="event-badge {{ item.degree }}">
+			 								<i class="ti-light-bulb"></i>
+			 								<div class="notify" ng-show="item.degree == 'high'"><span class="heartbit"></span><span class="point"></span></div>
+			 							</span>
+			 							<div class="event-info">
+			 								<div class="name">{{ item.desc }}<span class="datetime text-muted font-11 m-l-10"><i class="ti-time"></i> {{ item.timestamp | date: 'dd-MM-yyyy HH:mm:ss'}}</span></div>
+			 								<div class="address text-muted font-12"><i class="ti-location-pin"></i><span>{{ item.location }}</span><span>{{ item.confidence }}</span><span>{{ item.operation }}</span></div>
+			 							</div>
+			 						</div>
+			 					</div>
+			 				</div>
+			 				<div ng-show='vm.investigate.busy'></div>
+			 			</div>
+			 			<!-- //END content -->
 				 		</div>
 				 	</div>
 				 </div>

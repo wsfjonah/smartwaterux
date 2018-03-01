@@ -32,6 +32,7 @@
 		};
 		vm.isTimer = true;
 		vm.tabMode = "monitor";
+		vm.filterOn = false;
 		vm.invest = {
 			paging: "-1",
 			busy: false,
@@ -117,6 +118,10 @@
 				timePicker: true,
 				maxDate: new Date()
 			}
+		};
+
+		vm.toggleFilter = function(){
+			vm.filterOn = (vm.filterOn) ? false : true;
 		};
 
 		vm.loadmoreMonitor = function(){
@@ -235,6 +240,7 @@
 						obj.key = key;
 						vm.monitor.push(obj);
 					})
+					console.log(vm.monitor);
 					hidePace();
 					if(vm.monitor.length>500){
 						vm.monitorPage.button = true;

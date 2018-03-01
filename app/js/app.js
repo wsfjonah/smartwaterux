@@ -147,7 +147,7 @@ app.config(function ($httpProvider, $translateProvider, $qProvider) {
 
 });
 
-app.factory('authInterceptorService', ['$q', '$injector','$location', 'localStorageService', function ($q, $injector,$location, localStorageService) {
+app.factory('authInterceptorService', ['$q', '$injector','$location', 'localStorageService', function ($q, $injector, $location, localStorageService, $translate) {
 	var authInterceptorServiceFactory = {};
 	var _request = function (config) {
 		config.headers = config.headers || {};
@@ -162,10 +162,19 @@ app.factory('authInterceptorService', ['$q', '$injector','$location', 'localStor
 	};
 	var _responseError = function (rejection) {
 		console.log('##rejection');
-		if (rejection.status === 401 || rejection.status === -1 && rejection.xhrStatus!=="abort") {//xhrStatus trick
+		console.log(rejection);
+		//rejection.status === -1 && rejection.xhrStatus!=="abort"
+		if (rejection.status === 401) {//xhrStatus trick
 			var authService = $injector.get('authService');
 			authService.logout();
 			$location.path('/login');
+		}else{
+			var dialogService = $injector.get('dialogService');
+			var $translate = $injector.get('$translate');
+			console.log($translate);
+			console.log($dialogService);
+			console.log('test232323');
+			dialogService.alert(null,{title: $translate.instant('site_server_notice'), content: $translate.instant('site_server_error')});
 		}
 		return $q.reject(rejection);
 	};

@@ -238,10 +238,38 @@
 		padding: 0 30px;
 	}
 }
+.nav-tabs{
+	position: relative;
+}
+.monitor-filter-toggle{
+	position: absolute;
+	right:10px;
+	top:8px;
+}
 .monitoring{
 	.row-event{
 		border-bottom: 1px solid $border;
 		padding:10px;
+	}
+	.row-event:hover{
+		background-color:#f8f8f8;
+		cursor: pointer;
+	}
+	.address{
+		span{
+			margin-right:5px;
+		}
+		span:after{
+			content:" · ";
+			margin-left:5px;
+		}
+		span:last-child:after{
+			content: "";
+			margin:0;
+		}
+		span:last-child{
+			margin-right:0;
+		}
 	}
 	.row-event:last-child{
 		border-bottom:none;
