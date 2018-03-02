@@ -171,9 +171,6 @@ app.factory('authInterceptorService', ['$q', '$injector','$location', 'localStor
 		}else{
 			var dialogService = $injector.get('dialogService');
 			var $translate = $injector.get('$translate');
-			console.log($translate);
-			console.log($dialogService);
-			console.log('test232323');
 			dialogService.alert(null,{title: $translate.instant('site_server_notice'), content: $translate.instant('site_server_error')});
 		}
 		return $q.reject(rejection);
