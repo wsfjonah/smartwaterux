@@ -1371,6 +1371,23 @@
 			// add marker to the map
 			map.addOverlay(markerItem);
 			markerItem.setLabel("");
+
+
+			/* info window
+			*/
+			if (!row.title && !row.content) {
+				return;
+			}
+			//info window msg
+			var msg = '<p>'+row.name+'</p><p>'+row.content+'</p>';
+			var infoWindowItem = new BMap.InfoWindow(msg, {
+				enableMessage: true,
+				width : 350
+			});
+
+			markerItem.addEventListener('click', function(e){
+				map.openInfoWindow(infoWindowItem, new BMap.Point(row.longitude, row.latitude));
+			});
 		});
 	}
 

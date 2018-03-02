@@ -234,7 +234,27 @@
 			apiService.networkPumpApi().then(function(response){
 				angular.forEach(response.data, function(row){
 					if(angular.isDefined(row.location) && row.location.length){
-						vm.siteMapOptions.pumps.push(row.location[0]);
+						var obj = row.location[0];
+						obj.name = (angular.isDefined(row.name)) ? row.name : "Info";
+						obj.options = row.options;
+						obj.content = '<div class="overflow:auto"><table class="table table-sm table-striped table-bordered">';
+							obj.content += '<tbody>';
+								obj.content += '<tr>';
+									obj.content += '<td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_id')+':</td>';
+									obj.content += '<td>'+row.options.junctionid+'</td>';
+								obj.content += '</tr>';
+								obj.content += '<tr>';
+									obj.content += '<td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_subzone')+':</td>';
+									obj.content += '<td>'+row.options.subzone+'</td>';
+								obj.content += '</tr>';
+								obj.content += '<tr>';
+									obj.content += '<td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_layer')+':</td>';
+									obj.content += '<td>'+row.options.layer+'</td>';
+								obj.content += '</tr>';
+							obj.content += '</tbody>';
+						obj.content += '</table>';
+						obj.content += '<div>';
+						vm.siteMapOptions.pumps.push(obj);
 						vm.siteMapOptions.menus.pumps.results.push(row.location[0].name);
 					}
 				});
