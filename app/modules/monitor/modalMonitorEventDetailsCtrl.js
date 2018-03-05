@@ -1,4 +1,16 @@
 /* global angular, dialogService, CanvasJS */
+/* requirements:
+*	Event Popup
+*	Showing Event Graph - event details API
+*	Showing Site Table - neighbour api
+*		- display info with "add to plot"
+		- added/append to existing event details data
+*	Showing Map when open popup by using event details - localization (pipe, sensor)
+*		- just display without any action
+		- toggle by button
+*	Prev 5 Mins & Next 5 Mins - to call highrate api api/tsda/batchquery/highrate
+*	https://101.132.100.22/api/tsda/batchquery?token=8905c0ac-1d24-4bb4-9767-dfb3c6ebd784
+*/
 (function() {
 	'use strict';
 	var modalMonitorEventDetails = angular.module('modal.monitor.event',[]);
