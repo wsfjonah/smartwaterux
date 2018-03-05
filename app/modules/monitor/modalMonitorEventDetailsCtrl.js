@@ -14,7 +14,7 @@
 (function() {
 	'use strict';
 	var modalMonitorEventDetails = angular.module('modal.monitor.event',[]);
-	modalMonitorEventDetails.controller('modalMonitorEventDetailsCtrl', function ($scope, $uibModalInstance, items, apiService, $translate) {
+	modalMonitorEventDetails.controller('modalMonitorEventDetailsCtrl', function ($scope, $uibModalInstance, items, apiService, $translate, modalService) {
 		var vm = this;
 		vm.items = items;
 		vm.selected = {
@@ -31,7 +31,8 @@
 		vm.header = $translate.instant('site_location_event_title”');
 		vm.events = {
 			line: [],
-			column: []
+			column: [],
+			info: {}
 		};
 		$uibModalInstance.rendered.then(function(){
 			vm.chartEvent = new CanvasJS.Chart("chartEventContainer", {
@@ -90,6 +91,10 @@
 			getEventDetailsData(vm.items.eventId);
 		});
 
+		vm.viewMap= function(){
+			modalService.open(__env.modalMonitorEventMap, 'modalInfoMap as vm', {name:"Test", longitude: 121.81920253300011, latitude: 30.88555332900003});
+		};
+
 		vm.chartToolbarOptions = {
 			chartElem: 'chartEventContainer',
 			min: 0,
@@ -101,7 +106,10 @@
 			if(angular.isDefined(eventId)){
 				apiService.eventDetailsApi(eventId).then(function(response){
 					Pace.stop();
+					console.log('#event details');
+					console.log(response.data);
 					if(angular.isDefined(response.data.tsda.data)){
+						vm.events.info = response.data.event;
 						vm.header = response.data.tsda.meta.name+" "+response.data.tsda.meta.unit;
 						angular.forEach(response.data.tsda.data, function(value, key){
 							vm.events.line.push({x: parseFloat(key), y: parseFloat(value)});

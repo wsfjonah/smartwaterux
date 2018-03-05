@@ -206,6 +206,33 @@
 /*******************
  Monitoring
 *******************/
+.monitor-event{
+	.info{
+		background-color:#f8f8f8;
+		padding: 10px 20px;
+		border-bottom:1px solid #ddd;
+		position: relative;
+		button{
+			position: absolute;
+			right:5px;
+			top:4px;
+		}
+	}
+	.info span{
+		margin-right:5px;
+		&:after{
+			content:" · ";
+			margin-left:5px;
+		}
+		&:last-child:after{
+			content: "";
+			margin:0;
+		}
+		&:last-child{
+			margin-right:0;
+		}
+	}
+}
 .monitor-filter{
 	background-color:#f8f8f8;
 	border-bottom:1px solid #ddd;

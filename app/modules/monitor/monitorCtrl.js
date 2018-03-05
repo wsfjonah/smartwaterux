@@ -240,7 +240,7 @@
 						obj.key = key;
 						vm.monitor.push(obj);
 					})
-					console.log(vm.monitor);
+					//console.log(vm.monitor);
 					hidePace();
 					if(vm.monitor.length>500){
 						vm.monitorPage.button = true;

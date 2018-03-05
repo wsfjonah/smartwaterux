@@ -49,6 +49,7 @@
 	window.__env.modalHighRateUrl = window.__env.folder+'/app/modules/remote/modalHighRate.html';
 	window.__env.modalInformationTableInfo = window.__env.folder+'/app/modules/remote/modalDetails.html';
 	window.__env.modalInformationTableMap = window.__env.folder+'/app/modules/remote/modalMap.html';
+	window.__env.modalMonitorEventMap = window.__env.folder+'/app/modules/monitor/modalMap.html';
 
 	//locale folder
 	window.__env.localeFolderUrl = window.__env.folder+'/app/translations/locale-';
