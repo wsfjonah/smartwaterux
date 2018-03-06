@@ -164,6 +164,23 @@
 			});
 		};
 
+		this.batchTimeSeriesHighRateApi = function(params){
+			var defaultParams = {
+				datapoints: "",
+				resolution: "1n",
+				from: "1498875720000", //july
+				to: "1515549960000", //jan 2018
+				token: authService.getAuthentication().token
+			};
+			var userParams = $.extend(true, defaultParams, params);
+			return $http({
+				method: 'POST',
+				url: __env.batchTimeSeriesUrl+"/highrate",
+				data: $httpParamSerializerJQLike(userParams),
+				headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+			});
+		};
+
 		this.eventAnyApi = function(){
 			return $http({
 				method: 'GET',

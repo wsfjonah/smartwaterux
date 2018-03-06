@@ -165,12 +165,12 @@
 		function getEventDetailsData(eventId){
 			if(angular.isDefined(eventId)){
 				apiService.eventDetailsApi(eventId).then(function(response){
-					Pace.stop();
 					if(angular.isDefined(response.data.tsda.data) && angular.isDefined(response.data.event)){
 						vm.events.start = moment(response.data.event.ts).subtract(1, 'minute').format('x');
 						vm.events.end = moment(response.data.event.ts).add(1, 'minute').format('x');
 						vm.events.range.start = vm.events.start;
 						vm.events.range.end = vm.events.end;
+						Pace.stop();
 						getSiteData(response.data.event.siteid);
 						vm.events.info = response.data.event;
 						vm.header = response.data.tsda.meta.name+" "+response.data.tsda.meta.unit;
@@ -198,21 +198,27 @@
 		}
 		//site neighbor table
 		function getSiteData(siteId){
+			Pace.stop();
 			if(angular.isDefined(siteId)){
-				apiService.monitorSiteNeighbor(siteId).then(function(response){
-					if(angular.isDefined(response.data)){
-						angular.forEach(response.data, function(value){
-							var obj = value;
-							obj.isPlot = false;
-							vm.events.neighbors.push(obj);
-						});
-					}
+				Pace.stop();
+				Pace.ignore(function(){
+					console.log('loading...');
+					apiService.monitorSiteNeighbor(siteId).then(function(response){
+						Pace.stop();
+						if(angular.isDefined(response.data)){
+							angular.forEach(response.data, function(value){
+								var obj = value;
+								obj.isPlot = false;
+								vm.events.neighbors.push(obj);
+							});
+						}
+					});
 				});
 			}
 		}
 
 		function getBulkHighRateData(params){
-			apiService.batchTimeSeriesApi(params).then(function(response){
+			apiService.batchTimeSeriesHighRateApi(params).then(function(response){
 				if(angular.isDefined(response.data) && response.data.length){
 					//getting new data and append to chart
 					var isUpdate = false;
