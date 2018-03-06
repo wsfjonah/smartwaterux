@@ -111,5 +111,18 @@
 	"site_monitor_filter_tag" : "标签",
 	"site_monitor_filter_operation" : "行动",
 	"site_monitor_filter_confidence" : "置信度",
-	"site_monitor_info" : "信息"
+	"site_monitor_info" : "信息",
+	"site_monitor_event_table_desc" : "描述",
+	"site_monitor_event_table_datetime" : "日期与时间",
+	"site_monitor_event_table_confidence" : "置信度",
+	"site_monitor_event_table_operation" : "行动",
+	"site_monitor_event_table_name" : "名称",
+	"site_monitor_event_table_address" : "地址",
+	"site_monitor_event_table_status" : "状态",
+	"site_monitor_event_table_action" : "行动",
+	"site_monitor_event_add_plot" : "添加数据",
+	"site_monitor_event_remove_plot" : "删除数据",
+	"site_monitor_event_prev_min" : "前5分钟",
+	"site_monitor_event_next_min" : "下5分钟",
+	"site_monitor_event_map_header" : "活动地图"
 }

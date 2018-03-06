@@ -21,7 +21,6 @@
 			item: vm.items[0]
 		};
 		console.log(vm.items);
-		//console.log(vm.items);
 		vm.ok = function () {
 			$uibModalInstance.close(vm.selected.item);
 		};
@@ -31,6 +30,7 @@
 		vm.header = $translate.instant('site_location_event_title”');
 		vm.events = {
 			line: [],
+			name: "",
 			column: [],
 			info: {},
 			neighbors: [],
@@ -43,14 +43,6 @@
 		};
 		vm.multiChartTimeSeries = [
 			{
-				id: vm.items.datapointid,
-				type: "line",
-				xValueType: "dateTime",
-				xValueFormatString:"YYYY MM DD HH:mm",
-				dataPoints: vm.events.line,
-				name: vm.items.name,
-				showInLegend: true
-			}, {
 				id: "default",
 				type: "column",
 				visible: true,
@@ -104,7 +96,7 @@
 		});
 
 		vm.viewMap= function(){
-			modalService.open(__env.modalMonitorEventMap, 'modalInfoMap as vm', {name:"Test", longitude: 121.81920253300011, latitude: 30.88555332900003});
+			modalService.open(__env.modalMonitorEventMap, 'modalMonitorMapCtrl as vm', vm.events.info);
 		};
 
 		//add or remove plot
@@ -174,8 +166,6 @@
 			if(angular.isDefined(eventId)){
 				apiService.eventDetailsApi(eventId).then(function(response){
 					Pace.stop();
-					console.log('#event details');
-					console.log(response.data);
 					if(angular.isDefined(response.data.tsda.data) && angular.isDefined(response.data.event)){
 						vm.events.start = moment(response.data.event.ts).subtract(1, 'minute').format('x');
 						vm.events.end = moment(response.data.event.ts).add(1, 'minute').format('x');
@@ -184,10 +174,21 @@
 						getSiteData(response.data.event.siteid);
 						vm.events.info = response.data.event;
 						vm.header = response.data.tsda.meta.name+" "+response.data.tsda.meta.unit;
+						vm.events.name = response.data.event.sitename;
+						vm.events.column.push({x: parseFloat(response.data.event.ts), y: parseFloat(response.data.event.confidence)});
+						var obj = {
+							id: vm.items.datapointid,
+							type: "line",
+							xValueType: "dateTime",
+							xValueFormatString:"YYYY MM DD HH:mm",
+							dataPoints: vm.events.line,
+							name: vm.events.name,
+							showInLegend: true
+						};
+						vm.multiChartTimeSeries.unshift(obj);
 						angular.forEach(response.data.tsda.data, function(value, key){
 							vm.events.line.push({x: parseFloat(key), y: parseFloat(value)});
 						});
-						vm.events.column.push({x: parseFloat(response.data.event.ts), y: parseFloat(response.data.event.confidence)});
 						vm.chartEvent.render();
 					}
 				});

@@ -348,7 +348,6 @@
 				onMapLoaded: '&'
 			},
 			link: function(scope, elem/*, attrs*/) {
-				console.log('hello wes');
 				var topHt = $('.topbar').outerHeight();
 				elem.css('height',$(window).height()-topHt);
 				$(window).resize(function(){
@@ -361,25 +360,24 @@
 						overviewCtrl: true,
 						enableScrollWheelZoom: true,
 						zoom: 10,
-						mapType: "networkmap",
+						mapType: "monitorMap",
 						fullScreen: false
 					};
 					var opts = angular.extend({}, default_opts, scope.options);
 					var map = createMapInstance(opts, elem, $translate);
 					var previousMarkers = [];
-					//create markers
-					//redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService, dialogService);
-					console.log(opts);
 					//watch markers
 					scope.$watch('options.markers', function (/*newValue, oldValue*/) {
 						redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService, dialogService);
 					}, true);
 					//watch pipe
-					if(angular.isDefined(opts.pipes)){
-						scope.$watch('options.pipes', function (/*newValue, oldValue*/) {
-							drawPipeArea(map, opts, scope);
-						}, true);
-					}
+					scope.$watch('options.pipes', function (/*newValue, oldValue*/) {
+						drawPipeArea(map, opts, scope);
+					}, true);
+					//watch boundary - geo location for makrer and pipes
+					scope.$watch('options.boundary', function(){
+						centralizeMonitorArea(map, opts, scope);
+					}, true);
 				};
 				mapApi.then(function () {
 					scope.initialize();
@@ -1704,5 +1702,14 @@
 		if(opts.mapType==="heatmap"){
 			map.setViewport(points);
 		}
+	}
+	function centralizeMonitorArea(map, opts, $scope){
+		var points = [];
+		opts.boundary.forEach(function (row) {
+			points.push(new BMap.Point(row.longitude, row.latitude));
+		});
+		setTimeout(function(){
+			map.setViewport(points);
+		},500);
 	}
 })();

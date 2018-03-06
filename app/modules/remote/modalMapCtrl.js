@@ -2,8 +2,8 @@
 (function() {
 	'use strict';
 	var modalInfoMapModule = angular.module('modal.infoMap',[]);
-	modalInfoMapModule.$inject = ['$ocLazyLoad'];
-	modalInfoMapModule.controller('modalInfoMap', function ($uibModalInstance, items, apiService, modalService, $scope, $translate, $ocLazyLoad) {
+	modalInfoMapModule.$inject = ['$ocLazyLoad','mapApi'];
+	modalInfoMapModule.controller('modalInfoMap', function ($uibModalInstance, items, apiService, modalService, $scope, $translate, $ocLazyLoad, $window, $q, mapApi) {
 		var vm = this;
 		vm.items = items;
 		vm.selected = {
@@ -14,16 +14,25 @@
 		};
 		vm.cancel = function () {
 			$uibModalInstance.dismiss('cancel');
-			console.log('cancel');
 		};
 		vm.header = vm.items.name;
 		var longitude = parseFloat(vm.items.longitude);//121.324914; //default longitude
 		var latitude = parseFloat(vm.items.latitude);//31.099573; //default latitude
 		vm.ready = function(){
-			$ocLazyLoad.load('js!https://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4').then(function(){
+			mapApi.then(function () {
 				vm.mapInit();
+			}, function () {
+				// Promise rejected
 			});
+			function loadScript() {
+				// Use global document since Angular's $document is weak
+				var script = document.createElement('script');
+				// script.src = "http://api.map.baidu.com/api?v=2.0&ak=您的密钥&callback=init";
+				script.src = 'https://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4&callback=initMap';
+				document.body.appendChild(script);
+			}
 		};
+
 		vm.siteMapOptions = {
 			center: {
 				longitude: longitude,

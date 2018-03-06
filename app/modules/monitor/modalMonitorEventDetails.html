@@ -1,17 +1,43 @@
 <div class="monitor-event">
 	<div class="modal-header">
-		<h3 class="modal-title">{{ vm.header }}</h3>
+		<h3 class="modal-title">{{ vm.events.name }}</h3>
 	</div>
 	<div class="text-muted info">
-		<span>{{ vm.events.info.desc }}</span><span>{{ vm.events.info.timestamp | date: 'dd-MM-yyyy HH:mm:ss' }}</span><span>{{ vm.events.info.confidence }}</span><span>{{ vm.events.info.operation }}</span>
-		<button type="button" class="btn btn-default" ng-click="vm.viewMap()"><i class="ti-map-alt"></i></button>
+		<table class="table table-bordered m-b-0 table-sm">
+			<thead>
+					<tr>
+						<th width="30%">{{ "site_monitor_event_table_desc" | translate }}</th>
+						<th width="25%">{{ "site_monitor_event_table_datetime" | translate }}</th>
+						<th width="25%">{{ "site_monitor_event_table_confidence" | translate }}</th>
+						<th width="20%">{{ "site_monitor_event_table_operation" | translate }}</th>
+					</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<span class="text-muted text-12">{{ vm.events.info.desc }}</span>
+					</td>
+					<td>
+						{{ vm.events.info.timestamp | date: 'dd-MM-yyyy HH:mm:ss' }}
+					</td>
+					<td>
+						{{ vm.events.info.confidence }}
+					</td>
+					<td>
+						{{ vm.events.info.operation }}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
 	</div>
 	<div class="modal-body canvas-modal">
-		<div class="text-center">
+		<div class="text-center m-b-20">
 			<div class="btn-group" role="toolbar">
-				<button type="button" class="btn btn-default" ng-click="vm.toggleTime('prev')"><i class="ti-arrow-left"></i> Previous 5 mins</button>
-				<button type="button" class="btn btn-default" ng-click="vm.toggleTime('next')">Next 5 mins <i class="ti-arrow-right"></i></button>
+				<button type="button" class="btn btn-default" ng-click="vm.toggleTime('prev')"><i class="ti-arrow-left"></i> {{ "site_monitor_event_prev_min" | translate }}</button>
+				<button type="button" class="btn btn-default" ng-click="vm.toggleTime('next')">{{ "site_monitor_event_next_min" | translate }} <i class="ti-arrow-right"></i></button>
 			</div>
+			<button type="button" class="btn btn-default pull-right" ng-click="vm.viewMap()"><i class="ti-map-alt"></i></button>
 		</div>
 		<div class="chart-x">
 			<canvas-toolbar class="toolbar" data-options="vm.chartToolbarOptions" />
@@ -22,10 +48,10 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th width="30%">Name</th>
-							<th width="45%">Address</th>
-							<th width="15%">Status</th>
-							<th width="10%">Action</th>
+							<th width="30%">{{ "site_monitor_event_table_name" | translate }}</th>
+							<th width="45%">{{ "site_monitor_event_table_address" | translate }}</th>
+							<th width="15%">{{ "site_monitor_event_table_status" | translate }}</th>
+							<th width="10%">{{ "site_monitor_event_table_action" | translate }}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -33,7 +59,7 @@
 							<td>{{ neighbor.name }}</td>
 							<td>{{ neighbor.geo_address }}</td>
 							<td>{{ neighbor.status }}</td>
-							<td><button type="button" class="btn btn-default btn-sm" ng-click="vm.actionPlot(neighbor)"><span ng-if="!neighbor.isPlot"><i class="ti-plus"></i> Add to Plot</span><span ng-if="neighbor.isPlot"><i class="ti-close"></i> Remove Plot</span></button></td>
+							<td><button type="button" class="btn btn-default btn-sm" ng-click="vm.actionPlot(neighbor)"><span ng-if="!neighbor.isPlot"><i class="ti-plus"></i> {{ "site_monitor_event_add_plot" | translate }}</span><span ng-if="neighbor.isPlot"><i class="ti-close"></i> {{ "site_monitor_event_remove_plot" | translate }}</span></button></td>
 						</tr>
 					</tbody>
 				</table>
@@ -41,6 +67,6 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-primary" ng-click="$dismiss()">Close</button>
+		<button class="btn btn-primary" ng-click="$dismiss()">{{ "site_location_modal_close_btn" | translate }}</button>
 	</div>
 </div>

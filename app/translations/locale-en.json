@@ -111,5 +111,18 @@
 	"site_monitor_filter_tag" : "Tag",
 	"site_monitor_filter_operation" : "Operation",
 	"site_monitor_filter_confidence" : "Confidence",
-	"site_monitor_info" : "Info"
+	"site_monitor_info" : "Info",
+	"site_monitor_event_table_desc" : "Description",
+	"site_monitor_event_table_datetime" : "Date &amp; Time",
+	"site_monitor_event_table_confidence" : "Confidence",
+	"site_monitor_event_table_operation" : "Operation",
+	"site_monitor_event_table_name" : "Name",
+	"site_monitor_event_table_address" : "Address",
+	"site_monitor_event_table_status" : "Status",
+	"site_monitor_event_table_action" : "Action",
+	"site_monitor_event_add_plot" : "Add to Plot",
+	"site_monitor_event_remove_plot" : "Remove Plot",
+	"site_monitor_event_prev_min" : "Previous 5 Minutes",
+	"site_monitor_event_next_min" : "Next 5 Minutes",
+	"site_monitor_event_map_header" : "Event Map"
 }
