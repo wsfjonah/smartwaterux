@@ -10,22 +10,11 @@
 		.directive('projectDropdown', projectDropdown)
 		.directive('canvasToolbar', canvasToolbar)
 		.directive('elemReady', elemReady)
-		.directive('selectWatcher', selectWatcher)
 		.service('mapApi', mapApi)
 		.service('heatmapApi', heatmapApi);
 
 	//global defined
 	var heatmapOverlay;
-
-	function selectWatcher($timeout){
-		return {
-			link: function (scope, element, attr) {
-				$timeout(function() {
-					element.selectpicker();
-				});
-			}
-		};
-	}
 
 	function canvasToolbar(){
 		return {
