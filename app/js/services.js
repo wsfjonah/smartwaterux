@@ -305,5 +305,12 @@
 				headers: headers
 			});
 		};
+		this.monitorSiteNeighbor = function(siteid){
+			return $http({
+				method: 'GET',
+				url: __env.monitorSiteNeighborUrl+siteid+'/neighbors',
+				headers: headers
+			});
+		}
 	}
 })();

@@ -3,14 +3,14 @@
 		<h3 class="modal-title">{{ vm.header }}</h3>
 	</div>
 	<div class="modal-body canvas-modal">
-		<div id="allmap"></div>
+		<xpro-monitor-map id="monitorMap" options="vm.siteMapOptions" style="width: 100%; height: 500px;display: block;"></xpro-monitor-map>
 	</div>
 	<div class="modal-footer">
 		<button class="btn btn-primary" ng-click="vm.ok()">{{'site_location_modal_close_btn' | translate}}</button>
 	</div>
 </div>
 <style>
-#allmap {
+#monitorMap {
     display: block;
     width: 100%;
     height: 300px;

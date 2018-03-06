@@ -3,14 +3,14 @@
 		<h3 class="modal-title">{{ vm.header }}</h3>
 	</div>
 	<div class="text-muted info">
-		<span>{{ vm.events.info.timestamp | date: 'dd-MM-yyyy HH:mm:ss' }}</span><span>{{ vm.events.info.confidence }}</span><span>{{ vm.events.info.operation }}</span>
+		<span>{{ vm.events.info.desc }}</span><span>{{ vm.events.info.timestamp | date: 'dd-MM-yyyy HH:mm:ss' }}</span><span>{{ vm.events.info.confidence }}</span><span>{{ vm.events.info.operation }}</span>
 		<button type="button" class="btn btn-default" ng-click="vm.viewMap()"><i class="ti-map-alt"></i></button>
 	</div>
 	<div class="modal-body canvas-modal">
 		<div class="text-center">
 			<div class="btn-group" role="toolbar">
-				<button type="button" class="btn btn-default"><i class="ti-arrow-left"></i> Previous 5 mins</button>
-				<button type="button" class="btn btn-default">Next 5 mins <i class="ti-arrow-right"></i></button>
+				<button type="button" class="btn btn-default" ng-click="vm.toggleTime('prev')"><i class="ti-arrow-left"></i> Previous 5 mins</button>
+				<button type="button" class="btn btn-default" ng-click="vm.toggleTime('next')">Next 5 mins <i class="ti-arrow-right"></i></button>
 			</div>
 		</div>
 		<div class="chart-x">
@@ -22,30 +22,18 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th width="40%">Name</th>
-							<th width="40%">Address</th>
-							<th width="10%">Status</th>
+							<th width="30%">Name</th>
+							<th width="45%">Address</th>
+							<th width="15%">Status</th>
 							<th width="10%">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td><button type="button" class="btn btn-default">Add to Plot</button></td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td><button type="button" class="btn btn-default">Add to Plot</button></td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td><button type="button" class="btn btn-default">Add to Plot</button></td>
+						<tr ng-repeat="neighbor in vm.events.neighbors">
+							<td>{{ neighbor.name }}</td>
+							<td>{{ neighbor.geo_address }}</td>
+							<td>{{ neighbor.status }}</td>
+							<td><button type="button" class="btn btn-default btn-sm" ng-click="vm.actionPlot(neighbor)"><span ng-if="!neighbor.isPlot"><i class="ti-plus"></i> Add to Plot</span><span ng-if="neighbor.isPlot"><i class="ti-close"></i> Remove Plot</span></button></td>
 						</tr>
 					</tbody>
 				</table>

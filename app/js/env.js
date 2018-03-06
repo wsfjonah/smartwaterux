@@ -42,6 +42,9 @@
 	//network pipe end details
 	window.__env.networkPipeDetailsUrl = window.__env.baseUrl+'map/geo/pipe/detail';
 
+	//monitor neighbor
+	window.__env.monitorSiteNeighborUrl = window.__env.baseUrl+'site/get/';
+
 	//modal
 	window.__env.modalTimeSeriesUrl = window.__env.folder+'/app/modules/remote/modalTimeSeries.html';
 	window.__env.modalEventDetailsUrl = window.__env.folder+'/app/modules/remote/modalEventDetails.html';

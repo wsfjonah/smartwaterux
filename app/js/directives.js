@@ -6,6 +6,7 @@
 		.directive('xproMap', xproMap)
 		.directive('xproHeatmap', xproHeatmap)
 		.directive('xproNetworkMap', xproNetworkMap)
+		.directive('xproMonitorMap', xproMonitorMap)
 		.directive('projectDropdown', projectDropdown)
 		.directive('canvasToolbar', canvasToolbar)
 		.directive('elemReady', elemReady)
@@ -320,6 +321,63 @@
 					if(angular.isDefined(opts.plotMarkers)){
 						scope.$watch('options.plotMarkers', function (/*newValue, oldValue*/) {
 							createPlotMarkerCart(map, opts, scope, $translate, modalService);
+						}, true);
+					}
+				};
+				mapApi.then(function () {
+					scope.initialize();
+				}, function () {
+					// Promise rejected
+				});
+			},
+			template: '<div ng-style="divStyle"><label ng-style="labelStyle"></label></div>'
+		};
+	}
+
+	/* monitor map
+	* updated - 4/1/2018
+	*/
+	xproMonitorMap.$inject = ['$translate','mapApi','apiService','dialogService','modalService','notify'];
+	function xproMonitorMap($translate, mapApi, apiService, dialogService, modalService, notify){
+		return{
+			restrict: 'AE',
+			replace: 'true',
+			scope:{
+				info: '@',
+				options: '=',
+				onMapLoaded: '&'
+			},
+			link: function(scope, elem/*, attrs*/) {
+				console.log('hello wes');
+				var topHt = $('.topbar').outerHeight();
+				elem.css('height',$(window).height()-topHt);
+				$(window).resize(function(){
+					elem.css('height',$(window).height()-topHt);
+				});
+				scope.initialize = function() {
+					var default_opts = {
+						navCtrl: true,
+						scaleCtrl: true,
+						overviewCtrl: true,
+						enableScrollWheelZoom: true,
+						zoom: 10,
+						mapType: "networkmap",
+						fullScreen: false
+					};
+					var opts = angular.extend({}, default_opts, scope.options);
+					var map = createMapInstance(opts, elem, $translate);
+					var previousMarkers = [];
+					//create markers
+					//redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService, dialogService);
+					console.log(opts);
+					//watch markers
+					scope.$watch('options.markers', function (/*newValue, oldValue*/) {
+						redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService, dialogService);
+					}, true);
+					//watch pipe
+					if(angular.isDefined(opts.pipes)){
+						scope.$watch('options.pipes', function (/*newValue, oldValue*/) {
+							drawPipeArea(map, opts, scope);
 						}, true);
 					}
 				};

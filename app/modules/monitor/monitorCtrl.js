@@ -185,8 +185,8 @@
 			}
 		};
 
-		vm.viewEventDetails = function(id){
-			getEventDetails(id);
+		vm.viewEventDetails = function(row){
+			getEventDetails(row);
 		};
 
 		$scope.$on("$destroy",function(){
@@ -210,9 +210,12 @@
 
 		loadAnyEvent();
 
-		function getEventDetails(eventId){
+		function getEventDetails(row){
+			console.log(row);
 			var params = {
-				eventId: eventId
+				eventId: row.key,
+				datapointid: row.datapointid,
+				name: ""
 			};
 			vm.isTimer = false;
 			modalService.open(__env.modalMonitorEventDetailsUrl, 'modalMonitorEventDetailsCtrl as vm', params, function(){
@@ -228,7 +231,7 @@
 			if(vm.tabMode==="monitor" && vm.isTimer){ //only monitor mode need to refresh the data
 				vm.isTimer = false;
 				var params = {
-					end: "-1", 
+					end: "-1",
 					duration: vm.duration,
 					filter: ""
 				};
@@ -240,7 +243,6 @@
 						obj.key = key;
 						vm.monitor.push(obj);
 					})
-					//console.log(vm.monitor);
 					hidePace();
 					if(vm.monitor.length>500){
 						vm.monitorPage.button = true;

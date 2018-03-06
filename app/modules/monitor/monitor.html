@@ -26,7 +26,7 @@
 							<div ng-if="vm.isObjectEmpty(vm.monitor)" class="text-center p-20">
 								<i class="ti-info-alt newline font-30 m-b-10"></i>{{ "site_monitor_no_result" | translate }}
 							</div>
-							<div class="row-event" ng-repeat="item in vm.monitor | limitTo: vm.monitorPage.limitTo" ng-click="vm.viewEventDetails(item.key)">
+							<div class="row-event" ng-repeat="item in vm.monitor | limitTo: vm.monitorPage.limitTo" ng-click="vm.viewEventDetails(item)">
 								<div class="row">
 									<div class="col-md-12 clearfix">
 										<span class="event-badge {{ item.degree }}">
@@ -97,7 +97,7 @@
 			 				<i class="ti-info-alt newline font-30 m-b-10"></i>{{ "site_monitor_no_result" | translate }}
 			 			</div>
 			 			<div infinite-scroll='vm.nextPage()' infinite-scroll-disabled='vm.investigate.busy' infinite-scroll-distance='2' class="monitoring" ng-class="{'p-20': vm.invest.results.length > 0}" id="investigate_container">
-			 				<div class="row-event" ng-repeat="item in vm.invest.results" ng-click="vm.viewEventDetails(item.key)">
+			 				<div class="row-event" ng-repeat="item in vm.invest.results" ng-click="vm.viewEventDetails(item)">
 			 					<div class="row">
 			 						<div class="col-md-12 clearfix">
 			 							<span class="event-badge {{ item.degree }}">
