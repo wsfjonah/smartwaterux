@@ -181,14 +181,14 @@
 							type: "line",
 							xValueType: "dateTime",
 							xValueFormatString:"YYYY MM DD HH:mm",
-							dataPoints: vm.events.line,
+							dataPoints: [],
 							name: vm.events.name,
 							showInLegend: true
 						};
-						vm.multiChartTimeSeries.unshift(obj);
 						angular.forEach(response.data.tsda.data, function(value, key){
-							vm.events.line.push({x: parseFloat(key), y: parseFloat(value)});
+							obj.dataPoints.push({x: parseFloat(key), y: parseFloat(value)});
 						});
+						vm.multiChartTimeSeries.unshift(obj);
 						vm.chartEvent.render();
 					}
 				});
