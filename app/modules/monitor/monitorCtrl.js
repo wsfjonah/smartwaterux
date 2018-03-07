@@ -20,9 +20,9 @@
 	'use strict';
 	var monitor = angular.module('xProject.monitor', ['infinite-scroll', 'daterangepicker']);
 	monitor.$inject = ['$scope'];
-	monitor.controller('monitorController', function monitorController ($scope, apiService, $window, $translate, $interval, modalService) {
+	monitor.controller('monitorController', function monitorController ($scope, apiService, $window, $translate, $interval, modalService, commonService) {
 		var vm = this;
-		vm.timer = 30000; //30 seconds
+		vm.timer = 30000; //30000 - 30 seconds
 		vm.duration = 86400000; //10000000000 - 115days - 86400000 - 1day
 		vm.monitor = [];
 		vm.monitorPage = {
@@ -211,7 +211,6 @@
 		loadAnyEvent();
 
 		function getEventDetails(row){
-			console.log(row);
 			var params = {
 				eventId: row.key,
 				datapointid: row.datapointid,
@@ -221,11 +220,6 @@
 			modalService.open(__env.modalMonitorEventDetailsUrl, 'modalMonitorEventDetailsCtrl as vm', params, function(){
 				vm.isTimer = true;
 			});
-		}
-
-		function hidePace(){
-			$('.pace-running').addClass('pace-done').removeClass('pace-running');
-			$('.pace-active').addClass('pace-inactive').removeClass('pace-active');
 		}
 		function loadAnyEvent(){
 			if(vm.tabMode==="monitor" && vm.isTimer){ //only monitor mode need to refresh the data
@@ -243,12 +237,15 @@
 						obj.key = key;
 						vm.monitor.push(obj);
 					})
-					hidePace();
+					commonService.hidePace();
 					if(vm.monitor.length>500){
 						vm.monitorPage.button = true;
 					}
 					vm.monitorPage.max = vm.monitor.length;
 					vm.monitorPage.limitTo = 500;
+					vm.isTimer = true;
+				}, function(){ //error callback
+					console.log('error!!!!!!');
 					vm.isTimer = true;
 				});
 			}
@@ -285,7 +282,7 @@
 					console.log('#STOP');
 					vm.invest.busy = true;
 				}
-				hidePace();
+				commonService.hidePace();
 			});
 		}
 	});

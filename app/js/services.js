@@ -103,6 +103,10 @@
 				content: ''
 			};
 		};
+		this.hidePace = function(){
+			$('.pace-running').addClass('pace-done').removeClass('pace-running');
+			$('.pace-active').addClass('pace-inactive').removeClass('pace-active');
+		};
 	}
 
 	function apiService($http, localStorageService, $httpParamSerializerJQLike, authService){
@@ -147,7 +151,7 @@
 			});
 		};
 
-		this.batchTimeSeriesApi = function(params){
+		this.batchTimeSeriesApi = function(params, extraPath){
 			var defaultParams = {
 				datapoints: "",
 				resolution: "1n",
@@ -156,9 +160,10 @@
 				token: authService.getAuthentication().token
 			};
 			var userParams = $.extend(true, defaultParams, params);
+			var path = (angular.isDefined(extraPath)) ? extraPath : "";
 			return $http({
 				method: 'POST',
-				url: __env.batchTimeSeriesUrl,
+				url: __env.batchTimeSeriesUrl+path,
 				data: $httpParamSerializerJQLike(userParams),
 				headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
 			});

@@ -1,4 +1,4 @@
-/* global angular, dialogService, CanvasJS, __env, Pace, moment */
+/* global angular, dialogService, CanvasJS, __env, moment */
 /* requirements:
 *	Event Popup
 *	Showing Event Graph - event details API
@@ -14,8 +14,15 @@
 (function() {
 	'use strict';
 	var modalMonitorEventDetails = angular.module('modal.monitor.event',[]);
-	modalMonitorEventDetails.controller('modalMonitorEventDetailsCtrl', function ($scope, $uibModalInstance, items, apiService, $translate, modalService) {
+	modalMonitorEventDetails.controller('modalMonitorEventDetailsCtrl', function ($scope, $uibModalInstance, items, apiService, $translate, modalService, commonService) {
 		var vm = this;
+		var configLineGraph = {
+			type: "line",
+			xValueType: "dateTime",
+			xValueFormatString:"YYYY MM DD HH:mm",
+			dataPoints: [],
+			showInLegend: true
+		};
 		vm.items = items;
 		vm.selected = {
 			item: vm.items[0]
@@ -95,6 +102,7 @@
 			getEventDetailsData(vm.items.eventId);
 		});
 
+		//modal event map
 		vm.viewMap= function(){
 			modalService.open(__env.modalMonitorEventMap, 'modalMonitorMapCtrl as vm', vm.events.info);
 		};
@@ -105,11 +113,14 @@
 			var id = row.datapoint.pressure._id;
 			row.isPlot = (isPlot) ? false : true;
 			if(!isPlot){ //call highrate
+				console.log("\r\nPlot range");
+				console.log(moment(parseInt(vm.events.range.start)).format('HH:mm:ss')+" - "+moment(parseInt(vm.events.range.end)).format('HH:mm:ss'));
+				console.log("\r\n");
 				var params = {
 					id: id,
 					name: row.name,
-					from: vm.events.start,
-					to: vm.events.end
+					from: vm.events.range.start,
+					to: vm.events.range.end
 				};
 				getHighRateData(params);
 			}else{ //remove plot
@@ -152,6 +163,7 @@
 			max: 0
 		};
 
+		//collect all selected datapointid
 		function getId(){
 			var ids = [];
 			angular.forEach(vm.multiChartTimeSeries, function(row){
@@ -162,28 +174,26 @@
 			return ids;
 		}
 
+		//initial getting graph data with general information
 		function getEventDetailsData(eventId){
 			if(angular.isDefined(eventId)){
 				apiService.eventDetailsApi(eventId).then(function(response){
+					commonService.hidePace();
 					if(angular.isDefined(response.data.tsda.data) && angular.isDefined(response.data.event)){
-						vm.events.start = moment(response.data.event.ts).subtract(1, 'minute').format('x');
-						vm.events.end = moment(response.data.event.ts).add(1, 'minute').format('x');
-						vm.events.range.start = vm.events.start;
-						vm.events.range.end = vm.events.end;
+						var start = moment(response.data.event.ts).subtract(1, 'minute').format('x');
+						var end = moment(response.data.event.ts).add(2, 'minute').format('x');
+						vm.events.start = start;
+						vm.events.end = end;
+						vm.events.range.start = start;
+						vm.events.range.end = end;
 						getSiteData(response.data.event.siteid);
 						vm.events.info = response.data.event;
 						vm.header = response.data.tsda.meta.name+" "+response.data.tsda.meta.unit;
 						vm.events.name = response.data.event.sitename;
 						vm.events.column.push({x: parseFloat(response.data.event.ts), y: parseFloat(response.data.event.confidence)});
-						var obj = {
-							id: vm.items.datapointid,
-							type: "line",
-							xValueType: "dateTime",
-							xValueFormatString:"YYYY MM DD HH:mm",
-							dataPoints: [],
-							name: vm.events.name,
-							showInLegend: true
-						};
+						var obj = $.extend(true, {}, configLineGraph);
+						obj.id = vm.items.datapointid;
+						obj.name = vm.events.name;
 						angular.forEach(response.data.tsda.data, function(value, key){
 							obj.dataPoints.push({x: parseFloat(key), y: parseFloat(value)});
 						});
@@ -195,10 +205,12 @@
 				dialogService.alert(null,{content:$translate.instant('site_common_something_wrong')});
 			}
 		}
+
 		//site neighbor table
 		function getSiteData(siteId){
 			if(angular.isDefined(siteId)){
 				apiService.monitorSiteNeighbor(siteId).then(function(response){
+					commonService.hidePace();
 					if(angular.isDefined(response.data)){
 						angular.forEach(response.data, function(value){
 							var obj = value;
@@ -210,8 +222,10 @@
 			}
 		}
 
+		//bulk highrate with datapointid
 		function getBulkHighRateData(params){
-			apiService.batchTimeSeriesHighRateApi(params).then(function(response){
+			apiService.batchTimeSeriesApi(params, '/highrate').then(function(response){
+				commonService.hidePace();
 				if(angular.isDefined(response.data) && response.data.length){
 					//getting new data and append to chart
 					var isUpdate = false;
@@ -246,19 +260,14 @@
 				}
 			});
 		}
-
+		//single highrate
 		function getHighRateData(params){
 			apiService.timeSeriesHighRateApi(params).then(function(response){
+				commonService.hidePace();
 				if(angular.isDefined(response.data)){
-					var obj = {
-						id: params.id,
-						type: "line",
-						xValueType: "dateTime",
-						xValueFormatString:"YYYY MM DD HH:mm",
-						dataPoints: [],
-						name: params.name,
-						showInLegend: true
-					};
+					var obj = $.extend(true, {}, configLineGraph);
+					obj.id = params.id;
+					obj.name = params.name;
 					angular.forEach(response.data.data, function(value, key){
 						obj.dataPoints.push({x: parseFloat(key), y: parseFloat(value)});
 					});
