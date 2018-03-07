@@ -186,6 +186,14 @@
 			});
 		};
 
+		this.eventSetApi = function(id, type){
+			return $http({
+				method: 'POST',
+				url: __env.eventSetUrl+"/"+id+"/tag/"+type,
+				headers: headers
+			});
+		};
+
 		this.eventAnyApi = function(){
 			return $http({
 				method: 'GET',

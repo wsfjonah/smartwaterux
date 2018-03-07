@@ -1,4 +1,4 @@
-/* global angular, dialogService, CanvasJS, __env, moment */
+/* global angular, CanvasJS, __env, moment */
 /* requirements:
 *	Event Popup
 *	Showing Event Graph - event details API
@@ -14,7 +14,7 @@
 (function() {
 	'use strict';
 	var modalMonitorEventDetails = angular.module('modal.monitor.event',[]);
-	modalMonitorEventDetails.controller('modalMonitorEventDetailsCtrl', function ($scope, $uibModalInstance, items, apiService, $translate, modalService, commonService) {
+	modalMonitorEventDetails.controller('modalMonitorEventDetailsCtrl', function ($scope, $uibModalInstance, items, apiService, $translate, modalService, commonService, dialogService) {
 		var vm = this;
 		var configLineGraph = {
 			type: "line",
@@ -101,6 +101,11 @@
 			vm.chartEvent.render();
 			getEventDetailsData(vm.items.eventId);
 		});
+
+		//tagging
+		vm.toggleTagging = function(type){
+			getTagging(type);
+		};
 
 		//modal event map
 		vm.viewMap= function(){
@@ -260,6 +265,7 @@
 				}
 			});
 		}
+
 		//single highrate
 		function getHighRateData(params){
 			apiService.timeSeriesHighRateApi(params).then(function(response){
@@ -274,6 +280,17 @@
 					vm.multiChartTimeSeries.push(obj);
 					vm.chartEvent.render();
 				}
+			});
+		}
+
+		//tagging call
+		function getTagging(type){
+			apiService.eventSetApi(vm.items.eventId, type).then(function(response){
+				var msg = $translate.instant('site_common_something_wrong');
+				if(angular.isDefined(response.data.message) && response.data.message==="success"){
+					msg = $translate.instant('site_event_tagging_success');
+				}
+				dialogService.alert(null, {content: msg, title: $translate.instant('site_event_tagging_dialog_title')});
 			});
 		}
 	});

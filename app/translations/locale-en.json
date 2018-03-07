@@ -124,5 +124,8 @@
 	"site_monitor_event_remove_plot" : "Remove Plot",
 	"site_monitor_event_prev_min" : "Previous 5 Minutes",
 	"site_monitor_event_next_min" : "Next 5 Minutes",
-	"site_monitor_event_map_header" : "Event Map"
+	"site_monitor_event_map_header" : "Event Map",
+	"site_event_tagging_button_label" : "Tagging",
+	"site_event_tagging_success" : "Tagging Successfully!",
+	"site_event_tagging_dialog_title" : "Tagging Information"
 }

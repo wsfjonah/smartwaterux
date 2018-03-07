@@ -206,6 +206,9 @@
 /*******************
  Monitoring
 *******************/
+.md-dialog-container{
+	z-index:9999!important;
+}
 .monitor-event{
 	.info{
 		padding: 10px 20px;

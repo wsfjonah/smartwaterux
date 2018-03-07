@@ -23,6 +23,8 @@
 	window.__env.eventSingleRangeUrl = window.__env.baseUrl+'tsevent/datapoint';
 	//batch query time series
 	window.__env.batchTimeSeriesUrl = window.__env.baseUrl+'tsda/batchquery';
+	//event used - e.g. tag
+	window.__env.eventSetUrl = window.__env.baseUrl+'tsevent/set';
 
 	//network sensor
 	window.__env.siteSearchUrl = window.__env.baseUrl+'site/search';

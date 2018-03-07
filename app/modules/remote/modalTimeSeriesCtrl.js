@@ -21,12 +21,14 @@
 		*	by default "auto"
 		*/
 		vm.typeTimeSeries = "auto";
+		vm.duration = "1n";
 		vm.updateTypeTimeSeries = function(type){ //TODO - make allowed array
 			/*	if type not equal to current and type equal to auto
 			*	fetch data only when "custom" switch to "auto" - fetch time series any data
 			*/
 			if(type!==vm.typeTimeSeries && type=="auto"){
 				getTimeSeriesAnyData();
+				vm.duration = "1n";
 			}
 			vm.typeTimeSeries = type;
 		};
@@ -71,15 +73,15 @@
 	    		model: null,
 	    		options: [{"label":"1 "+t_min,"value":"1n"},{"label":"5 "+t_min,"value":"5n"},{"label":"30 "+t_min,"value":"30n"},{"label":"1 "+t_hour,"value":"1h"},{"label":"6 "+t_hour,"value":"6h"},{"label":"12 "+t_hour,"value":"12h"},{"label":"1 "+t_day,"value":"1d"},{"label":"1 "+t_week,"value":"1w"},{"label":"1 "+t_month,"value":"1m"}]
 	    	};
-    	/* set initial selected value in option
-    	*/
-    	vm.resolutions.model = vm.resolutions.options[0].value;
-    	/* daterange picker for time series
-    	*/
-    	var start = moment().subtract(4, 'months');
-    	var end = moment();
-    	/* setup daterange picker for filtering
-    	*/
+	    	/* set initial selected value in option
+	    	*/
+	    	vm.resolutions.model = vm.resolutions.options[0].value;
+	    	/* daterange picker for time series
+	    	*/
+	    	var start = moment().subtract(4, 'months');
+	    	var end = moment();
+	    	/* setup daterange picker for filtering
+	    	*/
 		vm.datePickerDate = {
 			date:{
 				startDate: start,
@@ -192,6 +194,7 @@
 			var params = getParams();
 			if(angular.isDefined(params) && params.datapoints!==""){
 				vm.typeTimeSeries = "custom";
+				vm.duration = vm.resolutions.model;
 				/* get time series by resolution, start & end date
 				*/
 				if(vm.isBatchRequest){
@@ -274,7 +277,8 @@
 		function getEventDetails(eventId){
 			var params = {
 				eventId: eventId,
-				info: vm.items
+				info: vm.items,
+				duration: vm.duration
 			};
 			modalService.open(__env.modalEventDetailsUrl, 'modalEventDetailsCtrl as vm', params);
 		}

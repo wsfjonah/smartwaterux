@@ -2,11 +2,29 @@
 	<h3 class="modal-title">{{ vm.header }}</h3>
 </div>
 <div class="modal-body canvas-modal">
+	<div class="text-center m-b-20">
+		<div class="btn-group" role="toolbar">
+			<button type="button" class="btn btn-default" ng-click="vm.toggleTime('prev')"><i class="ti-arrow-left"></i> {{ "site_monitor_event_prev_min" | translate }}</button>
+			<button type="button" class="btn btn-default" ng-click="vm.toggleTime('next')">{{ "site_monitor_event_next_min" | translate }} <i class="ti-arrow-right"></i></button>
+		</div>
+	</div>
 	<div class="chart-x">
 		<canvas-toolbar class="toolbar" data-options="vm.chartToolbarOptions" />
 		<div id="chartEventContainer" style="width:100%;height:250px"></div>
 	</div>
 </div>
 <div class="modal-footer">
+	<div class="btn-group dropup">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			{{ "site_event_tagging_button_label" | translate }} <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+			<li><a href="JavaScript:void(0);" class="dropdown-item" ng-click="vm.toggleTagging('hammer')">{{ "site_monitor_tag_opt_hammer" | translate }}</a></li>
+			<li><a href="JavaScript:void(0);" class="dropdown-item" ng-click="vm.toggleTagging('valve_open')">{{ "site_monitor_tag_opt_valve_open" | translate }}</a></li>
+			<li><a href="JavaScript:void(0);" class="dropdown-item" ng-click="vm.toggleTagging('valve_close')">{{ "site_monitor_tag_opt_valve_close" | translate }}</a></li>
+			<li><a href="JavaScript:void(0);" class="dropdown-item" ng-click="vm.toggleTagging('burst')">{{ "site_monitor_tag_opt_burst" | translate }}</a></li>
+			<li><a href="JavaScript:void(0);" class="dropdown-item" ng-click="vm.toggleTagging('data_error')">{{ "site_monitor_tag_opt_data_error" | translate }}</a></li>
+		</ul>
+	</div>
 	<button class="btn btn-primary" ng-click="vm.ok()">Close</button>
 </div>

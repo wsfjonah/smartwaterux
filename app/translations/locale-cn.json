@@ -124,5 +124,8 @@
 	"site_monitor_event_remove_plot" : "删除数据",
 	"site_monitor_event_prev_min" : "前5分钟",
 	"site_monitor_event_next_min" : "下5分钟",
-	"site_monitor_event_map_header" : "活动地图"
+	"site_monitor_event_map_header" : "活动地图",
+	"site_event_tagging_button_label" : "标记",
+	"site_event_tagging_success" : "成功标记!",
+	"site_event_tagging_dialog_title" : "标记信息"
 }
