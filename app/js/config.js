@@ -72,7 +72,7 @@
 					return $ocLazyLoad.load({
 						serie: true,
 						files: [
-							'js!http://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4',
+							'js!https://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4',
 							'assets/css/bootstrap-table.css',
 							'assets/js/bootstrap-table.min.js',
 							'app/vendors/bootstrap-table-angular.min.js',
