@@ -155,7 +155,6 @@
 			angular.forEach(vm.filter.tag.model, function(v){
 				res.tag.push(v.id);
 			});
-			console.log(res);
 			return res;
 		};
 
@@ -245,7 +244,6 @@
 					vm.monitorPage.limitTo = 500;
 					vm.isTimer = true;
 				}, function(){ //error callback
-					console.log('error!!!!!!');
 					vm.isTimer = true;
 				});
 			}
@@ -264,13 +262,11 @@
 				params.filter = "/?filter="+encodeURIComponent(JSON.stringify(getData))
 				vm.invest.isFilter = true;
 			}
-			console.log(params);
 			apiService.eventMonitorApi(params).then(function(response){
 				var objKey = {};
 				if(angular.isDefined(init)){
 					vm.invest.results.length = 0;
 				}
-				console.log('total : '+Object.keys(response.data.event).length);
 				for(var key in response.data.event){
 					objKey = response.data.event[key];
 					objKey.key = key;
@@ -279,7 +275,6 @@
 				vm.invest.paging = (angular.isDefined(response.data.oldest)) ? response.data.oldest : null;
 				vm.invest.busy = false;
 				if(vm.isObjectEmpty(response.data.event)){
-					console.log('#STOP');
 					vm.invest.busy = true;
 				}
 				commonService.hidePace();

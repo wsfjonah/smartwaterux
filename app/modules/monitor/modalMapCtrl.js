@@ -9,7 +9,6 @@
 		vm.selected = {
 			item: vm.items[0]
 		};
-		console.log(items);
 		vm.ok = function () {
 			$uibModalInstance.close(vm.selected.item);
 		};
@@ -23,11 +22,6 @@
 		var colorSet = commonService.getColors();
 		var longitude = parseFloat(vm.items.longitude);//121.324914; //default longitude
 		var latitude = parseFloat(vm.items.latitude);//31.099573; //default latitude
-		/*vm.ready = function(){
-			$ocLazyLoad.load('js!https://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4').then(function(){
-				vm.mapInit();
-			});
-		};*/
 		vm.defaultMarkerConfig = commonService.markerConfig();
 		vm.siteMapOptions = {
 			center: {

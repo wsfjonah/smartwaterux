@@ -27,7 +27,6 @@
 		vm.selected = {
 			item: vm.items[0]
 		};
-		console.log(vm.items);
 		vm.ok = function () {
 			$uibModalInstance.close(vm.selected.item);
 		};
@@ -118,9 +117,6 @@
 			var id = row.datapoint.pressure._id;
 			row.isPlot = (isPlot) ? false : true;
 			if(!isPlot){ //call highrate
-				console.log("\r\nPlot range");
-				console.log(moment(parseInt(vm.events.range.start)).format('HH:mm:ss')+" - "+moment(parseInt(vm.events.range.end)).format('HH:mm:ss'));
-				console.log("\r\n");
 				var params = {
 					id: id,
 					name: row.name,
