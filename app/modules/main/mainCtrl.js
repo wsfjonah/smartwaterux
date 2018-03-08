@@ -3,7 +3,7 @@
 	'use strict';
 	var main = angular.module('xProject.main',[]);
 	main.$inject = ['$scope', 'authService', '$location', '$http'];
-	main.controller('mainController', function mainController ($scope, authService, $location, apiService) {
+	main.controller('mainController', function mainController ($scope, authService, $location, apiService, $translate) {
 		var vm = this;
 		vm.project = {
 			status: "",
@@ -25,8 +25,8 @@
 			subzones: [],
 			layers: [],
 			diametermap: [],
-			coveragePercentage: [],
-			coverageMeter: []
+			coverageChart: [],
+			localizedChart: []
 		};
 
 		getProjectDetails();
@@ -37,6 +37,7 @@
 			theme: 'theme1',
 			animationEnabled: true,
 			zoomEnabled: true,
+			dataPointWidth: 30,
 			data: [
 				{
 					type: "column",
@@ -45,38 +46,43 @@
 				}
 			]
 		});
-		vm.piePercentSensorChart = new CanvasJS.Chart("chartPercentSensorContainer", {
+		vm.pieCoverageChart = new CanvasJS.Chart("chartCoverageContainer", {
 			theme: 'theme1',
 			animationEnabled: true,
 			zoomEnabled: true,
 			dataPointWidth: 10,
+			legend:{
+				fontFamily: "Poppins,sans-serif",
+			},
 			data: [
 				{
 					type: "doughnut",
 					showInLegend: true,
 					startAngle: 60,
-					yValueFormatString: "##0.00\" Meter\"",
+					yValueFormatString: "##0.##\" %\"",
 					indexLabel: "{name} {y}",
-					indexLabelFontFamily: "arial",
-					dataPoints: vm.project.coveragePercentage
+					indexLabelFontFamily: "Poppins,sans-serif",
+					dataPoints: vm.project.coverageChart
 				}
 			]
 		});
-		vm.pieMeterSensorChart = new CanvasJS.Chart("chartMeterSensorContainer", {
+		vm.pieLocalizedChart = new CanvasJS.Chart("chartLocalizedContainer", {
 			theme: 'theme1',
 			animationEnabled: true,
 			zoomEnabled: true,
 			dataPointWidth: 10,
-			indexLabelFontFamily: "arial",
+			legend:{
+				fontFamily: "Poppins,sans-serif",
+			},
 			data: [
 				{
 					type: "doughnut",
 					showInLegend: true,
 					startAngle: 60,
-					yValueFormatString: "##0.00\" %\"",
+					yValueFormatString: "##0.##\" %\"",
 					indexLabel: "{name} {y}",
-					indexLabelFontFamily: "arial",
-					dataPoints: vm.project.coverageMeter
+					indexLabelFontFamily: "Poppins,sans-serif",
+					dataPoints: vm.project.localizedChart
 				}
 			]
 		});
@@ -86,28 +92,28 @@
 			apiService.dashboardCoverageApi().then(function(response){
 				if(angular.isDefined(response.data)){
 					var res = response.data.content.test;
-					vm.project.coveragePercentage.push({
+					vm.project.coverageChart.push({
 						y: parseFloat(res.coverage),
-						name: "Coverage",
+						name: $translate.instant("site_dashboard_coverage"),
 						color: "#3b5998"
 					});
-					vm.project.coveragePercentage.push({
-						y: parseFloat(res.localization),
-						name: "Localization",
+					vm.project.coverageChart.push({
+						y: 1-parseFloat(res.coverage),
+						name: $translate.instant("site_dashboard_not_covered"),
 						color: "#e84c9d"
 					});
-					vm.project.coverageMeter.push({
-						y: parseFloat(res.covered_length),
-						name: "Covered Length",
+					vm.project.localizedChart.push({
+						y: parseFloat(res.localization),
+						name: $translate.instant("site_dashboard_localization"),
 						color: "#f86c6b"
 					});
-					vm.project.coverageMeter.push({
-						y: parseFloat(res.localizedLength),
-						name: "Localized Length",
+					vm.project.localizedChart.push({
+						y: 1-parseFloat(res.localization),
+						name: $translate.instant("site_dashboard_not_localized"),
 						color: "#11bec4"
 					});
-					vm.piePercentSensorChart.render();
-					vm.pieMeterSensorChart.render();
+					vm.pieCoverageChart.render();
+					vm.pieLocalizedChart.render();
 				}
 			});
 		}
@@ -138,10 +144,11 @@
 					vm.project.total_pipe_length = res.total_pipe_length;
 					vm.project.max_pipe_diameter = res.max_pipe_diameter;
 					vm.project.min_pipe_diameter = res.min_pipe_diameter;
-					vm.project.subzones = (res.subzones).join(", ");
+					vm.project.subzones = res.subzones;
 					vm.project.layers = res.layers;
+					console.log(res.diametermap);
 					angular.forEach(res.diametermap, function(y, x){
-						vm.project.diametermap.push({x: parseFloat(x), y: parseFloat(y)});
+						vm.project.diametermap.push({label: x, y: parseFloat(y)});
 					});
 					vm.barDiameterChart.render();
 				}
