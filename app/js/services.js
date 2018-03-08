@@ -127,6 +127,22 @@
 			return $http(configArr);
 		};
 
+		this.projectApi = function(){
+			return $http({
+				method: 'GET',
+				url: __env.projectUrl,
+				headers: headers
+			});
+		};
+
+		this.dashboardCoverageApi = function(){
+			return $http({
+				method: 'GET',
+				url: __env.dashboardCoverageUrl,
+				headers: headers
+			});
+		};
+
 		this.customerApi = function(){
 			return $http({
 				method: 'GET',

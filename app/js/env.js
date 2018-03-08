@@ -26,6 +26,12 @@
 	//event used - e.g. tag
 	window.__env.eventSetUrl = window.__env.baseUrl+'tsevent/set';
 
+	//project
+	window.__env.projectUrl = window.__env.baseUrl+'project/detail';
+
+	//dashboard coverage
+	window.__env.dashboardCoverageUrl = window.__env.baseUrl+'dashboard/coverage';
+
 	//customer
 	window.__env.customerUrl = window.__env.baseUrl+'map/customer';
 
