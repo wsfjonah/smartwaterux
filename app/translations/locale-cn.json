@@ -127,5 +127,7 @@
 	"site_monitor_event_map_header" : "活动地图",
 	"site_event_tagging_button_label" : "标记",
 	"site_event_tagging_success" : "成功标记!",
-	"site_event_tagging_dialog_title" : "标记信息"
+	"site_event_tagging_dialog_title" : "标记信息",
+	"site_success_label" : "成功!",
+	"site_warning_label" : "警告!"
 }

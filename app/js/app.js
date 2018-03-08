@@ -17,7 +17,8 @@ var app = angular
 		'xProject.factory',
 		'xProject.filter',
 		'xProject.services',
-		'xProject.auth'
+		'xProject.auth',
+		'oitozero.ngSweetAlert'
 	]);
 
 app.constant('__env', env);

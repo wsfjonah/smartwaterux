@@ -2,7 +2,7 @@
 (function() {
 	'use strict';
 	var modalEventDetails = angular.module('modal.event',[]);
-	modalEventDetails.controller('modalEventDetailsCtrl', function ($scope, $uibModalInstance, items, apiService, $translate, commonService, dialogService) {
+	modalEventDetails.controller('modalEventDetailsCtrl', function ($scope, $uibModalInstance, items, apiService, $translate, commonService, sweetAlert) {
 		var vm = this;
 		vm.items = items;
 		vm.selected = {
@@ -120,11 +120,16 @@
 		//tagging call
 		function getTagging(type){
 			apiService.eventSetApi(vm.items.eventId, type).then(function(response){
-				var msg = $translate.instant('site_common_something_wrong');
 				if(angular.isDefined(response.data.message) && response.data.message==="success"){
-					msg = $translate.instant('site_event_tagging_success');
+					sweetAlert.success({
+						title: $translate.instant('site_success_label'),
+						text: $translate.instant('site_event_tagging_success')
+					});
+				}else{
+					sweetAlert.error({
+						text: $translate.instant('site_common_something_wrong')
+					});
 				}
-				dialogService.alert(null, {content: msg, title: $translate.instant('site_event_tagging_dialog_title')});
 			});
 		}
 
@@ -147,7 +152,9 @@
 					}
 				});
 			}else{
-				dialogService.alert(null,{content:$translate.instant('site_common_something_wrong')});
+				sweetAlert.error({
+					text: $translate.instant('site_common_something_wrong')
+				});
 			}
 		}
 
