@@ -127,6 +127,14 @@
 			return $http(configArr);
 		};
 
+		this.customerApi = function(){
+			return $http({
+				method: 'GET',
+				url: __env.customerUrl,
+				headers: headers
+			});
+		};
+
 		this.timeSeriesAnyApi = function(id){
 			return $http({
 				method: 'GET',

@@ -25,6 +25,7 @@
 			markers: [],
 			boundary: [],
 			heatMap: [],
+			customers: [],
 			pumps: [],
 			pipes: [],
 			hydrant: [],
@@ -38,6 +39,10 @@
 				},
 				sensors:{
 					label:"Sensors",
+					results:[]
+				},
+				customers:{
+					label:"Customer",
 					results:[]
 				},
 				status:{
@@ -57,10 +62,31 @@
 		};
 		vm.defaultMarkerConfig = commonService.markerConfig();
 
+		getCustomerData();
 		getPipeSummary();
 		getSensorData();
 		getPipeData();
 		getPumpData();
+
+		function getCustomerData(){
+			apiService.customerApi().then(function(response){
+				if(angular.isDefined(response.data)){
+					angular.forEach(response.data, function(customer){
+						var obj = angular.extend({},{},vm.defaultMarkerConfig);
+						obj.icon = 'assets/images/map/marker_customer.png';
+						obj.id = customer.id;
+						obj.title = customer.options.name;
+						obj.latitude = customer.location[0].latitude;
+						obj.longitude = customer.location[0].longitude;
+						obj.zone = customer.zone;
+						obj.subzone = customer.options.subzone;
+						obj.junctionid = customer.options.junctionid;
+						vm.siteMapOptions.customers.push(obj);
+						vm.siteMapOptions.menus.customers.results.push(customer.options.name);
+					});
+				}
+			});
+		}
 
 		function getSensorData(){
 			var obj = {};
@@ -168,8 +194,9 @@
 			apiService.networkPumpApi().then(function(response){
 				angular.forEach(response.data, function(row){
 					if(angular.isDefined(row.location) && row.location.length){
-						var obj = row.location[0];
-						obj.name = (angular.isDefined(row.name)) ? row.name : "Info";
+						console.log(row);
+						obj = row.location[0];
+						obj.name = row.options.name;
 						obj.options = row.options;
 						obj.content = '<div class="overflow:auto"><table class="table table-sm table-striped table-bordered">';
 							obj.content += '<tbody>';

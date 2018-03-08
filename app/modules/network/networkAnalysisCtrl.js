@@ -24,6 +24,7 @@
 			mapType: "networkAnalysisMap",
 			markers: [],
 			boundary: [],
+			customers: [],
 			pumps: [],
 			pipes: [],
 			hydrant: [],
@@ -39,6 +40,10 @@
 				},
 				sensors:{
 					label:"Sensors",
+					results:[]
+				},
+				customers:{
+					label:"Customer",
 					results:[]
 				},
 				status:{
@@ -65,68 +70,31 @@
 		};
 		vm.defaultMarkerConfig = commonService.markerConfig();
 
+		getCustomerData();
 		getPipeSummary();
 		getSensorData();
 		getPipeData();
 		getPumpData();
 
-		//testing menu JS
-		$('.map-menu').on('click', '.btn-toggle', function(){
-			var elem = $(this),
-				group = elem.parents('.group-search'),
-				isActive = group.hasClass('on-search'),
-				isKeyword = group.hasClass('on-keyword'),
-				input = group.find('input'),
-				prevVal = (typeof input.data('value')!=="undefined") ? input.data('value') : "";
-			console.log('test toggle');
-			if(isActive){
-				group.removeClass('on-search');
-			}else{
-				group.addClass('on-search');
-				if(!isKeyword){
-					input.val('');
+		function getCustomerData(){
+			apiService.customerApi().then(function(response){
+				if(angular.isDefined(response.data)){
+					angular.forEach(response.data, function(customer){
+						var obj = angular.extend({},{},vm.defaultMarkerConfig);
+						obj.icon = 'assets/images/map/marker_customer.png';
+						obj.id = customer.id;
+						obj.title = customer.options.name;
+						obj.latitude = customer.location[0].latitude;
+						obj.longitude = customer.location[0].longitude;
+						obj.zone = customer.zone;
+						obj.subzone = customer.options.subzone;
+						obj.junctionid = customer.options.junctionid;
+						vm.siteMapOptions.customers.push(obj);
+						vm.siteMapOptions.menus.customers.results.push(customer.options.name);
+					});
 				}
-				input.val(prevVal).focus();
-			}
-		}).on('click', '.remove', function(){
-			var elem = $(this),
-				group = elem.parents('.group-search'),
-				input = group.find('input');
-
-			group.removeClass('on-search').removeClass('on-keyword');
-			input.data('value','');
-			//TODO:: search - all
-		}).on('keyup', 'input', function(e){
-			var elem = $(this),
-				group = elem.parents('.group-search'),
-				value = $.trim(elem.val());
-
-			if(e.keyCode === 13 && value!==""){
-			 	group.addClass('on-keyword');
-			 	elem.data('value', value);
-			 	//TODO:: search - keyword
-			}
-		}).on('blur', 'input', function(e){
-			var elem = $(this),
-				group = elem.parents('.group-search');
-
-			group.removeClass('on-search');
-		}).on('click', '.btn-trigger', function(){
-			var elem = $(this),
-				group = elem.parents('.multi-group'),
-				isActive = group.hasClass('active'),
-				classActive = "active";
-			if(isActive){
-				group.removeClass(classActive);
-			}else{
-				group.addClass(classActive);
-			}
-		});
-		$("body").click(function(e) {
-			if(!$(e.target).hasClass('btn-trigger') && !$(e.target).parents(".multi-group").length){
-				$('.multi-group').removeClass('active');
-			}
-		});
+			});
+		}
 
 		function getSensorData(){
 			var obj = {};
@@ -235,7 +203,7 @@
 				angular.forEach(response.data, function(row){
 					if(angular.isDefined(row.location) && row.location.length){
 						var obj = row.location[0];
-						obj.name = (angular.isDefined(row.name)) ? row.name : "Info";
+						obj.name = row.options.name;
 						obj.options = row.options;
 						obj.content = '<div class="overflow:auto"><table class="table table-sm table-striped table-bordered">';
 							obj.content += '<tbody>';

@@ -63,6 +63,7 @@
 	"site_network_toolbar_pipes" : "Pipes",
 	"site_network_toolbar_sensors" : "Sensors",
 	"site_network_toolbar_status" : "Status",
+	"site_network_toolbar_customer" : "Customers",
 	"site_network_toolbar_pumps" : "Pumps",
 	"site_network_toolbar_pipe_details" : "Pipe Details",
 	"site_network_toolbar_hydrant" : "Hydrant",

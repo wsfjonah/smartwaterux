@@ -26,6 +26,9 @@
 	//event used - e.g. tag
 	window.__env.eventSetUrl = window.__env.baseUrl+'tsevent/set';
 
+	//customer
+	window.__env.customerUrl = window.__env.baseUrl+'map/customer';
+
 	//network sensor
 	window.__env.siteSearchUrl = window.__env.baseUrl+'site/search';
 	window.__env.networkSensorUrl = window.__env.baseUrl+'site/search';
