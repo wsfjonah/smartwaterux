@@ -19,7 +19,8 @@ gulp.task('js-angular-lib-concat', function(){
 		'app/vendors/angular-cookies.min.js',
 		'app/vendors/angular-translate-storage-cookie.min.js',
 		'app/vendors/angular-translate-storage-local.min.js',
-		'app/vendors/ui-bootstrap-tpls-2.1.4.min.js'
+		'app/vendors/ui-bootstrap-tpls-2.1.4.min.js',
+		'app/vendors/SweetAlert.min.js'
 	])
 	.pipe(gp_sourcemaps.init())
 	.pipe(gp_concat('angular-lib.min.js'))
@@ -49,7 +50,8 @@ gulp.task('js-jquery-lib-concat', function(){
 		'assets/js/popper.min.js',
 		'assets/js/bootstrap-4.0.min.js',
 		'assets/js/pace.min.js',
-		'assets/js/bootstrap-select.min.js'
+		'assets/js/bootstrap-select.min.js',
+		'assets/js/sweetalert.min.js'
 	])
 	.pipe(gp_sourcemaps.init())
 	.pipe(gp_concat('jquery-lib.min.js'))

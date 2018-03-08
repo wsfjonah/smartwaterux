@@ -5,6 +5,7 @@
 		.module('xProject.factory', [])
 		.factory('dialogService', dialogService)
 		.factory('notify', notify)
+		.factory('sweetAlert', sweetAlert)
 		.factory('modalService', modalService);
 
 	function dialogService($mdDialog) {
@@ -33,6 +34,29 @@
 				});
 			};
 			return dialogService;
+	}
+
+	function sweetAlert(SweetAlert){
+		var sweetAlert = {};
+		sweetAlert.success = function(opts){
+			var config = {
+				title: "Good job!",
+				text: "You clicked the button!",
+				type: "success"
+			};
+			var opt_config = angular.extend({}, config, opts);
+			SweetAlert.swal(opt_config.title, opt_config.text, opt_config.type);
+		};
+		sweetAlert.error = function(opts){
+			var config = {
+				title: "Oops",
+				text: "Something went wrong!",
+				type: "error"
+			};
+			var opt_config = angular.extend({}, config, opts);
+			SweetAlert.swal(opt_config.title, opt_config.text, opt_config.type);
+		}
+		return sweetAlert;
 	}
 
 	function notify($mdToast){

@@ -10,6 +10,10 @@
 		};
 		vm.isBatchRequest = (angular.isArray(items)); //single or batch request
 		vm.plotData = (vm.isBatchRequest) ? items : [items];
+		vm.defaultrange = {
+			from: null,
+			to: null
+		};
 		vm.ok = function () {
 			$uibModalInstance.close(vm.selected.item);
 		};
@@ -50,16 +54,15 @@
 					vm.chart.render();
 				}
 			}else{ //if status true, we need to fetch data and pass to event updateΩ
-				if(vm.typeTimeSeries==="custom"){
-					var params = getParams();
-					apiService.eventSingleRangeApi(params.datapoints, params.from, params.to).then(function(response){
-						updateEvent(response.data.event);
-					});
-				}else{
-					apiService.eventAnyApi().then(function(response){
-						updateEvent(response.data.event);
-					});
+				var params = getParams();
+				if(vm.typeTimeSeries!=="custom"){ //default parameter to get event
+					params.from = vm.defaultrange.from;
+					params.to = vm.defaultrange.end;
+					params.resolution = "1n";
 				}
+				apiService.eventSingleRangeApi(params.datapoints, params.from, params.to).then(function(response){
+					updateEvent(response.data.event);
+				});
 			}
 		};
 		/* option for resolution and model
@@ -288,18 +291,24 @@
 			var id = getId().join(",");
 			if(angular.isDefined(id) && id!==""){
 				apiService.timeSeriesAnyApi(id).then(function(response){
-					//vm.chartData.length = 0;
-					vm.multiChartTimeSeries[0].dataPoints.length = 0;
-					angular.forEach(response.data.data, function(value, key){
-						vm.multiChartTimeSeries[0].dataPoints.push({
-							x: parseInt(key),
-							y: parseFloat(value)
+					if(angular.isDefined(response.data)){
+						vm.defaultrange.from = response.data.meta.starttime;
+						vm.defaultrange.end = response.data.meta.endtime;
+						vm.multiChartTimeSeries[0].dataPoints.length = 0;
+						angular.forEach(response.data.data, function(value, key){
+							vm.multiChartTimeSeries[0].dataPoints.push({
+								x: parseInt(key),
+								y: parseFloat(value)
+							});
 						});
-					});
-					vm.chart.render();
+						vm.chart.render();
+					}
 				});
 				if(vm.switchEvent.status){
-					apiService.eventAnyApi().then(function(response){
+					var params = getParams();
+					params.from = vm.defaultrange.from;
+					params.to = vm.defaultrange.end;
+					apiService.eventSingleRangeApi(params.datapoints, params.from, params.to).then(function(response){
 						updateEvent(response.data.event);
 					});
 				}
