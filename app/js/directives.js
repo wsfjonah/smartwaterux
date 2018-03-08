@@ -18,7 +18,7 @@
 	var heatmapOverlay;
 	function selectWatcher($timeout){
 		return {
-			link: function (scope, element, attr) {
+			link: function (scope, element/*, attr*/) {
 				$timeout(function() {
 					element.selectpicker();
 				});
@@ -293,8 +293,6 @@
 					var opts = angular.extend({}, default_opts, scope.options);
 					var map = createMapInstance(opts, elem, $translate);
 					var previousMarkers = [];
-					//create markers
-					//redrawMarkers(map, $translate, previousMarkers, opts, scope, null, apiService, dialogService);
 
 					//watch markers
 					scope.$watch('options.markers', function (/*newValue, oldValue*/) {
@@ -322,6 +320,12 @@
 							createPlotMarkerCart(map, opts, scope, $translate, modalService);
 						}, true);
 					}
+					//watch customer
+					if(angular.isDefined(opts.customers)){
+						scope.$watch('options.customers', function (/*newValue, oldValue*/) {
+							redrawCustomerMarker(map, opts, scope, $translate);
+						}, true);
+					}
 				};
 				mapApi.then(function () {
 					scope.initialize();
@@ -336,8 +340,8 @@
 	/* monitor map
 	* updated - 4/1/2018
 	*/
-	xproMonitorMap.$inject = ['$translate','mapApi','apiService','dialogService','modalService','notify'];
-	function xproMonitorMap($translate, mapApi, apiService, dialogService, modalService, notify){
+	xproMonitorMap.$inject = ['$translate','mapApi','apiService','dialogService'/*,'modalService','notify'*/];
+	function xproMonitorMap($translate, mapApi, apiService, dialogService/*, modalService, notify*/){
 		return{
 			restrict: 'AE',
 			replace: 'true',
@@ -705,6 +709,7 @@
 			search: $translate.instant('site_network_toolbar_search'),
 			pipes: $translate.instant('site_network_toolbar_pipes'),
 			sensors: $translate.instant('site_network_toolbar_sensors'),
+			customers: $translate.instant('site_network_toolbar_customer'),
 			status: $translate.instant('site_network_toolbar_status'),
 			pumps: $translate.instant('site_network_toolbar_pumps'),
 			hydrant: $translate.instant('site_network_toolbar_hydrant'),
@@ -832,7 +837,7 @@
 					removeActiveClass(["search","multi"]);
 					if(isActive){
 						elem.removeClass(classActive);
-						pr.removeClass(classActive)
+						pr.removeClass(classActive);
 					}else{
 						elem.addClass(classActive);
 						pr.addClass(classActive);
@@ -892,8 +897,6 @@
 				var divMenuGroup = document.createElement("button");
 				var menuButton = document.createElement("button");
 				var divDropdown = document.createElement("div");
-
-
 
 				if(key!=="coverage" && key!=="hydrant" && key!=="cart" && key!=="pipeDetails" && key!=="search"){
 					divMenuGroup = document.createElement("div");
@@ -1213,6 +1216,34 @@
 			updateStatusOverlay(map, status, value, opts);
 		}else if(type==="pumps"){
 			updatePumpOverlay(map, status, value, opts);
+		}else if(type==="customers"){
+			updateCustomerOverlay(map, status, value, opts);
+		}
+	}
+
+	/* update customer marker overlap
+	*
+	*/
+	function updateCustomerOverlay(map, status, value, opts){
+		var markerInstance = opts.customerInstance;
+		if(!status && value==="all"){ //all & off
+			angular.forEach(opts.customers, function(element, i){
+				map.removeOverlay(markerInstance[i]);
+			});
+		}else if(status && value==="all"){ //all & on
+			angular.forEach(opts.customers, function(element, i){
+				map.addOverlay(markerInstance[i]);
+			});
+		}else if(value!=="all"){
+			angular.forEach(opts.customers, function(element, i){
+				if(element.title===value){
+					if(status){
+						map.addOverlay(markerInstance[i]);
+					}else{
+						map.removeOverlay(markerInstance[i]);
+					}
+				}
+			});
 		}
 	}
 
@@ -1440,7 +1471,7 @@
 				width : 350
 			});
 
-			markerItem.addEventListener('click', function(e){
+			markerItem.addEventListener('click', function(/*e*/){
 				map.openInfoWindow(infoWindowItem, new BMap.Point(row.longitude, row.latitude));
 			});
 		});
@@ -1575,6 +1606,44 @@
 		}
 		return isUnique;
 	}
+	function redrawCustomerMarker(map, opts/*, scope, $translate*/){
+		var points = [];
+		if(opts.hasOwnProperty('onSearch') && opts.onSearch){
+			return;
+		}
+		if (!opts.customers) {
+			return;
+		}
+		if(!opts.hasOwnProperty('customerInstance')){
+			opts.customerInstance = [];
+		}else{
+			opts.customerInstance.length = 0;
+		}
+
+		opts.customers.forEach(function (marker) {
+			var markerItem = createMarker(marker, new BMap.Point(marker.longitude, marker.latitude));
+			points.push(new BMap.Point(marker.longitude, marker.latitude));
+			opts.customerInstance.push(markerItem);
+			// add marker to the map
+			map.addOverlay(markerItem);
+			markerItem.setLabel("");
+			// append marker
+			var markerEvent = { marker: markerItem, listener: null };
+			if (!marker.title) {
+				return;
+			}
+			//info window msg
+			var msg = '<p>' + (marker.title || '') + '</p>';
+			var infoWindowItem = new BMap.InfoWindow(msg, {
+				enableMessage: !!marker.enableMessage
+			});
+			//marker binding
+			markerEvent.listener = function () {
+				this.openInfoWindow(infoWindowItem);
+			};
+			markerItem.addEventListener('click', markerEvent.listener);
+		});
+	}
 	function redrawMarkers(map, $translate, previousMarkers, opts, $scope, modalService, apiService, dialogService){
 		var points = [];
 		if(opts.hasOwnProperty('onSearch') && opts.onSearch){
@@ -1702,7 +1771,7 @@
 			map.setViewport(points);
 		}
 	}
-	function centralizeMonitorArea(map, opts, $scope){
+	function centralizeMonitorArea(map, opts/*, $scope*/){
 		var points = [];
 		opts.boundary.forEach(function (row) {
 			points.push(new BMap.Point(row.longitude, row.latitude));
