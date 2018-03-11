@@ -1,4 +1,4 @@
-/* global angular, CanvasJS, console */
+/* global angular, CanvasJS */
 (function() {
 	'use strict';
 	var main = angular.module('xProject.main',[]);
@@ -146,7 +146,6 @@
 					vm.project.min_pipe_diameter = res.min_pipe_diameter;
 					vm.project.subzones = res.subzones;
 					vm.project.layers = res.layers;
-					console.log(res.diametermap);
 					angular.forEach(res.diametermap, function(y, x){
 						vm.project.diametermap.push({label: x, y: parseFloat(y)});
 					});

@@ -51,6 +51,7 @@
 			{
 				id: "default",
 				type: "column",
+				fillOpacity: .5, 
 				visible: true,
 				axisYType: "secondary",
 				xValueType: "dateTime",

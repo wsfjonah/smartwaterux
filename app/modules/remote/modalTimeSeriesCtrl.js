@@ -261,6 +261,7 @@
 				if(vm.chart.options.data.length<=1){
 					vm.chart.options.data.push({
 						type: "column",
+						fillOpacity: .5, 
 						visible: true,
 						axisYType: "secondary",
 						xValueType: "dateTime",
