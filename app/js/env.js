@@ -56,6 +56,9 @@
 	//monitor neighbor
 	window.__env.monitorSiteNeighborUrl = window.__env.baseUrl+'site/get/';
 
+	//event tagging
+	window.__env.eventTagsUrl = window.__env.baseUrl+'tsevent/alltags';
+
 	//modal
 	window.__env.modalTimeSeriesUrl = window.__env.folder+'/app/modules/remote/modalTimeSeries.html';
 	window.__env.modalEventDetailsUrl = window.__env.folder+'/app/modules/remote/modalEventDetails.html';

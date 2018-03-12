@@ -45,7 +45,8 @@
 			range:{
 				start: null,
 				end: null
-			}
+			},
+			tags: []
 		};
 		vm.multiChartTimeSeries = [
 			{
@@ -104,7 +105,7 @@
 
 		//tagging
 		vm.toggleTagging = function(type){
-			getTagging(type);
+			setTagging(type);
 		};
 
 		//modal event map
@@ -164,6 +165,22 @@
 			min: 0,
 			max: 0
 		};
+
+		getTagsList();
+
+		//get tagging list
+		function getTagsList(){
+			apiService.eventTagsList().then(function(response){
+				if(angular.isDefined(response.data)){
+					angular.forEach(response.data, function(res){
+						vm.events.tags.push({
+							name: commonService.tagMapping(res),
+							id: res
+						});
+					});
+				}
+			});
+		}
 
 		//collect all selected datapointid
 		function getId(){
@@ -283,7 +300,7 @@
 		}
 
 		//tagging call
-		function getTagging(type){
+		function setTagging(type){
 			apiService.eventSetApi(vm.items.eventId, type).then(function(response){
 				if(angular.isDefined(response.data.message) && response.data.message==="success"){
 					sweetAlert.success({
@@ -295,6 +312,7 @@
 						text: $translate.instant('site_common_something_wrong')
 					});
 				}
+				commonService.hidePace();
 			});
 		}
 	});

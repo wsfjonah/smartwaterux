@@ -89,7 +89,7 @@
 		};
 	}
 
-	function commonService(){
+	function commonService($translate){
 		/*jshint validthis: true */
 		this.getColors = function() {
 			return ["#FF1493","#FFA500","#0f7ca8","#3867c4","#96137c","#b79494","#f9b49d","#c60303","#008066","#823f5e","#687759","#d14959","#703e7f","#000000"];
@@ -106,6 +106,18 @@
 		this.hidePace = function(){
 			$('.pace-running').addClass('pace-done').removeClass('pace-running');
 			$('.pace-active').addClass('pace-inactive').removeClass('pace-active');
+		};
+		this.tagMapping = function(value){
+			var lists = {
+				hammer: $translate.instant('site_monitor_tag_opt_hammer'),
+				valve_open: $translate.instant('site_monitor_tag_opt_valve_open'),
+				valve_close: $translate.instant('site_monitor_tag_opt_valve_close'),
+				burst: $translate.instant('site_monitor_tag_opt_burst'),
+				data_error: $translate.instant('site_monitor_tag_opt_data_error'),
+				anomaly: $translate.instant('site_monitor_tag_opt_anomaly'),
+				unknown: $translate.instant('site_monitor_tag_opt_unknown')
+			};
+			return (angular.isDefined(value) && lists.hasOwnProperty(value)) ? lists[value] : value;
 		};
 	}
 
@@ -365,6 +377,13 @@
 				url: __env.monitorSiteNeighborUrl+siteid+'/neighbors',
 				headers: headers
 			});
-		}
+		};
+		this.eventTagsList = function(){
+			return $http({
+				method: 'GET',
+				url: __env.eventTagsUrl,
+				headers: headers
+			});
+		};
 	}
 })();
