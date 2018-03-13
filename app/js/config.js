@@ -22,12 +22,6 @@
 					return $ocLazyLoad.load({
 						serie: true,
 						files: [
-							'assets/js/plugins/sparkline/jquery.sparkline.min.js',
-							'assets/js/plugins/chartist-js/dist/chartist.min.css',
-							'assets/js/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css',
-							'assets/js/plugins/chartist-js/dist/chartist.min.js',
-							'assets/js/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js',
-							'assets/js/xpro_dashboard.js',
 							'app/modules/main/mainCtrl.js'
 						]
 					});

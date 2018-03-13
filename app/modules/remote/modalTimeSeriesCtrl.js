@@ -81,7 +81,7 @@
 	    	vm.resolutions.model = vm.resolutions.options[0].value;
 	    	/* daterange picker for time series
 	    	*/
-	    	var start = moment().subtract(4, 'months');
+	    	var start = moment().subtract(1, 'months');
 	    	var end = moment();
 	    	/* setup daterange picker for filtering
 	    	*/
@@ -256,11 +256,12 @@
 			if(angular.isDefined(res)){
 				vm.eventData.length = 0;
 				angular.forEach(res, function(value, key){
-					vm.eventData.push({x: parseInt(value.timestamp), y: parseFloat(value.sigma), z: key});
+					vm.eventData.push({x: parseInt(value.timestamp), y: parseFloat(value.confidence), z: key});
 				});
 				if(vm.chart.options.data.length<=1){
 					vm.chart.options.data.push({
 						type: "column",
+						fillOpacity: .5, 
 						visible: true,
 						axisYType: "secondary",
 						xValueType: "dateTime",

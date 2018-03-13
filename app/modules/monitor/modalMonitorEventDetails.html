@@ -72,11 +72,7 @@
 				{{ "site_event_tagging_button_label" | translate }} <span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu">
-				<li><a href="JavaScript:void(0);" class="dropdown-item" ng-click="vm.toggleTagging('hammer')">{{ "site_monitor_tag_opt_hammer" | translate }}</a></li>
-				<li><a href="JavaScript:void(0);" class="dropdown-item" ng-click="vm.toggleTagging('valve_open')">{{ "site_monitor_tag_opt_valve_open" | translate }}</a></li>
-				<li><a href="JavaScript:void(0);" class="dropdown-item" ng-click="vm.toggleTagging('valve_close')">{{ "site_monitor_tag_opt_valve_close" | translate }}</a></li>
-				<li><a href="JavaScript:void(0);" class="dropdown-item" ng-click="vm.toggleTagging('burst')">{{ "site_monitor_tag_opt_burst" | translate }}</a></li>
-				<li><a href="JavaScript:void(0);" class="dropdown-item" ng-click="vm.toggleTagging('data_error')">{{ "site_monitor_tag_opt_data_error" | translate }}</a></li>
+				<li ng-repeat="tag in vm.events.tags"><a href="JavaScript:void(0);" class="dropdown-item" ng-click="vm.toggleTagging(tag.id)">{{ tag.name }}</a></li>
 			</ul>
 		</div>
 		<button class="btn btn-primary" ng-click="$dismiss()">{{ "site_location_modal_close_btn" | translate }}</button>
