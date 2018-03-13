@@ -5,10 +5,10 @@
 	//Assets version
 	window.__env.assetVersion = "1.0";
 	//API Base url
-	window.__env.baseUrl = "/api/"; //main api path - client development path - /api/ | wes dev - https://101.132.100.22/api/
+	window.__env.baseUrl = "https://101.132.100.22/api/"; //main api path - client development path - /api/ | wes dev - https://101.132.100.22/api/
 
 	//project folder name
-	window.__env.folder = "/smartwater"; //client development env - /smartwater | wes dev - ""
+	window.__env.folder = ""; //client development env - /smartwater | wes dev - ""
 
 	// API url
 	window.__env.userLoginUrl = window.__env.baseUrl+'user/login';
@@ -52,6 +52,9 @@
 	window.__env.networkHydrantUrl = window.__env.baseUrl+'map/hydrant';
 	//network pipe end details
 	window.__env.networkPipeDetailsUrl = window.__env.baseUrl+'map/geo/pipe/detail';
+
+	//dma
+	window.__env.dmaUrl = window.__env.baseUrl+'map/dma';
 
 	//monitor neighbor
 	window.__env.monitorSiteNeighborUrl = window.__env.baseUrl+'site/get/';

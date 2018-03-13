@@ -249,9 +249,24 @@
 								</div>
 							</div>
 							<div class="soc-content">
-								<div class="details zone">
-									<span class="tag" style="font-size:22px; background-color:#f8f8f8; border:1px solid #eee; padding:5px 10px; border-radius: 3px; font-weight: 500; margin-right: 10px;" ng-repeat="zone in vm.project.subzones">{{ zone }}</span>
-								</div>
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th class="text-left">{{ "site_dashboard_zone_table_id" | translate }}</th>
+											<th class="text-left">{{ "site_dashboard_zone_table_name" | translate }}</th>
+											<th class="text-left" width="20%">{{ "site_dashboard_zone_table_area" | translate }}</th>
+											<th class="text-left" width="20%">{{ "site_dashboard_zone_table_pipe_length" | translate }}</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="row in vm.project.dma">
+											<td class="text-left">{{ row.id }}</td>
+											<td class="text-left">{{ row.name }}</td>
+											<td class="text-left">{{ row.area }}</td>
+											<td class="text-left">{{ row.pipe_length }}</td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>

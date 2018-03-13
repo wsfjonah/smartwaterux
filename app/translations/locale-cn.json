@@ -162,5 +162,9 @@
 	"site_dashboard_coverage" : "已覆盖",
 	"site_dashboard_not_covered" : "未覆盖",
 	"site_dashboard_localization" : "可定位",
-	"site_dashboard_not_localized" : "不可定位"
+	"site_dashboard_not_localized" : "不可定位",
+	"site_dashboard_zone_table_id" : "ID",
+	"site_dashboard_zone_table_name" : "名称",
+	"site_dashboard_zone_table_area" : "区域",
+	"site_dashboard_zone_table_pipe_length" : "水管长度"
 }

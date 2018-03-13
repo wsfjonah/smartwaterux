@@ -162,5 +162,9 @@
 	"site_dashboard_coverage" : "Coverage",
 	"site_dashboard_not_covered" : "Not Covered",
 	"site_dashboard_localization" : "Localization",
-	"site_dashboard_not_localized" : "Not Localized"
+	"site_dashboard_not_localized" : "Not Localized",
+	"site_dashboard_zone_table_id" : "ID",
+	"site_dashboard_zone_table_name" : "Name",
+	"site_dashboard_zone_table_area" : "Area",
+	"site_dashboard_zone_table_pipe_length" : "Pipe Length"
 }

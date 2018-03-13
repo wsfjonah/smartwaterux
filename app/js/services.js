@@ -385,5 +385,12 @@
 				headers: headers
 			});
 		};
+		this.dmaList = function(){
+			return $http({
+				method: 'GET',
+				url: __env.dmaUrl,
+				headers: headers
+			});
+		}
 	}
 })();

@@ -22,7 +22,7 @@
 			total_pipe_length: 0,
 			max_pipe_diameter: 0,
 			min_pipe_diameter: 0,
-			subzones: [],
+			dma: [],
 			layers: [],
 			diametermap: [],
 			coverageChart: [],
@@ -32,6 +32,7 @@
 		getProjectDetails();
 		getPipeSummary();
 		getCoverage();
+		getDma();
 
 		vm.barDiameterChart = new CanvasJS.Chart("chartDiameterContainer", {
 			theme: 'theme1',
@@ -42,6 +43,7 @@
 				{
 					type: "column",
 					visible: true,
+					yValueFormatString: "#####0.##########\" m\"",
 					dataPoints: vm.project.diametermap
 				}
 			]
@@ -86,7 +88,6 @@
 				}
 			]
 		});
-
 
 		function getCoverage(){
 			apiService.dashboardCoverageApi().then(function(response){
@@ -137,6 +138,16 @@
 			});
 		}
 
+		function getDma(){
+			apiService.dmaList().then(function(response){
+				if(angular.isDefined(response.data)){
+					angular.forEach(response.data, function(value, id){
+						vm.project.dma.push(value);
+					});
+				}
+			});
+		}
+
 		function getPipeSummary(){
 			apiService.networkPipeSummaryApi().then(function(response){
 				if(angular.isDefined(response.data)){
@@ -144,10 +155,9 @@
 					vm.project.total_pipe_length = res.total_pipe_length;
 					vm.project.max_pipe_diameter = res.max_pipe_diameter;
 					vm.project.min_pipe_diameter = res.min_pipe_diameter;
-					vm.project.subzones = res.subzones;
 					vm.project.layers = res.layers;
 					angular.forEach(res.diametermap, function(y, x){
-						vm.project.diametermap.push({label: x, y: parseFloat(y)});
+						vm.project.diametermap.push({label: x+"mm", y: parseFloat(y)});
 					});
 					vm.barDiameterChart.render();
 				}
