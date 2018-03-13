@@ -78,7 +78,8 @@
 							'app/modules/remote/modalHighRateCtrl.js',
 							'app/modules/remote/modalDetailsCtrl.js',
 							'app/modules/remote/modalMapCtrl.js',
-							'app/modules/remote/siteTableCtrl.js'
+							'app/modules/remote/siteTableCtrl.js',
+							'app/modules/remote/modalSiteEventsCtrl.js'
 						]
 					});
 				}]

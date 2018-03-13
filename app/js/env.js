@@ -53,6 +53,11 @@
 	//network pipe end details
 	window.__env.networkPipeDetailsUrl = window.__env.baseUrl+'map/geo/pipe/detail';
 
+	//site event - daily | weekly
+	window.__env.siteEventSummaryUrl = window.__env.baseUrl+'tsevent/pressuresummary';
+	//site reading - daily | weekly
+	window.__env.siteReadingSummaryUrl = window.__env.baseUrl+'tsda/pressuresummary';
+
 	//dma
 	window.__env.dmaUrl = window.__env.baseUrl+'map/dma';
 
@@ -70,6 +75,7 @@
 	window.__env.modalInformationTableInfo = window.__env.folder+'/app/modules/remote/modalDetails.html';
 	window.__env.modalInformationTableMap = window.__env.folder+'/app/modules/remote/modalMap.html';
 	window.__env.modalMonitorEventMap = window.__env.folder+'/app/modules/monitor/modalMap.html';
+	window.__env.modalSiteEventUrl = window.__env.folder+'/app/modules/remote/modalSiteEvents.html';
 
 	//locale folder
 	window.__env.localeFolderUrl = window.__env.folder+'/app/translations/locale-';

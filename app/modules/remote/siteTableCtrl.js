@@ -1,4 +1,4 @@
-/* global angular, __env, dialogService */
+/* global angular, __env, dialogService, moment */
 (function() {
 	'use strict';
 	var siteTable = angular.module('xProject.sitetable',['bsTable']);
@@ -117,6 +117,14 @@
 			var params = getData(id);
 			modalService.open(__env.modalInformationTableMap, 'modalInfoMap as vm', params);
 		};
+		$scope.viewEvent = function(id, name, type){
+			var params = {
+				type: type,
+				name: name,
+				id: id
+			};
+			modalService.open(__env.modalSiteEventUrl, 'modalSiteEventCtrl as vm', params);
+		};
 		function getData(id){
 			var params = {};
 			for(var i = 0, len = vm.remoteTable.options.data.length; i < len; i++) {
@@ -132,7 +140,7 @@
 			return "<a href='JavaScript:void(0)' onclick=\"angular.element(this).scope().viewMap('"+row.id+"')\">"+value+"</a>";
 		}
 
-		function formatVariation(value, row){
+		function formatVariation(value/*, row*/){
 			return "<span class='p-variation "+value+"'></span>";
 		}
 
@@ -143,10 +151,10 @@
 					html += "<i class='ti-menu'></i>";
 					html += "</button>";
 					html += "<ul class='dropdown-menu dropdown-menu-sm'>";
-						html += "<li><a href='JavaScript:void(0)' class='dropdown-item'>"+$translate.instant('site_location_table_action_daily_pressure')+"</a></li>";
-						html += "<li><a href='JavaScript:void(0)' class='dropdown-item'>"+$translate.instant('site_location_table_action_weekly_pressure')+"</a></li>";
-						html += "<li><a href='JavaScript:void(0)' class='dropdown-item'>"+$translate.instant('site_location_table_action_daily_event')+"</a></li>";
-						html += "<li><a href='JavaScript:void(0)' class='dropdown-item'>"+$translate.instant('site_location_table_action_weekly_event')+"</a></li>";
+						html += "<li><a href='JavaScript:void(0)' class='dropdown-item' onclick=\"angular.element(this).scope().viewEvent('"+row._id+"', '"+row.name+"', 'daily_event')\">"+$translate.instant('site_location_table_action_daily_event')+"</a></li>";
+						html += "<li><a href='JavaScript:void(0)' class='dropdown-item' onclick=\"angular.element(this).scope().viewEvent('"+row._id+"', '"+row.name+"', 'weekly_event')\">"+$translate.instant('site_location_table_action_weekly_event')+"</a></li>";
+						html += "<li><a href='JavaScript:void(0)' class='dropdown-item' onclick=\"angular.element(this).scope().viewEvent('"+row._id+"', '"+row.name+"', 'daily_reading')\">"+$translate.instant('site_location_table_action_daily_reading')+"</a></li>";
+						html += "<li><a href='JavaScript:void(0)' class='dropdown-item' onclick=\"angular.element(this).scope().viewEvent('"+row._id+"', '"+row.name+"', 'weekly_reading')\">"+$translate.instant('site_location_table_action_weekly_reading')+"</a></li>";
 					html += "</ul>";
 				html += "</div>";
 				html += "<button type='button' class='btn btn-secondary btn-sm' onclick=\"angular.element(this).scope().viewDetails('"+row.id+"')\"><i class='ti-info-alt'></i></button>";
