@@ -194,7 +194,6 @@
 			apiService.networkPumpApi().then(function(response){
 				angular.forEach(response.data, function(row){
 					if(angular.isDefined(row.location) && row.location.length){
-						console.log(row);
 						obj = row.location[0];
 						obj.name = row.options.name;
 						obj.options = row.options;

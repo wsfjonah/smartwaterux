@@ -24,7 +24,8 @@
 			range:{
 				start: null,
 				end: null
-			}
+			},
+			tags: []
 		};
 		vm.multiChartTimeSeries = [
 			{
@@ -36,6 +37,7 @@
 			},
 			{
 				type: "column",
+				fillOpacity: .5, 
 				visible: true,
 				axisYType: "secondary",
 				xValueType: "dateTime",
@@ -43,6 +45,7 @@
 				dataPoints: vm.events.column
 			}
 		];
+
 		$uibModalInstance.rendered.then(function(){
 			vm.chartEvent = new CanvasJS.Chart("chartEventContainer", {
 				theme: 'theme1',
@@ -114,11 +117,26 @@
 
 		//tagging
 		vm.toggleTagging = function(type){
-			getTagging(type);
+			setTagging(type);
 		};
 
+		getTagsList();
+		//get tagging list
+		function getTagsList(){
+			apiService.eventTagsList().then(function(response){
+				if(angular.isDefined(response.data)){
+					angular.forEach(response.data, function(res){
+						vm.events.tags.push({
+							name: commonService.tagMapping(res),
+							id: res
+						});
+					});
+				}
+			});
+		}
+
 		//tagging call
-		function getTagging(type){
+		function setTagging(type){
 			apiService.eventSetApi(vm.items.eventId, type).then(function(response){
 				if(angular.isDefined(response.data.message) && response.data.message==="success"){
 					sweetAlert.success({
@@ -130,6 +148,7 @@
 						text: $translate.instant('site_common_something_wrong')
 					});
 				}
+				commonService.hidePace();
 			});
 		}
 

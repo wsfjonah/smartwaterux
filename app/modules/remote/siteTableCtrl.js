@@ -36,8 +36,8 @@
 						title: $translate.instant('site_location_table_header_device'),
 						align: 'right',
 						valign: 'bottom',
-						width: 100,
-						sortable: true
+						width: 80,
+						//sortable: true
 					},{
 						field: 'name',
 						title: $translate.instant('site_location_table_header_name'),
@@ -51,12 +51,12 @@
 						valign: 'top',
 						sortable: true,
 						formatter: formatMapLink
-					},{
-						field: 'type',
-						title: $translate.instant('site_location_table_header_type'),
-						align: 'left',
-						width: '60px',
-						valign: 'top',
+					// },{
+					// 	field: 'type',
+					// 	title: $translate.instant('site_location_table_header_type'),
+					// 	align: 'left',
+					// 	width: '60px',
+					// 	valign: 'top',
 						//sortable: true
 					},{
 						field: 'status',
@@ -65,6 +65,31 @@
 						width: '60px',
 						valign: 'top',
 						//sortable: true
+					},{
+						field: 'datavariation',
+						title: $translate.instant('site_location_table_header_datavariation'),
+						align: 'center',
+						width: '60px',
+						valign: 'top',
+						formatter: formatVariation
+					},{
+						field: 'dataquality',
+						title: $translate.instant('site_location_table_header_dataquality'),
+						align: 'left',
+						width: '60px',
+						valign: 'top'
+					},{
+						field: 'reading',
+						title: $translate.instant('site_location_table_header_reading'),
+						align: 'left',
+						width: '60px',
+						valign: 'top'
+					},{
+						field: 'checkpoint_reading',
+						title: $translate.instant('site_location_table_header_checkpoint_reading'),
+						align: 'left',
+						width: '100px',
+						valign: 'top'
 					},{
 						field: 'geo_latlng',
 						title: $translate.instant('site_location_table_header_action'),
@@ -107,8 +132,23 @@
 			return "<a href='JavaScript:void(0)' onclick=\"angular.element(this).scope().viewMap('"+row.id+"')\">"+value+"</a>";
 		}
 
+		function formatVariation(value, row){
+			return "<span class='p-variation "+value+"'></span>";
+		}
+
 		function formatUserAction(value, row){
 			var html = "<div class='btn-group'>";
+				html += "<div class='btn-group'>";
+					html += "<button type='button' class='btn btn-secondary btn-sm' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+					html += "<i class='ti-menu'></i>";
+					html += "</button>";
+					html += "<ul class='dropdown-menu dropdown-menu-sm'>";
+						html += "<li><a href='JavaScript:void(0)' class='dropdown-item'>"+$translate.instant('site_location_table_action_daily_pressure')+"</a></li>";
+						html += "<li><a href='JavaScript:void(0)' class='dropdown-item'>"+$translate.instant('site_location_table_action_weekly_pressure')+"</a></li>";
+						html += "<li><a href='JavaScript:void(0)' class='dropdown-item'>"+$translate.instant('site_location_table_action_daily_event')+"</a></li>";
+						html += "<li><a href='JavaScript:void(0)' class='dropdown-item'>"+$translate.instant('site_location_table_action_weekly_event')+"</a></li>";
+					html += "</ul>";
+				html += "</div>";
 				html += "<button type='button' class='btn btn-secondary btn-sm' onclick=\"angular.element(this).scope().viewDetails('"+row.id+"')\"><i class='ti-info-alt'></i></button>";
 				html += "<button type='button' class='btn btn-secondary btn-sm' onclick=\"angular.element(this).scope().viewData('"+row.id+"')\"><i class='ti-stats-up'></i></button>";
 			html += "</div>";
@@ -120,9 +160,21 @@
 		function getSiteData(string){
 			apiService.siteApi(string).then(function(response){
 				angular.forEach(response.data, function(value/*, key*/){
+					var variation = "green";
+					if(value.datavariation>0.01 && value.datavariation<=0.04){
+						variation = "yellow";
+					}else if(value.datavariation>0.04 && value.datavariation<=0.07){
+						variation = "orange";
+					}else if(value.datavariation>0.07){
+						variation = "red";
+					}
 					vm.tableData.push({
 						id: value.device_ref,
 						device_ref: value.device_ref,
+						checkpoint_reading: moment(value.checkpoint_reading).format('YYYY-MM-DD HH:mm:ss'),
+						reading: ((value.reading/100) * 100).toFixed(2),
+						dataquality: ((value.dataquality/1) * 100).toFixed(2) + '%',
+						datavariation: variation,
 						created: value.created,
 						datapoint: value.datapoint,
 						geo_address: value.geo_address,

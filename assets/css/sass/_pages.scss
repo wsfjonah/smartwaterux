@@ -204,6 +204,37 @@
 }
 
 /*******************
+ site table
+*******************/
+.dropdown-menu-sm{
+	li > a{
+		font-size:13px;
+	}
+	.dropdown-item{
+		padding: 5px 1rem;
+	}
+}
+.p-variation{
+	display: inline-block;
+	width:20px;
+	height:20px;
+	border-radius:20px;
+	border:1px solid #999;
+	&.green{
+		background-color:#11bec4;
+	}
+	&.yellow{
+		background-color:#f4ee42;
+	}
+	&.orange{
+		background-color:#f86c6b;
+	}
+	&.red{
+		background-color:#cc0e1a;
+	}
+}
+
+/*******************
  Monitoring
 *******************/
 .md-dialog-container{

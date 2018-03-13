@@ -1,4 +1,4 @@
-/* global angular */
+/* global angular, __env, moment */
 /* 	requirement
 *	1. monitor mode
 *	- use api - api/tsevent/search/-1/100000000
@@ -58,6 +58,12 @@
 					},{
 						id: 'data_error',
 						name: $translate.instant('site_monitor_tag_opt_data_error')
+					},{
+						id: 'anomaly',
+						name: $translate.instant('site_monitor_tag_opt_anomaly')
+					},{
+						id: 'unknown',
+						name: $translate.instant('site_monitor_tag_opt_unknown')
 					}
 				]
 			},
@@ -80,17 +86,23 @@
 				model: null,
 				options:[
 					{
-						id: 1,
+						id: "1hr",
+						name: $translate.instant('site_monitor_duration_opt_1hr')
+					},{
+						id: "2hr",
+						name: $translate.instant('site_monitor_duration_opt_2hr')
+					},{
+						id: "6hr",
+						name: $translate.instant('site_monitor_duration_opt_6hr')
+					},{
+						id: "12hr",
+						name: $translate.instant('site_monitor_duration_opt_12hr')
+					},{
+						id: "1d",
 						name: $translate.instant('site_monitor_duration_opt_1d')
 					},{
-						id: 2,
+						id: "2d",
 						name: $translate.instant('site_monitor_duration_opt_2d')
-					},{
-						id: 5,
-						name: $translate.instant('site_monitor_duration_opt_5d')
-					},{
-						id: 7,
-						name: $translate.instant('site_monitor_duration_opt_7d')
 					}
 				]
 			},
@@ -141,7 +153,27 @@
 		vm.getFilterData = function(){
 			var end = moment($("#date_filter_monitor").data('daterangepicker').startDate);
 			var isToday = moment(end).isSame(moment(), 'day');
-			var duration = parseInt(vm.filter.duration.model.id)*24*3600*1000;//(1d) 24x3600x1000
+			var duration = 0;
+			switch (vm.filter.duration.model.id){
+				case "1hr":
+					duration = 1*3600*1000;
+					break;
+				case "2hr":
+					duration = 2*3600*1000;
+					break;
+				case "6hr":
+					duration = 6*3600*1000;
+					break;
+				case "12hr":
+					duration = 12*3600*1000;
+					break;
+				case "1d":
+					duration = 1*24*3600*1000;
+					break;
+				case "2d":
+					duration = 2*24*3600*1000;
+					break;
+			}
 			var res = {
 				tag: [],
 				duration: duration,
@@ -235,7 +267,7 @@
 						obj = v;
 						obj.key = key;
 						vm.monitor.push(obj);
-					})
+					});
 					commonService.hidePace();
 					if(vm.monitor.length>500){
 						vm.monitorPage.button = true;
@@ -256,10 +288,10 @@
 					end: (angular.isDefined(init)) ? getData.end : vm.invest.paging,
 					duration: getData.duration,
 					filter: ""
-				}
+				};
 				delete getData.end;
 				delete getData.duration;
-				params.filter = "/?filter="+encodeURIComponent(JSON.stringify(getData))
+				params.filter = "/?filter="+encodeURIComponent(JSON.stringify(getData));
 				vm.invest.isFilter = true;
 			}
 			apiService.eventMonitorApi(params).then(function(response){
