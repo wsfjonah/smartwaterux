@@ -65,7 +65,8 @@
 					horizontalAlign: "center",
 					verticalAlign: "bottom",
 					fontSize: 15,
-					fontFamily: "Roboto, Helvetica Neue, sans-serif"
+					fontFamily: "Roboto, Helvetica Neue, sans-serif",
+					itemclick: vm.toggleDataSeries
 				},
 				legendText: "Numbers",
 				data: vm.events.line_chart
@@ -73,6 +74,16 @@
 			vm.chart.render();
 			initData();
 		});
+
+		vm.toggleDataSeries = function(e){
+			console.log('click');
+			if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+				e.dataSeries.visible = false;
+			} else {
+				e.dataSeries.visible = true;
+			}
+			e.chart.render();
+		};
 
 		function initData(){
 			if(vm.events.type==="daily_event" || vm.events.type==="weekly_event"){

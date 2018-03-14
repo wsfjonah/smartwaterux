@@ -43,7 +43,7 @@
 				{
 					type: "column",
 					visible: true,
-					yValueFormatString: "#####0.##########\" m\"",
+					yValueFormatString: "#####0.##\" km\"",
 					dataPoints: vm.project.diametermap
 				}
 			]
@@ -157,7 +157,7 @@
 					vm.project.min_pipe_diameter = res.min_pipe_diameter;
 					vm.project.layers = res.layers;
 					angular.forEach(res.diametermap, function(y, x){
-						vm.project.diametermap.push({label: x+"mm", y: parseFloat(y)});
+						vm.project.diametermap.push({label: x+"mm", y: parseFloat(y/1000)});
 					});
 					vm.barDiameterChart.render();
 				}
