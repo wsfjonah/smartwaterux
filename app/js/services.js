@@ -406,5 +406,19 @@
 				headers: headers
 			});
 		};
+		this.dashboardSiteEventSummaryApi = function(){
+			return $http({
+				method: 'GET',
+				url: __env.dashboardEventUrl,
+				headers: headers
+			});
+		};
+		this.dashboardSiteVariationSummaryApi = function(){
+			return $http({
+				method: 'GET',
+				url: __env.dashboardVariationUrl,
+				headers: headers
+			});
+		};
 	}
 })();

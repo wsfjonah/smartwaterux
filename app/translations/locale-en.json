@@ -8,6 +8,8 @@
 	"site_server_error" : "Something went wrong on the server, please try again later",
 	"site_menu_label" : "Menu",
 	"site_menu_main" : "Dashboard",
+	"site_menu_dashboard_info" : "Info. Dashboard",
+	"site_menu_dashboard_network" : "Network Dashboard",
 	"site_menu_monitor" : "Monitoring",
 	"site_menu_remote" : "Remote Site",
 	"site_menu_location" : "Location",
@@ -166,5 +168,7 @@
 	"site_dashboard_zone_table_id" : "ID",
 	"site_dashboard_zone_table_name" : "Name",
 	"site_dashboard_zone_table_area" : "Area",
-	"site_dashboard_zone_table_pipe_length" : "Pipe Length"
+	"site_dashboard_zone_table_pipe_length" : "Pipe Length",
+	"site_dashboard_network_event_summary" : "Event Summary",
+	"site_dashboard_network_variation_summary" : "Variation Summary"
 }

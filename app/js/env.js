@@ -58,6 +58,10 @@
 	//site reading - daily | weekly
 	window.__env.siteReadingSummaryUrl = window.__env.baseUrl+'tsda/pressuresummary';
 
+	//network dashboard
+	window.__env.dashboardVariationUrl = window.__env.baseUrl+'dashboard/sites/variationsummary';
+	window.__env.dashboardEventUrl = window.__env.baseUrl+'dashboard/sites/eventsummary';
+
 	//dma
 	window.__env.dmaUrl = window.__env.baseUrl+'map/dma';
 
@@ -87,7 +91,7 @@
 	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location','/network-data'];
 
 	//main page after user login
-	window.__env.pageMain = '/main';
+	window.__env.pageMain = '/dashboard-info';
 
 	// Whether or not to enable debug mode
 	// Setting this to false will disable console output
