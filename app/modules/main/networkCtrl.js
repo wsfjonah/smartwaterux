@@ -1,61 +1,71 @@
 /* global angular, CanvasJS */
 (function() {
 	'use strict';
-	var dashboardNetwork = angular.module('xProject.main',[]);
-	dashboardNetwork.$inject = ['$scope', 'authService', '$location', '$http'];
-	dashboardNetwork.controller('dashboardNetworkController', function dashboardNetworkController ($scope, authService, $location, apiService) {
+	var dashboardNetwork = angular.module('xProject.networkdashboard',[]);
+	dashboardNetwork.$inject = ['$scope'];
+	dashboardNetwork.controller('dashboardNetworkController', function dashboardNetworkController ($scope, apiService, $timeout, $translate) {
 		var vm = this;
-		vm.project = {
-			events: [],
-			variations: []
+		vm.networkChart = [];
+		vm.chartTitle = [];
+		vm.langMapping = function(key, title){
+			var mapping = {
+				eventsummary : $translate.instant("site_dashboard_network_event_summary"),
+				variation : $translate.instant("site_dashboard_network_variation_summary")
+			};
+			return (mapping.hasOwnProperty(key)) ? mapping[key] : title;
 		};
 
-		vm.eventChart = new CanvasJS.Chart("chartEventContainer", {
-			theme: 'theme1',
-			animationEnabled: true,
-			zoomEnabled: true,
-			dataPointWidth: 30,
-			data: [
-				{
-					type: "column",
-					visible: true,
-					//yValueFormatString: "#####0.##\" km\"",
-					dataPoints: vm.project.events
-				}
-			]
+		/* watch language changed and apply for network chart title
+		*/
+		$scope.$parent.$watch('vm.currLang', function(newVal, oldVal){
+			if(newVal!==oldVal){
+				vm.chartTitle.length = 0;
+				angular.forEach(vm.networkChart, function(row){
+					vm.chartTitle.push(vm.langMapping(row.id, row.desc));
+				});
+			}
 		});
 
-		vm.variationChart = new CanvasJS.Chart("chartVariationContainer", {
-			theme: 'theme1',
-			animationEnabled: true,
-			zoomEnabled: true,
-			dataPointWidth: 30,
-			data: [
-				{
-					type: "column",
-					visible: true,
-					//yValueFormatString: "#####0.##\" km\"",
-					dataPoints: vm.project.variations
-				}
-			]
-		});
 		getNetworkSummary();
 
 		function getNetworkSummary(){
 			apiService.dashboardNetworkSummaryApi().then(function(response){
 				if(angular.isDefined(response.data)){
-					if(angular.isDefined(response.data.eventsummary)){
-						angular.forEach(response.data.eventsummary.chart, function(value, key){
-							vm.project.events.push({label: key, y: value});
+					var prefix = "chartContainer_";
+					var obj = {};
+					vm.chartTitle.length = 0;
+					angular.forEach(response.data, function(row, keyChart){
+						obj = {};
+						obj.id = keyChart;
+						obj.desc = row.desc;
+						obj.chartId = prefix+obj.id;
+						obj.data = [];
+						angular.forEach(row.chart, function(value, key){
+							obj.data.push({label: key, y: value});
 						});
-						vm.eventChart.render();
-					}
-					if(angular.isDefined(response.data.variation)){
-						angular.forEach(response.data.variation.chart, function(value, key){
-							vm.project.variations.push({label: key, y: value});
+						vm.chartTitle.push(vm.langMapping(obj.id, obj.desc));
+						vm.networkChart.push(obj);
+					});
+					$timeout(function() {
+						angular.forEach(vm.networkChart, function(value){
+							if (angular.element('#'+value.chartId).length) {
+								var chart = new CanvasJS.Chart(value.chartId, {
+									theme: 'theme1',
+									animationEnabled: true,
+									zoomEnabled: true,
+									dataPointWidth: 30,
+									data: [
+										{
+											type: "column",
+											visible: true,
+											dataPoints: value.data
+										}
+									]
+								});
+								chart.render();
+							}
 						});
-						vm.variationChart.render();
-					}
+					});
 				}
 			});
 		}
