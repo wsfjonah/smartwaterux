@@ -406,19 +406,13 @@
 				headers: headers
 			});
 		};
-		this.dashboardSiteEventSummaryApi = function(){
+		this.dashboardNetworkSummaryApi = function(){
 			return $http({
 				method: 'GET',
-				url: __env.dashboardEventUrl,
+				url: __env.dashboardNetworkSummaryUrl,
 				headers: headers
 			});
 		};
-		this.dashboardSiteVariationSummaryApi = function(){
-			return $http({
-				method: 'GET',
-				url: __env.dashboardVariationUrl,
-				headers: headers
-			});
-		};
+
 	}
 })();

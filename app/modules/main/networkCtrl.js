@@ -39,26 +39,23 @@
 				}
 			]
 		});
-		getEventSummary();
-		getVariationSummary();
+		getNetworkSummary();
 
-		function getEventSummary(){
-			apiService.dashboardSiteEventSummaryApi().then(function(response){
+		function getNetworkSummary(){
+			apiService.dashboardNetworkSummaryApi().then(function(response){
 				if(angular.isDefined(response.data)){
-					angular.forEach(response.data, function(value, key){
-						vm.project.events.push({label: key, y: value});
-					});
-					vm.eventChart.render();
-				}
-			});
-		}
-		function getVariationSummary(){
-			apiService.dashboardSiteVariationSummaryApi().then(function(response){
-				if(angular.isDefined(response.data)){
-					angular.forEach(response.data, function(value, key){
-						vm.project.variations.push({label: key, y: value});
-					});
-					vm.variationChart.render();
+					if(angular.isDefined(response.data.eventsummary)){
+						angular.forEach(response.data.eventsummary.chart, function(value, key){
+							vm.project.events.push({label: key, y: value});
+						});
+						vm.eventChart.render();
+					}
+					if(angular.isDefined(response.data.variation)){
+						angular.forEach(response.data.variation.chart, function(value, key){
+							vm.project.variations.push({label: key, y: value});
+						});
+						vm.variationChart.render();
+					}
 				}
 			});
 		}

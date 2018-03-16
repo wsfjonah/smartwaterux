@@ -169,6 +169,6 @@
 	"site_dashboard_zone_table_name" : "名称",
 	"site_dashboard_zone_table_area" : "区域",
 	"site_dashboard_zone_table_pipe_length" : "水管长度",
-	"site_dashboard_network_event_summary" : "事件摘要",
-	"site_dashboard_network_variation_summary" : "变化摘要"
+	"site_dashboard_network_event_summary" : "管网事件统计",
+	"site_dashboard_network_variation_summary" : "管网变化统计"
 }

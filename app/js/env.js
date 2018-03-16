@@ -59,8 +59,7 @@
 	window.__env.siteReadingSummaryUrl = window.__env.baseUrl+'tsda/pressuresummary';
 
 	//network dashboard
-	window.__env.dashboardVariationUrl = window.__env.baseUrl+'dashboard/sites/variationsummary';
-	window.__env.dashboardEventUrl = window.__env.baseUrl+'dashboard/sites/eventsummary';
+	window.__env.dashboardNetworkSummaryUrl = window.__env.baseUrl+'dashboard/networksummary';
 
 	//dma
 	window.__env.dmaUrl = window.__env.baseUrl+'map/dma';
