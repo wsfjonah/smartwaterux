@@ -406,5 +406,13 @@
 				headers: headers
 			});
 		};
+		this.dashboardNetworkSummaryApi = function(){
+			return $http({
+				method: 'GET',
+				url: __env.dashboardNetworkSummaryUrl,
+				headers: headers
+			});
+		};
+
 	}
 })();

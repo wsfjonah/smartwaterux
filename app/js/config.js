@@ -7,7 +7,7 @@
 
 	function appConfig($routeProvider) {
 		$routeProvider
-		.when('/main', {
+		.when('/dashboard-info', {
 			templateUrl: __env.folder+'/app/modules/main/main.html',
 			controller: 'mainController as vm',
 			restrictions: {
@@ -23,6 +23,27 @@
 						serie: true,
 						files: [
 							'app/modules/main/mainCtrl.js'
+						]
+					});
+				}]
+			}
+		})
+		.when('/dashboard-network', {
+			templateUrl: __env.folder+'/app/modules/main/network.html',
+			controller: 'dashboardNetworkController as vm',
+			restrictions: {
+				ensureAuthenticated: true,
+				loginRedirect: false
+			},
+			page_params: {
+				key: "dashboard_network"
+			},
+			resolve: {
+				loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+					return $ocLazyLoad.load({
+						serie: true,
+						files: [
+							'app/modules/main/networkCtrl.js'
 						]
 					});
 				}]
@@ -187,7 +208,7 @@
 				key: "login"
 			},
 		}).otherwise({
-			redirectTo: '/main'
+			redirectTo: '/dashboard-info'
 		});
 	}
 })();

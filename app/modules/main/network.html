@@ -1,0 +1,22 @@
+<div class="row page-titles">
+	<div class="col-md-5 align-self-center">
+		<h3 class="text-white" translate="site_menu_dashboard_network"></h3>
+	</div>
+</div>
+<div class="container-fluid">
+	<!-- Row -->
+	<div class="row" ng-repeat="chart in vm.networkChart">
+		<!-- Column -->
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">{{ vm.chartTitle[$index] }}</div>
+				<div class="card-body">
+					<div class="chart-x">
+						<div id="{{ chart.chartId }}" style="width:100%;height:300px"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Column -->
+	</div>
+</div>

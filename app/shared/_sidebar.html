@@ -19,28 +19,34 @@
 		<ul id="sidebarnav">
 			<li class="nav-devider"></li>
 			<li class="nav-small-cap" translate="site_menu_label"></li>
-			<li>
+			<!-- <li>
 				<a class="waves-effect waves-dark" href="#!main" aria-expanded="false">
 					<i class="ti-package"></i><span class="hide-menu" translate="site_menu_main"></span>
 				</a>
-			</li>
-			<li> <a class="has-arrow waves-effect waves-dark" href="" aria-expanded="false"><i class="ti-shield"></i><span class="hide-menu" translate="site_menu_remote"></span></a>
+			</li> -->
+			<li>
+				<a class="has-arrow waves-effect waves-dark" href="" aria-expanded="false"><i class="ti-package"></i><span class="hide-menu" translate="site_menu_main"></span></a>
 				<ul aria-expanded="false" class="collapse">
-					<li ng-class="{ active: vm.isCurrentPath('/location') }"><a href="#!location" translate="site_menu_location"></a></li>
-					<li ng-class="{ active: vm.isCurrentPath('/site') }"><a href="#!site" translate="site_menu_table"></a></li>
+					<li><a href="#!main" translate="site_menu_dashboard_info" ng-class="{ active: vm.isCurrentPath('/dashboard-info') }"></a></li>
+					<li><a href="#!dashboard-network" translate="site_menu_dashboard_network" ng-class="{ active: vm.isCurrentPath('/dashboard-network') }"></a></li>
+				</ul>
+			</li>
+			<li>
+				<a class="has-arrow waves-effect waves-dark" href="" aria-expanded="false"><i class="ti-shield"></i><span class="hide-menu" translate="site_menu_remote"></span></a>
+				<ul aria-expanded="false" class="collapse">
+					<li><a href="#!location" translate="site_menu_location" ng-class="{ active: vm.isCurrentPath('/location') }"></a></li>
+					<li><a href="#!site" translate="site_menu_table" ng-class="{ active: vm.isCurrentPath('/site') }"></a></li>
 				</ul>
 			</li>
 			<li> <a class="has-arrow waves-effect waves-dark" href="JavaScript:void(0);" aria-expanded="false"><i class="ti-location-pin"></i><span class="hide-menu" translate="site_menu_network"></span></a>
 				<ul aria-expanded="false" class="collapse">
-					<li><a href="#!gis" translate="site_menu_city_overview"></a></li>
-					<li><a href="#!network-analysis" translate="site_menu_network_analysis"></a></li>
-					<li><a href="#!network-data" translate="site_menu_network_data"></a></li>
-					<!-- <li><a href="#!network-condition" translate="site_menu_network_cond"></a></li>
-					<li><a href="#!network-alert" translate="site_menu_network_alert"></a></li> -->
+					<li><a href="#!gis" translate="site_menu_city_overview" ng-class="{ active: vm.isCurrentPath('/gis') }"></a></li>
+					<li><a href="#!network-analysis" translate="site_menu_network_analysis" ng-class="{ active: vm.isCurrentPath('/network-analysis') }"></a></li>
+					<li><a href="#!network-data" translate="site_menu_network_data" ng-class="{ active: vm.isCurrentPath('/network-data') }"></a></li>
 				</ul>
 			</li>
 			<li>
-				<a class="waves-effect waves-dark" href="#!monitoring" aria-expanded="false">
+				<a class="waves-effect waves-dark" href="#!monitoring" aria-expanded="false" ng-class="{ active: vm.isCurrentPath('/monitoring') }">
 					<i class="ti-signal"></i><span class="hide-menu" translate="site_menu_monitor"></span>
 				</a>
 			</li>

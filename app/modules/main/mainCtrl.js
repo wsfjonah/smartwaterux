@@ -141,7 +141,7 @@
 		function getDma(){
 			apiService.dmaList().then(function(response){
 				if(angular.isDefined(response.data)){
-					angular.forEach(response.data, function(value, id){
+					angular.forEach(response.data, function(value/*, id*/){
 						vm.project.dma.push(value);
 					});
 				}
