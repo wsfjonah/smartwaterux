@@ -49,6 +49,28 @@
 				}]
 			}
 		})
+		.when('/dashboard-scatter', {
+			templateUrl: __env.folder+'/app/modules/main/scatter.html',
+			controller: 'dashboardScatterController as vm',
+			restrictions: {
+				ensureAuthenticated: true,
+				loginRedirect: false
+			},
+			page_params: {
+				key: "dashboard_scatter"
+			},
+			resolve: {
+				loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+					return $ocLazyLoad.load({
+						serie: true,
+						files: [
+							'app/modules/main/scatterCtrl.js',
+							'app/modules/main/scatterData.js'
+						]
+					});
+				}]
+			}
+		})
 		.when('/location', {
 			templateUrl: __env.folder+'/app/modules/remote/location.html',
 			controller: 'locationController as vm',
