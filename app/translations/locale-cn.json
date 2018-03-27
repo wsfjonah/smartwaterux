@@ -10,6 +10,7 @@
 	"site_menu_main" : "面板",
 	"site_menu_dashboard_info" : "信息面板",
 	"site_menu_dashboard_network" : "网络面板",
+	"site_menu_dashboard_scatter" : "发布面板",
 	"site_menu_monitor" : "监控",
 	"site_menu_remote" : "远程终端",
 	"site_menu_location" : "地理位置",
