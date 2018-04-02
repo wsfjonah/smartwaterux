@@ -58,10 +58,10 @@
 			},
 			data: [
 				{
-					type: "doughnut",
+					type: "pie",
 					showInLegend: true,
 					startAngle: 60,
-					yValueFormatString: "##0.##\" %\"",
+					yValueFormatString: "##0.##\"\"",
 					indexLabel: "{name} {y}",
 					indexLabelFontFamily: "Poppins,sans-serif",
 					dataPoints: vm.project.coverageChart
@@ -78,10 +78,10 @@
 			},
 			data: [
 				{
-					type: "doughnut",
+					type: "pie",
 					showInLegend: true,
 					startAngle: 60,
-					yValueFormatString: "##0.##\" %\"",
+					yValueFormatString: "##0.##\"\"",
 					indexLabel: "{name} {y}",
 					indexLabelFontFamily: "Poppins,sans-serif",
 					dataPoints: vm.project.localizedChart
