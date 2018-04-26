@@ -187,6 +187,14 @@
 			});
 		};
 
+		this.timeSeriesRangeCsvApi = function(params){
+			return $http({
+				method: 'GET',
+				url: __env.timeSeriesRangeUrl+"/"+params.datapoints+"/"+params.resolution+"/"+params.from+"/"+params.to+"/csv"+"/"+params.timezone,
+				headers: headers
+			});
+		};
+
 		this.batchTimeSeriesApi = function(params, extraPath){
 			var defaultParams = {
 				datapoints: "",

@@ -191,6 +191,35 @@
 			}
 		};
 
+		/* downloadCsv button
+		*/
+		vm.downloadCsv = function(){
+			var params = {},
+				res_date = getStartEndDate(),
+				ids = getId().join(",");
+
+			var current_date = new Date();
+			var gmtHours = -1 * current_date.getTimezoneOffset()/60;
+			var current_timezone = "GMT+" + gmtHours;
+
+			params = {
+				datapoints: ids,
+				resolution: vm.resolutions.model,
+				from: res_date.start,
+				to: res_date.end,
+				timezone: current_timezone
+			};
+
+			if(angular.isDefined(params) && params.datapoints!==""){
+				apiService.timeSeriesRangeCsvApi(params).then(function(response){
+					console.log(response);
+					$window.open("data:text/csv;charset=utf-8," + encodeURIComponent(response.data));
+				});
+			}else{
+				dialogService.alert(null,{content:$translate.instant('site_common_something_wrong')});
+			}
+		};
+
 		/* filter button
 		*/
 		vm.getTimeSeriesFilter = function(){

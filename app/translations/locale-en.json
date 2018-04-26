@@ -31,6 +31,7 @@
 	"site_location_modal_lowrate" : "Low Rate",
 	"site_location_modal_view_event" : "View Event",
 	"site_location_modal_view_highrate" : "View High Rate",
+	"site_location_modal_download_btn" : "Download",
 	"site_location_modal_close_btn" : "Close",
 	"site_location_modal_filter_btn" : "Filter",
 	"site_location_modal_tab_auto" : "Auto Suggestion",
