@@ -49,6 +49,6 @@
 	</div>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-default" ng-click="vm.downloadCsv()">{{'site_location_modal_download_btn' | translate}}</button>
+	<a href={{vm.csvUrl}} class="btn btn-default">{{'site_location_modal_download_btn' | translate}}</a>
 	<button class="btn btn-primary" ng-click="vm.ok()">{{'site_location_modal_close_btn' | translate}}</button>
 </div>
