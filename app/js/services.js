@@ -129,7 +129,7 @@
 		this.siteApi = function(string){
 			var configArr = {
 				method: 'GET',
-				url: apiBaseURL + 'site/search',
+				url:  __env.siteSearchUrl,
 				headers: headers,
 				data: $httpParamSerializerJQLike()
 			};
@@ -297,7 +297,7 @@
 		this.boundaryApi = function(){
 			return $http({
 				method: 'GET',
-				url: apiBaseURL + 'map/boundary',
+				url: __env.boundaryUrl,
 				headers: headers
 			});
 		};
@@ -305,21 +305,21 @@
 		this.heatMapApi = function(){
 			return $http({
 				method: 'GET',
-				url: apiBaseURL + 'map/heatmap',
+				url: __env.heatmapUrl,
 				headers: headers
 			});
 		};
 		this.sensorApi = function(query){
 			return $http({
 				method: 'GET',
-				url: apiBaseURL + 'map/sensorjunction?query='+query,
+				url: __env.sensorJunctionUrl,
 				headers: headers
 			});
 		};
 		this.pipeApi = function(query){
 			return $http({
 				method: 'GET',
-				url: apiBaseURL + 'map/pipe?query='+query,
+				url: __env.mapPipeUrl,
 				headers: headers
 			});
 		};

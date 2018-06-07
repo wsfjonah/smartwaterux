@@ -192,7 +192,7 @@
 		};
 
 		vm.csvUrl = "https://smartwater.banxiniot.com/api/tsda/query/5a6eb4e70b272a1f64fa26ba-pressure/1n/1523327700000/1523332740000/csv/GMT+8?token=617a1a81-0655-444e-a8cb-ea9daf0e406d";
-		
+
 		/* filter button
 		*/
 		vm.getTimeSeriesFilter = function(){
@@ -263,7 +263,7 @@
 				if(vm.chart.options.data.length<=1){
 					vm.chart.options.data.push({
 						type: "column",
-						fillOpacity: .5, 
+						fillOpacity: .5,
 						visible: true,
 						axisYType: "secondary",
 						xValueType: "dateTime",
