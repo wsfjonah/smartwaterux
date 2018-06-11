@@ -2,7 +2,7 @@
 	'use strict';
 	window.__env = window.__env || {};
 
-	window.__env.env = "local";
+	window.__env.isLocal = true;
 
 	//Assets version
 	window.__env.assetVersion = "1.0";
@@ -14,7 +14,7 @@
 
 	//local json data
 	window.__env.json = window.__env.folder+"/json/";
-	window.__env.q = (window.__env.env === "local") ? "?" : "";
+	window.__env.q = (window.__env.isLocal) ? "?" : "";
 
 	// API url
 	window.__env.userLoginUrl = window.__env.baseUrl+'user/login';
@@ -82,52 +82,52 @@
 
 	/* collecting local json data
 	*/
-	if (window.__env.env === "local") {
+	if (window.__env.isLocal) {
 		// API url
 		window.__env.userLoginUrl = window.__env.json+'login.json?'; //done
 		window.__env.switchProjectUrl = window.__env.json+'switchproject.json?'; //done
 		window.__env.timeSeriesAnyUrl = window.__env.json+'tsda_query.json?'; //done
 		window.__env.timeSeriesRangeUrl = window.__env.json+'tsda_range_query.json?'; //done
-		window.__env.eventAnyUrl = window.__env.json+'tsevent/search/-1/100000000';
+		//window.__env.eventAnyUrl = window.__env.json+'tsevent/search/-1/100000000';
 		window.__env.eventDurationUrl = window.__env.json+'tsevent_search.json?'; //done
-		window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query';
+		//window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query'; //unused
 		window.__env.eventDetailsUrl = window.__env.json+'tsevent_get.json?'; //done
 		window.__env.eventSingleRangeUrl = window.__env.json+'tsevent_datapoint.json?'; //done
 		//batch query time series
 		window.__env.batchTimeSeriesUrl = window.__env.json+'tsda_batch_highrate_next.json?'; //have to solve next / prev minutes data
 		//event used - e.g. tag
-		window.__env.eventSetUrl = window.__env.baseUrl+'tsevent/set';
+		window.__env.eventSetUrl = window.__env.json+'tsevent_set.json?'; //done
 
 		//project
-		window.__env.projectUrl = window.__env.baseUrl+'project/detail';
+		window.__env.projectUrl = window.__env.json+'project_details.json?'; //done
 
 		//dashboard coverage
-		window.__env.dashboardCoverageUrl = window.__env.baseUrl+'dashboard/coverage';
+		window.__env.dashboardCoverageUrl = window.__env.json+'dashboard_coverage.json?'; //done
 
 		//customer
-		window.__env.customerUrl = window.__env.baseUrl+'map/customer';
+		window.__env.customerUrl = window.__env.json+'map_customer.json?'; //done
 
 		//network sensor
 		window.__env.siteSearchUrl = window.__env.json+'site_search.json?'; //done
-		window.__env.networkSensorUrl = window.__env.baseUrl+'site/search';
+		window.__env.networkSensorUrl = window.__env.json+'site_search.json?'; //done
 		window.__env.boundaryUrl = window.__env.json+'map_boundary.json?'; //done
-		window.__env.heatmapUrl = window.__env.baseUrl+'map/heatmap';
-		window.__env.sensorJunctionUrl = window.__env.baseUrl+'map/sensorjunction?query=';
-		window.__env.mapPipeUrl = window.__env.baseUrl+'map/pipe?query=';
+		//window.__env.heatmapUrl = window.__env.baseUrl+'map/heatmap';
+		//window.__env.sensorJunctionUrl = window.__env.baseUrl+'map/sensorjunction?query=';
+		window.__env.mapPipeUrl = window.__env.json+'map_pipe.json?'; //done
 		//network pipe
-		window.__env.networkPipeUrl = window.__env.baseUrl+'map/pipe';
+		window.__env.networkPipeUrl = window.__env.json+'map_pipe.json?'; //done
 		//network pipe summary - used for menu
-		window.__env.networkPipeSummaryUrl = window.__env.baseUrl+'map/pipesummary';
+		window.__env.networkPipeSummaryUrl = window.__env.json+'pipe_summary.json?'; //done
 		//network analysis pipe
-		window.__env.networkAnalysisPipeUrl = window.__env.baseUrl+'map/geo/pipe';
+		window.__env.networkAnalysisPipeUrl = window.__env.json+'map_geo_pipe.json?'; //done
 		//network analysis coverage
-		window.__env.networkAnalysisSensorCoverageUrl = window.__env.baseUrl+'map/sensorcoverage';
+		window.__env.networkAnalysisSensorCoverageUrl = window.__env.json+'map_sensor_coverage.json?'; //done
 		//network pump
-		window.__env.networkPumpUrl = window.__env.baseUrl+'map/pump';
+		window.__env.networkPumpUrl = window.__env.json+'map_pump.json?'; //done
 		//network hydrant
-		window.__env.networkHydrantUrl = window.__env.baseUrl+'map/hydrant';
+		window.__env.networkHydrantUrl = window.__env.json+'map_hydrant.json?'; //done
 		//network pipe end details
-		window.__env.networkPipeDetailsUrl = window.__env.baseUrl+'map/geo/pipe/detail';
+		window.__env.networkPipeDetailsUrl = window.__env.json+'map_geo_pipe_detail.json?'; //done
 
 		//site event - daily | weekly
 		window.__env.siteEventSummaryUrl = window.__env.json+'tsevent_pressure_summary.json?'; //done
@@ -135,16 +135,16 @@
 		window.__env.siteReadingSummaryUrl = window.__env.json+'tsda_reading_summary.json?'; //done
 
 		//network dashboard
-		window.__env.dashboardNetworkSummaryUrl = window.__env.baseUrl+'dashboard/networksummary';
+		window.__env.dashboardNetworkSummaryUrl = window.__env.json+'dashboard_network_summary.json?'; //done
 
 		//dma
-		window.__env.dmaUrl = window.__env.baseUrl+'map/dma';
+		window.__env.dmaUrl = window.__env.json+'map_dma.json?'; //done
 
 		//monitor neighbor
-		window.__env.monitorSiteNeighborUrl = window.__env.baseUrl+'site/get/';
+		window.__env.monitorSiteNeighborUrl = window.__env.json+'site_neighbors.json?'; //done
 
 		//event tagging
-		window.__env.eventTagsUrl = window.__env.json+'tsevent_alltags.json'; //done
+		window.__env.eventTagsUrl = window.__env.json+'tsevent_alltags.json?'; //done
 	}
 
 

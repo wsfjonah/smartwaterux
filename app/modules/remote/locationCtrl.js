@@ -43,7 +43,9 @@
 			dialogService.alert(ev,{content:"Something went wrong!"});
 		};
 		getSiteData();
-		getBoundary();
+		setTimeout(function() {
+			getBoundary();
+		},500);
 
 		/*	to get site data
 		*/

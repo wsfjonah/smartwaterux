@@ -177,10 +177,17 @@
 			}
 		}
 
+		vm.prevDisabled = false;
+		vm.nextDisabled = false;
+
 		//bulk highrate with datapointid
 		function getBulkHighRateData(params){
 			apiService.batchTimeSeriesApi(params, '/highrate').then(function(response){
 				commonService.hidePace();
+				if ((__env.isLocal && (vm.prevDisabled || vm.nextDisabled))) {
+					return false;
+				}
+
 				if(angular.isDefined(response.data) && response.data.length){
 					//getting new data and append to chart
 					var isUpdate = false;
@@ -196,11 +203,14 @@
 									});
 								});
 								//previous need to reverse
-								if(params.method==="prev"){
+								if(!__env.isLocal && params.method==="prev"){
 									arr.reverse();
+									vm.prevDisabled = true;
+								} else {
+									vm.nextDisabled = true;
 								}
 								angular.forEach(arr, function(value){
-									if(params.method==="prev"){
+									if(!__env.isLocal && params.method==="prev"){
 										vm.multiChartTimeSeries[indexChart].dataPoints.unshift(value);
 									}else{ //next
 										vm.multiChartTimeSeries[indexChart].dataPoints.push(value);
