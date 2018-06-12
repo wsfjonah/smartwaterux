@@ -179,6 +179,15 @@
 			});
 		};
 
+		// for local
+		this.monitorEventAddPlotApi = function(res){
+			return $http({
+				method: 'GET',
+				url: __env.monitorEventAddPlotUrl+"/"+res.id+"/highrate/"+res.from+"/"+res.to,
+				headers: headers
+			});
+		};
+
 		this.timeSeriesRangeApi = function(params){
 			return $http({
 				method: 'GET',
@@ -208,6 +217,25 @@
 			return $http({
 				method: 'POST',
 				url: __env.batchTimeSeriesUrl+path,
+				data: $httpParamSerializerJQLike(userParams),
+				headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+			});
+		};
+
+		// for local
+		this.monitorEventNextApi = function(params, extraPath){
+			var defaultParams = {
+				datapoints: "",
+				resolution: "1n",
+				from: "1498875720000", //july
+				to: "1515549960000", //jan 2018
+				token: authService.getAuthentication().token
+			};
+			var userParams = $.extend(true, defaultParams, params);
+			var path = (angular.isDefined(extraPath)) ? extraPath : "";
+			return $http({
+				method: 'POST',
+				url: __env.monitorEventNextUrl+path,
 				data: $httpParamSerializerJQLike(userParams),
 				headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
 			});
@@ -265,7 +293,7 @@
 		this.eventMonitorApi = function(res){
 			return $http({
 				method: 'GET',
-				url: __env.eventDurationUrl+"/"+res.end+"/"+res.duration+res.filter,
+				url: __env.monitorEventUrl+"/"+res.end+"/"+res.duration+res.filter,
 				headers: headers
 			});
 		};
@@ -290,6 +318,15 @@
 			return $http({
 				method: 'GET',
 				url: __env.eventDetailsUrl+"/"+eventId,
+				headers: headers
+			});
+		};
+
+		//for local
+		this.monitorEventDetailsApi = function(eventId){
+			return $http({
+				method: 'GET',
+				url: __env.monitorEventDetailsUrl+"/"+eventId,
 				headers: headers
 			});
 		};
@@ -326,14 +363,14 @@
 		this.networkSensorApi = function(query){
 			return $http({
 				method: 'GET',
-				url: __env.networkSensorUrl,
+				url: __env.siteSearchUrl,
 				headers: headers
 			});
 		};
 		this.networkPipeApi = function(query){
 			return $http({
 				method: 'GET',
-				url: __env.networkPipeUrl,
+				url: __env.mapPipeUrl,
 				headers: headers
 			});
 		};

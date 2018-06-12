@@ -8,7 +8,6 @@
 		vm.selected = {
 			item: vm.items
 		};
-		console.log(vm.items);
 		vm.ok = function () {
 			$uibModalInstance.close(vm.selected.item);
 		};
@@ -76,7 +75,6 @@
 		});
 
 		vm.toggleDataSeries = function(e){
-			console.log('click');
 			if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
 				e.dataSeries.visible = false;
 			} else {

@@ -23,11 +23,15 @@
 	window.__env.timeSeriesRangeUrl = window.__env.baseUrl+'tsda/query';
 	window.__env.eventAnyUrl = window.__env.baseUrl+'tsevent/search/-1/100000000';
 	window.__env.eventDurationUrl = window.__env.baseUrl+'tsevent/search';
+	window.__env.monitorEventUrl = window.__env.baseUrl+'tsevent/search';
 	window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query';
 	window.__env.eventDetailsUrl = window.__env.baseUrl+'tsevent/get';
 	window.__env.eventSingleRangeUrl = window.__env.baseUrl+'tsevent/datapoint';
 	//batch query time series
 	window.__env.batchTimeSeriesUrl = window.__env.baseUrl+'tsda/batchquery';
+	window.__env.monitorEventNextUrl = window.__env.baseUrl+'tsda/batchquery';
+	window.__env.monitorEventAddPlotUrl = window.__env.baseUrl+'tsda/batchquery';
+	window.__env.monitorEventDetailsUrl = window.__env.baseUrl+'tsevent/get';
 	//event used - e.g. tag
 	window.__env.eventSetUrl = window.__env.baseUrl+'tsevent/set';
 
@@ -80,71 +84,159 @@
 	//event tagging
 	window.__env.eventTagsUrl = window.__env.baseUrl+'tsevent/alltags';
 
+	window.__env.downloadCsvUrl = "https://smartwater.banxiniot.com/api/tsda/query/5a6eb4e70b272a1f64fa26ba-pressure/1n/1523327700000/1523332740000/csv/GMT+8?token=617a1a81-0655-444e-a8cb-ea9daf0e406d";
+
 	/* collecting local json data
 	*/
 	if (window.__env.isLocal) {
-		// API url
+		/* 	login page
+		*	- modules/auth/authCtrl.js
+		*/
 		window.__env.userLoginUrl = window.__env.json+'login.json?'; //done
+		/* 	switch project api
+		*	- app/js/app.js
+		*/
 		window.__env.switchProjectUrl = window.__env.json+'switchproject.json?'; //done
+		/* 	time series
+		*	- modules/remote/modalTimeSeriesCtrl.js
+		*	- modules/monitor/modalMonitorEventDetailsCtrl.js
+		*	- modules/remote/modalHighRateCtrl.js
+		*/
 		window.__env.timeSeriesAnyUrl = window.__env.json+'tsda_query.json?'; //done
+		/* 	time series range
+		*	- modules/remote/modalTimeSeriesCtrl.js
+		*/
 		window.__env.timeSeriesRangeUrl = window.__env.json+'tsda_range_query.json?'; //done
-		//window.__env.eventAnyUrl = window.__env.json+'tsevent/search/-1/100000000';
+		/* 	time series duration
+		*	- modules/remote/modalHighRateCtrl.js
+		*	- modules/monitor/monitorCtrl.js
+		*/
 		window.__env.eventDurationUrl = window.__env.json+'tsevent_search.json?'; //done
-		//window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query'; //unused
+		/* 	event details
+		*	- modules/monitor/modalMonitorEventDetailsCtrl.js
+		*	- modules/remote/modalEventDetailsCtrl.js
+		*/
 		window.__env.eventDetailsUrl = window.__env.json+'tsevent_get.json?'; //done
+		/* 	single event details - datapoint+from+to
+		*	- modules/remote/modalTimeSeriesCtrl.js
+		*/
 		window.__env.eventSingleRangeUrl = window.__env.json+'tsevent_datapoint.json?'; //done
-		//batch query time series
+		/* 	batch time series - next 5 mins, monitor event details modal
+		*	- modules/monitor/modalMonitorEventDetailsCtrl.js
+		*	- modules/remote/modalEventDetailsCtrl.js
+		*	- modules/remote/modalTimeSeriesCtrl.js
+		*/
 		window.__env.batchTimeSeriesUrl = window.__env.json+'tsda_batch_highrate_next.json?'; //have to solve next / prev minutes data
-		//event used - e.g. tag
+		/* 	set tagging
+		*	- modules/monitor/modalMonitorEventDetailsCtrl.js
+		*	- modules/remote/modalEventDetailsCtrl.js
+		*/
 		window.__env.eventSetUrl = window.__env.json+'tsevent_set.json?'; //done
-
-		//project
+		/* 	dashboard project details
+		*	- modules/main/mainCtrl.js
+		*/
 		window.__env.projectUrl = window.__env.json+'project_details.json?'; //done
-
-		//dashboard coverage
+		/* 	dashboard coverage data
+		*	- modules/main/mainCtrl.js
+		*/
 		window.__env.dashboardCoverageUrl = window.__env.json+'dashboard_coverage.json?'; //done
-
-		//customer
+		/* 	map customer location data
+		*	- modules/network/gisCtrl.js
+		*	- modules/network/networkAnalysisCtrl.js
+		*/
 		window.__env.customerUrl = window.__env.json+'map_customer.json?'; //done
-
-		//network sensor
+		/* 	site neighbors data
+		*	- modules/remote/locationCtrl.js
+		*	- modules/remote/siteTableCtrl.js
+		*	- modules/network/gisCtrl.js
+		*	- modules/network/networkAnalysisCtrl.js
+		*	- modules/network/networkDataCtrl.js
+		*/
 		window.__env.siteSearchUrl = window.__env.json+'site_search.json?'; //done
-		window.__env.networkSensorUrl = window.__env.json+'site_search.json?'; //done
+		/* 	map boundary
+		*	- modules/remote/locationCtrl.js
+		*/
 		window.__env.boundaryUrl = window.__env.json+'map_boundary.json?'; //done
-		//window.__env.heatmapUrl = window.__env.baseUrl+'map/heatmap';
-		//window.__env.sensorJunctionUrl = window.__env.baseUrl+'map/sensorjunction?query=';
+		/* 	map pipe
+		*	- modules/network/gisCtrl.js
+		*	- modules/network/networkAnalysisCtrl.js
+		*	- modules/network/networkDataCtrl.js
+		*/
 		window.__env.mapPipeUrl = window.__env.json+'map_pipe.json?'; //done
-		//network pipe
-		window.__env.networkPipeUrl = window.__env.json+'map_pipe.json?'; //done
-		//network pipe summary - used for menu
+		//window.__env.networkPipeUrl = window.__env.json+'map_pipe.json?';
+		/* 	pipe summary
+		*	- modules/main/mainCtrl.js
+		*	- modules/network/gisCtrl.js
+		*	- modules/network/networkAnalysisCtrl.js
+		*/
 		window.__env.networkPipeSummaryUrl = window.__env.json+'pipe_summary.json?'; //done
-		//network analysis pipe
+		/* 	map geo pipe
+		*	- modules/network/networkAnalysisCtrl.js
+		*	- modules/network/networkDataCtrl.js
+		*/
 		window.__env.networkAnalysisPipeUrl = window.__env.json+'map_geo_pipe.json?'; //done
-		//network analysis coverage
+		/* 	directive - network coverage api
+		*	- app/js/directives.js
+		*/
 		window.__env.networkAnalysisSensorCoverageUrl = window.__env.json+'map_sensor_coverage.json?'; //done
-		//network pump
+		/* 	map pump
+		*	- modules/network/gisCtrl.js
+		*	- modules/network/networkAnalysisCtrl.js
+		*/
 		window.__env.networkPumpUrl = window.__env.json+'map_pump.json?'; //done
-		//network hydrant
+		/* 	directive - map hydrant
+		*	- app/js/directives.js
+		*/
 		window.__env.networkHydrantUrl = window.__env.json+'map_hydrant.json?'; //done
-		//network pipe end details
+		/* 	directive - network pipe details
+		*	- app/js/directives.js
+		*/
 		window.__env.networkPipeDetailsUrl = window.__env.json+'map_geo_pipe_detail.json?'; //done
-
-		//site event - daily | weekly
+		/* 	event summary - daily, weekly - event
+		*	- modules/remote/modalSiteEventsCtrl.js
+		*/
 		window.__env.siteEventSummaryUrl = window.__env.json+'tsevent_pressure_summary.json?'; //done
-		//site reading - daily | weekly
+		/* 	reading summary - daily, weekly - reading
+		*	- modules/remote/modalSiteEventsCtrl.js
+		*/
 		window.__env.siteReadingSummaryUrl = window.__env.json+'tsda_reading_summary.json?'; //done
-
-		//network dashboard
+		/* 	dashboard network summary
+		*	- modules/main/networkCtrl.js
+		*/
 		window.__env.dashboardNetworkSummaryUrl = window.__env.json+'dashboard_network_summary.json?'; //done
-
-		//dma
+		/* 	dashboard dma data
+		*	- modules/main/mainCtrl.js
+		*/
 		window.__env.dmaUrl = window.__env.json+'map_dma.json?'; //done
-
-		//monitor neighbor
+		/* 	monitor site neighbors
+		*	- modules/monitor/modalMonitorEventDetailsCtrl.js
+		*/
 		window.__env.monitorSiteNeighborUrl = window.__env.json+'site_neighbors.json?'; //done
-
-		//event tagging
+		/* 	event tag
+		*	- modules/monitor/modalMonitorEventDetailsCtrl.js
+		*	- modules/remote/modalEventDetailsCtrl.js
+		*/
 		window.__env.eventTagsUrl = window.__env.json+'tsevent_alltags.json?'; //done
+		/* 	monitor - event data
+		*	- modules/monitor/monitorCtrl.js
+		*/
+		window.__env.monitorEventUrl = window.__env.json+'monitor_events.json?'; //done
+		/* 	monitor - event details chart data
+		*	- modules/monitor/modalMonitorEventDetails.js
+		*/
+		window.__env.monitorEventDetailsUrl = window.__env.json+'monitor_event_details.json?'; //done
+		/* 	monitor - event details add plot - extra data for sample used
+		*	- modules/monitor/modalMonitorEventDetails.js
+		*/
+		window.__env.monitorEventAddPlotUrl = window.__env.json+'monitor_event_addplot.json?'; //done
+		/* 	monitor - add next 5 mins - extra data for sample used
+		*	- modules/monitor/modalMonitorEventDetails.js
+		*/
+		window.__env.monitorEventNextUrl = window.__env.json+'monitor_event_next_5min.json?'; //done
+		/* 	download csv
+		*	- modules/remote/modalTimeSeriesCtrl.js
+		*/
+		window.__env.downloadCsvUrl = window.__env.json+'download.csv'; //done
 	}
 
 

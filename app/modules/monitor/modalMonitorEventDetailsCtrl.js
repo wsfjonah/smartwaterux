@@ -52,7 +52,7 @@
 			{
 				id: "default",
 				type: "column",
-				fillOpacity: .5, 
+				fillOpacity: .5,
 				visible: true,
 				axisYType: "secondary",
 				xValueType: "dateTime",
@@ -141,7 +141,12 @@
 		};
 
 		//adjust prev or next 5 minutes
+		vm.prevDisabled = false;
+		vm.nextDisabled = false;
 		vm.toggleTime = function(status){
+			if (__env.isLocal && (vm.nextDisabled || vm.prevDisabled)) {
+				return false;
+			}
 			var range = vm.events.range;
 			vm.events.start = (status==="prev") ? moment(parseInt(range.start)).subtract('5', 'minute').format('x') : moment(parseInt(range.end)).format('x');
 			vm.events.end = (status==="prev") ? moment(parseInt(range.start)).format('x') : moment(parseInt(range.end)).add('5', 'minute').format('x');
@@ -157,6 +162,8 @@
 				to: vm.events.end,
 				method: status
 			};
+			vm.nextDisabled = true;
+			vm.prevDisabled = true;
 			getBulkHighRateData(params);
 		};
 
@@ -196,7 +203,7 @@
 		//initial getting graph data with general information
 		function getEventDetailsData(eventId){
 			if(angular.isDefined(eventId)){
-				apiService.eventDetailsApi(eventId).then(function(response){
+				apiService.monitorEventDetailsApi(eventId).then(function(response){
 					commonService.hidePace();
 					if(angular.isDefined(response.data.tsda.data) && angular.isDefined(response.data.event)){
 						var start = moment(response.data.event.ts).subtract(1, 'minute').format('x');
@@ -245,7 +252,7 @@
 
 		//bulk highrate with datapointid
 		function getBulkHighRateData(params){
-			apiService.batchTimeSeriesApi(params, '/highrate').then(function(response){
+			apiService.monitorEventNextApi(params, '/highrate').then(function(response){
 				commonService.hidePace();
 				if(angular.isDefined(response.data) && response.data.length){
 					//getting new data and append to chart
@@ -284,7 +291,7 @@
 
 		//single highrate
 		function getHighRateData(params){
-			apiService.timeSeriesHighRateApi(params).then(function(response){
+			apiService.monitorEventAddPlotApi(params).then(function(response){
 				commonService.hidePace();
 				if(angular.isDefined(response.data)){
 					var obj = $.extend(true, {}, configLineGraph);
