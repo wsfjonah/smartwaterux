@@ -48,7 +48,7 @@
 			if(angular.isDefined(res.token) && res.token!==""){
 				opts_res.isAuth = true;
 			}
-			localStorageService.set('authorizationData', opts_res);
+			localStorageService.set(__env.CacheStorageName, opts_res);
 		};
 		/*this.ensureAuthenticated = function(token) { //unused for now
 			return $http({
@@ -65,9 +65,7 @@
 			if(angular.isDefined(res.token) && res.token!==""){
 				opts_res.isAuth = true;
 			}
-			//console.log('#set authorizationData');
-			//console.log(opts_res);
-			localStorageService.set('authorizationData', opts_res);
+			localStorageService.set(__env.CacheStorageName, opts_res);
 			this.getAuthentication();
 		};
 		this.isLoggedIn = function(){
@@ -77,14 +75,14 @@
 			return (isAuth && isToken);
 		};
 		this.getAuthentication = function(){
-			var auth_res = localStorageService.get('authorizationData');
+			var auth_res = localStorageService.get(__env.CacheStorageName);
 			if(auth_res===null){
 				auth_res = _authentication_info;
 			}
 			return auth_res;
 		};
 		this.logout = function(){
-			localStorageService.set('authorizationData', _authentication_info);
+			localStorageService.set(__env.CacheStorageName, _authentication_info);
 			this.updateProject(_authentication_info);
 		};
 	}

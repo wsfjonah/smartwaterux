@@ -6,8 +6,8 @@ app.factory('authInterceptorService', ['$q', '$injector','$location', 'localStor
     var _request = function (config) {
 
         config.headers = config.headers || {};
-       
-        var authData = localStorageService.get('authorizationData');
+
+        var authData = localStorageService.get(__env.CacheStorageName);
         if (authData) {
             config.headers.Authorization = 'Bearer ' + authData.token;
         }
@@ -18,7 +18,7 @@ app.factory('authInterceptorService', ['$q', '$injector','$location', 'localStor
     var _responseError = function (rejection) {
         if (rejection.status === 401) {
             var authService = $injector.get('authService');
-            var authData = localStorageService.get('authorizationData');
+            var authData = localStorageService.get(__env.CacheStorageName);
 
             if (authData) {
                 if (authData.useRefreshTokens) {

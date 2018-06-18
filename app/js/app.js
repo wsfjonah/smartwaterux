@@ -152,7 +152,7 @@ app.factory('authInterceptorService', ['$q', '$injector','$location', 'localStor
 	var authInterceptorServiceFactory = {};
 	var _request = function (config) {
 		config.headers = config.headers || {};
-		var authData = localStorageService.get('authorizationData');
+		var authData = localStorageService.get(__env.CacheStorageName);
 		var ignore_url = __env.ignoreInterceptorRequest;
 		if(authData!==null){
 			if(angular.isDefined(authData.token) && ignore_url.indexOf(config.url)<0) {
