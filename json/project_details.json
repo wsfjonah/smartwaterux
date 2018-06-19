@@ -8,9 +8,9 @@
   "status": "试运行",
   "client_name": "某城市给排水公司",
   "map": {
-    "lng": 121.904486,
+    "lng": 103.907653,
     "level": 13,
-    "lat": 30.921144
+    "lat": 1.317618
   },
   "sensors": {
     "flow meter": 5,

@@ -1,1 +1,33 @@
-{"role":"user","projects":{"demo":"演示版"},"current_project":{"name":"演示版","timezone":"Asia/Shanghai","type":"wsn","start_time":"Nov 9, 2017 12:00:00 AM","end_time":"Nov 10, 2017 12:00:00 AM","address":"漕泾河-松江新兴产业园","status":"试运行","client_name":"漕泾河-松江新兴产业园","map":{"lng":121.328581,"level":13,"lat":31.099107},"_id":"shsj01","created":"Dec 6, 2017 12:03:16 PM","lastmod":"Dec 18, 2017 10:55:44 AM"},"timezone":"Asia/Shanghai","lang":"zh-CHS","username":"demo","apps":["map","site","dashboard"],"token":"2f77934d-9876-4c4d-a20f-cf43a4d1a5c8"}
+{
+  "role": "user",
+  "projects": {
+    "demo": "演示版"
+  },
+  "current_project": {
+    "name": "演示版",
+    "timezone": "Asia/Shanghai",
+    "type": "wsn",
+    "start_time": "Nov 9, 2017 12:00:00 AM",
+    "end_time": "Nov 10, 2017 12:00:00 AM",
+    "address": "漕泾河-松江新兴产业园",
+    "status": "试运行",
+    "client_name": "漕泾河-松江新兴产业园",
+    "map": {
+		"lng": 103.907653,
+		"level": 13,
+		"lat": 1.317618
+    },
+    "_id": "shsj01",
+    "created": "Dec 6, 2017 12:03:16 PM",
+    "lastmod": "Dec 18, 2017 10:55:44 AM"
+  },
+  "timezone": "Asia/Shanghai",
+  "lang": "zh-CHS",
+  "username": "demo",
+  "apps": [
+    "map",
+    "site",
+    "dashboard"
+  ],
+  "token": "2f77934d-9876-4c4d-a20f-cf43a4d1a5c8"
+}
