@@ -8,7 +8,6 @@
 		vm.selected = {
 			item: vm.items[0]
 		};
-		console.log(vm.items);
 		vm.ok = function () {
 			$uibModalInstance.close(vm.selected.item);
 		};
@@ -187,13 +186,12 @@
 				if ((__env.isLocal && (vm.prevDisabled || vm.nextDisabled))) {
 					return false;
 				}
-
 				if(angular.isDefined(response.data) && response.data.length){
 					//getting new data and append to chart
 					var isUpdate = false;
 					angular.forEach(response.data, function(row){
 						angular.forEach(vm.multiChartTimeSeries, function(resChart, indexChart){
-							if(row.meta.datapointid===resChart.id){
+							//if(row.meta.datapointid===resChart.id){
 								isUpdate = true;
 								var arr = [];
 								angular.forEach(row.data, function(value, key){
@@ -205,10 +203,9 @@
 								//previous need to reverse
 								if(!__env.isLocal && params.method==="prev"){
 									arr.reverse();
-									vm.prevDisabled = true;
-								} else {
-									vm.nextDisabled = true;
 								}
+								vm.prevDisabled = true;
+								vm.nextDisabled = true;
 								angular.forEach(arr, function(value){
 									if(!__env.isLocal && params.method==="prev"){
 										vm.multiChartTimeSeries[indexChart].dataPoints.unshift(value);
@@ -216,7 +213,7 @@
 										vm.multiChartTimeSeries[indexChart].dataPoints.push(value);
 									}
 								});
-							}
+							//}
 						});
 					});
 					if(isUpdate){

@@ -4,6 +4,8 @@
 
 	window.__env.isLocal = true;
 
+	window.__env.CacheStorageName = "authorizationData_demo";
+
 	//Assets version
 	window.__env.assetVersion = "1.0";
 	//API Base url
