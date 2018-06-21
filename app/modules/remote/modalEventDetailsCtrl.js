@@ -191,6 +191,7 @@
 					var isUpdate = false;
 					angular.forEach(response.data, function(row){
 						angular.forEach(vm.multiChartTimeSeries, function(resChart, indexChart){
+							if (angular.isDefined(resChart.id) && resChart.type === "line") { //for demo used
 							//if(row.meta.datapointid===resChart.id){
 								isUpdate = true;
 								var arr = [];
@@ -213,7 +214,7 @@
 										vm.multiChartTimeSeries[indexChart].dataPoints.push(value);
 									}
 								});
-							//}
+							}
 						});
 					});
 					if(isUpdate){

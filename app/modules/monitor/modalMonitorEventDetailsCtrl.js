@@ -259,7 +259,7 @@
 					var isUpdate = false;
 					angular.forEach(response.data, function(row){
 						angular.forEach(vm.multiChartTimeSeries, function(resChart, indexChart){
-							if(row.meta.datapointid===resChart.id){
+							if (angular.isDefined(resChart.id) && resChart.type === "line") { //for demo used
 								isUpdate = true;
 								var arr = [];
 								angular.forEach(row.data, function(value, key){
