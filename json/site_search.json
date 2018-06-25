@@ -6,6 +6,17 @@
       "5a6eb4e70b272a1f64fa26bb",
       "5a6eb4e70b272a1f64fa26b6"
     ],
+    "nearby": [
+      "p_p4_n2_gx002342",
+      "p_p4_n2_gx002343",
+      "p_p4_n2_gx002302",
+      "p_p4_n2_gx002303",
+      "p_p4_n2_gx002350",
+      "p_p4_n2_gx002344",
+      "p_p4_n2_gx002382",
+      "p_p4_n2_gx002383",
+      "p_p4_n2_gx002384"
+    ],
     "checkpoint_reading": 1520380020000,
     "reading": 21.94359141799511,
     "dataquality": 1,
@@ -22,7 +33,7 @@
     "remark": "{day_bigevent: 4, eve_bigevent: 0, mth_event: 10}",
     "icon": "siteicon/orange.png",
     "geo_address": "第一科技发展公司东北202米",
-    "geo_latlng": "30.87641545000005,121.80252439400003",
+    "geo_latlng": "1.3486813459999958,103.960963027",
     "geo_ref": "j_p4_n2_4684",
     "tag": {
       "subzone": "p4",
@@ -42,7 +53,7 @@
     },
     "_id": "5a6eb4e70b272a1f64fa26ba",
     "created": "Feb 14, 2018 8:47:11 AM",
-    "lastmod": "Mar 13, 2018 8:56:23 AM"
+    "lastmod": "Jun 12, 2018 5:38:45 PM"
   },
   {
     "neighbors": [
@@ -50,6 +61,21 @@
       "5a6eb4e70b272a1f64fa26bb",
       "5a6eb4e70b272a1f64fa26b3",
       "5a6eb4e70b272a1f64fa26b6"
+    ],
+    "nearby": [
+      "p_p1c_n2_gx002100",
+      "p_p1c_n2_gx002101",
+      "p_p1c_n2_gx002334",
+      "p_p1c_n2_gx002102",
+      "p_p1c_n2_gx002103",
+      "p_p1c_n2_gx002333",
+      "p_p1c_n2_gx002096",
+      "p_p1c_n2_gx002097",
+      "p_p1c_n2_gx002336",
+      "p_p4_n2_gx002335",
+      "p_p4_n2_gx002098",
+      "p_p4_n2_gx002099",
+      "p_p4_n2_gx002320"
     ],
     "checkpoint_reading": 1520380020000,
     "reading": 20.510610389551662,
@@ -67,7 +93,7 @@
     "remark": "{day_bigevent: 4, eve_bigevent: 0, mth_event: 18}",
     "icon": "siteicon/orange.png",
     "geo_address": "第二半导体科技有限公司南186米",
-    "geo_latlng": "30.87638839100006,121.79125866600002",
+    "geo_latlng": "1.3486542870000058,103.949697299",
     "geo_ref": "j_p1c_n2_4199",
     "tag": {
       "subzone": "p1c",
@@ -87,7 +113,7 @@
     },
     "_id": "5a6eb4e70b272a1f64fa26b2",
     "created": "Feb 14, 2018 8:31:53 AM",
-    "lastmod": "Mar 13, 2018 8:56:26 AM"
+    "lastmod": "Jun 12, 2018 5:38:45 PM"
   },
   {
     "neighbors": [
@@ -95,6 +121,12 @@
       "5a6eb4e70b272a1f64fa26b6",
       "5a6eb4e70b272a1f64fa26b2",
       "5a6eb4e70b272a1f64fa26bb"
+    ],
+    "nearby": [
+      "p_p1c_n2_gx002877",
+      "p_p1c_n2_gx002878",
+      "p_p1c_n2_gx003893",
+      "p_p1c_n2_gx003894"
     ],
     "checkpoint_reading": 1520380020000,
     "reading": 19.864422679181132,
@@ -112,7 +144,7 @@
     "remark": "{day_bigevent: 0, eve_bigevent: 0, mth_event: 22}",
     "icon": "siteicon/orange.png",
     "geo_address": "第三液化天然气有限责任公司西211米",
-    "geo_latlng": "30.861922161000077,121.79959970100008",
+    "geo_latlng": "1.3341880570000235,103.95803833400005",
     "geo_ref": "j_p1c_n2_5753",
     "tag": {
       "subzone": "p1c",
@@ -132,7 +164,7 @@
     },
     "_id": "5a6eb4e70b272a1f64fa26b3",
     "created": "Feb 14, 2018 8:31:53 AM",
-    "lastmod": "Mar 13, 2018 8:56:29 AM"
+    "lastmod": "Jun 12, 2018 5:38:45 PM"
   },
   {
     "neighbors": [
@@ -140,6 +172,19 @@
       "5a6eb4e70b272a1f64fa26bb",
       "5a6eb4e70b272a1f64fa26b8",
       "5a6eb4e70b272a1f64fa26b9"
+    ],
+    "nearby": [
+      "p_p1c_n2_gx003490",
+      "p_p1c_n2_gx003491",
+      "p_p1c_n2_gx003960",
+      "p_p1c_n2_gx003956",
+      "p_p1c_n2_gx003955",
+      "p_p1c_n2_gx003674",
+      "p_p1c_n2_gx003672",
+      "p_p1c_n2_gx003675",
+      "p_p1c_n2_gx003958",
+      "p_p1c_n2_gx003957",
+      "p_p1c_n2_gx003962"
     ],
     "checkpoint_reading": 1520380020000,
     "reading": 21.620975913911177,
@@ -155,7 +200,7 @@
     "remark": "{day_bigevent: 0, eve_bigevent: 0, mth_event: 3}",
     "icon": "siteicon/orange.png",
     "geo_address": "第四机械公司西108米",
-    "geo_latlng": "30.876272331000077,121.83363278400002",
+    "geo_latlng": "1.3485382270000237,103.99207141699999",
     "geo_ref": "j_p1c_n2_6979",
     "tag": {
       "subzone": "p1c",
@@ -175,7 +220,7 @@
     },
     "_id": "5a6eb4e70b272a1f64fa26b4",
     "created": "Feb 14, 2018 8:31:53 AM",
-    "lastmod": "Mar 13, 2018 8:56:32 AM"
+    "lastmod": "Jun 12, 2018 5:38:45 PM"
   },
   {
     "neighbors": [
@@ -183,6 +228,13 @@
       "5a6eb4e70b272a1f64fa26b4",
       "5a6eb4e70b272a1f64fa26b8",
       "5a6eb4e70b272a1f64fa26bc"
+    ],
+    "nearby": [
+      "p_p1c_n2_gx000330",
+      "p_p1c_n2_gx000329",
+      "p_p1c_n2_gx000335",
+      "p_p1c_n2_gx003823",
+      "p_p1c_n2_gx003824"
     ],
     "checkpoint_reading": 1520380020000,
     "reading": 21.4133404642775,
@@ -198,7 +250,7 @@
     "remark": "{day_bigevent: 0, eve_bigevent: 0, mth_event: 6}",
     "icon": "siteicon/orange.png",
     "geo_address": "第五电泵阀有限公司-东1门西450米",
-    "geo_latlng": "30.867306886000076,121.82892904500004",
+    "geo_latlng": "1.3395727820000225,103.98736767800001",
     "geo_ref": "j_p1c_n2_660",
     "tag": {
       "subzone": "p1c",
@@ -218,7 +270,7 @@
     },
     "_id": "5a6eb4e70b272a1f64fa26b5",
     "created": "Feb 14, 2018 8:31:53 AM",
-    "lastmod": "Mar 13, 2018 8:56:34 AM"
+    "lastmod": "Jun 12, 2018 5:38:45 PM"
   },
   {
     "neighbors": [
@@ -226,6 +278,19 @@
       "5a6eb4e70b272a1f64fa26b3",
       "5a6eb4e70b272a1f64fa26b5",
       "5a6eb4e70b272a1f64fa26bc"
+    ],
+    "nearby": [
+      "p_p1c_n2_gx002908",
+      "p_p1c_n2_gx002909",
+      "p_p1c_n2_gx003932",
+      "p_p1c_n2_gx003933",
+      "p_p1c_n2_gx002910",
+      "p_p1c_n2_gx002911",
+      "p_p1c_n2_gx003931",
+      "p_p1c_n2_gx000188",
+      "p_p1c_n2_gx002838",
+      "p_p1c_n2_gx002839",
+      "p_p1c_n2_gx003934"
     ],
     "checkpoint_reading": 1520380020000,
     "reading": 19.505040224651342,
@@ -242,7 +307,7 @@
     "remark": "{day_bigevent: 2, eve_bigevent: 0, mth_event: 80}",
     "icon": "siteicon/orange.png",
     "geo_address": "第六制造基地东南234米",
-    "geo_latlng": "30.860426073000067,121.81653025100006",
+    "geo_latlng": "1.3326919690000132,103.97496888400003",
     "geo_ref": "j_p1c_n2_5815",
     "tag": {
       "subzone": "p1c",
@@ -262,7 +327,7 @@
     },
     "_id": "5a6eb4e70b272a1f64fa26b6",
     "created": "Feb 14, 2018 8:31:53 AM",
-    "lastmod": "Mar 13, 2018 8:56:38 AM"
+    "lastmod": "Jun 12, 2018 5:38:45 PM"
   },
   {
     "neighbors": [
@@ -270,6 +335,13 @@
       "5a6eb4e70b272a1f64fa26b4",
       "5a6eb4e70b272a1f64fa26bc",
       "5a6eb4e70b272a1f64fa26b8"
+    ],
+    "nearby": [
+      "p_p1c_n2_gx004001",
+      "p_p1c_n2_gx004000",
+      "p_p1c_n2_gx004002",
+      "p_p1c_n2_gx004343",
+      "p_p1c_n2_gx004344"
     ],
     "checkpoint_reading": 1520380020000,
     "reading": 20.90781297375646,
@@ -287,7 +359,7 @@
     "remark": "{day_bigevent: 3, eve_bigevent: 0, mth_event: 11}",
     "icon": "siteicon/orange.png",
     "geo_address": "第七公路东122米",
-    "geo_latlng": "30.876303407000048,121.85261035900002",
+    "geo_latlng": "1.3485693029999943,104.011048992",
     "geo_ref": "j_p1c_n2_8002",
     "tag": {
       "subzone": "p1c",
@@ -307,7 +379,7 @@
     },
     "_id": "5a6eb4e70b272a1f64fa26b7",
     "created": "Feb 14, 2018 8:31:53 AM",
-    "lastmod": "Mar 13, 2018 8:56:42 AM"
+    "lastmod": "Jun 12, 2018 5:38:45 PM"
   },
   {
     "neighbors": [
@@ -315,6 +387,12 @@
       "5a6eb4e70b272a1f64fa26b4",
       "5a6eb4e70b272a1f64fa26b9",
       "5a6eb4e70b272a1f64fa26bc"
+    ],
+    "nearby": [
+      "p_p1c_n2_gx000351",
+      "p_p1c_n2_gx000357",
+      "p_p1c_n2_gx003845",
+      "p_p1c_n2_gx003846"
     ],
     "checkpoint_reading": 1520380020000,
     "reading": 20.72236413777921,
@@ -332,7 +410,7 @@
     "remark": "{day_bigevent: 0, eve_bigevent: 0, mth_event: 76}",
     "icon": "siteicon/orange.png",
     "geo_address": "第八有限公司南247米",
-    "geo_latlng": "30.866485498000056,121.84209651300004",
+    "geo_latlng": "1.3387513940000026,104.00053514600002",
     "geo_ref": "j_p1c_n2_702",
     "tag": {
       "subzone": "p1c",
@@ -352,7 +430,7 @@
     },
     "_id": "5a6eb4e70b272a1f64fa26b8",
     "created": "Feb 14, 2018 8:31:53 AM",
-    "lastmod": "Mar 13, 2018 8:56:45 AM"
+    "lastmod": "Jun 12, 2018 5:38:45 PM"
   },
   {
     "neighbors": [
@@ -361,6 +439,15 @@
       "5a6eb4e70b272a1f64fa26bc",
       "5a6eb4e70b272a1f64fa26b8",
       "5a6eb4e70b272a1f64fa26b4"
+    ],
+    "nearby": [
+      "p_p1c_n2_gx000599",
+      "p_p1c_n2_gx000600",
+      "p_p1c_n2_gx003817",
+      "p_p1c_n2_gx003818",
+      "p_p1c_n2_gx000601",
+      "p_p1c_n2_gx003819",
+      "p_p1c_n2_gx003820"
     ],
     "checkpoint_reading": 1520380020000,
     "reading": 19.468706956926336,
@@ -376,7 +463,7 @@
     "remark": "{day_bigevent: 3, eve_bigevent: 0, mth_event: 7}",
     "icon": "siteicon/orange.png",
     "geo_address": "第九科技有限公司北115米",
-    "geo_latlng": "30.86066042200005,121.83310335900005",
+    "geo_latlng": "1.3329263179999948,103.99154199200002",
     "geo_ref": "j_p1c_n2_1197",
     "tag": {
       "subzone": "p1c",
@@ -396,7 +483,7 @@
     },
     "_id": "5a6eb4e70b272a1f64fa26b9",
     "created": "Feb 14, 2018 8:31:54 AM",
-    "lastmod": "Mar 13, 2018 8:56:48 AM"
+    "lastmod": "Jun 12, 2018 5:38:45 PM"
   },
   {
     "neighbors": [
@@ -404,6 +491,12 @@
       "5a6eb4e70b272a1f64fa26b8",
       "5a6eb4e70b272a1f64fa26b5",
       "5a6eb4e70b272a1f64fa26b6"
+    ],
+    "nearby": [
+      "p_p1c_n2_gx000626",
+      "p_p1c_n2_gx000627",
+      "p_p1c_n2_gx003005",
+      "p_p1c_n2_gx003006"
     ],
     "checkpoint_reading": 1520380020000,
     "reading": 20.35603685212445,
@@ -419,7 +512,7 @@
     "remark": "{day_bigevent: 2, eve_bigevent: 1, mth_event: 9}",
     "icon": "siteicon/orange.png",
     "geo_address": "变压器有限公司北230米",
-    "geo_latlng": "30.857606776000036,121.84087369300009",
+    "geo_latlng": "1.3298726719999827,103.99931232600007",
     "geo_ref": "j_p1c_n2_1252",
     "tag": {
       "subzone": "p1c",
@@ -439,7 +532,7 @@
     },
     "_id": "5a6eb4e70b272a1f64fa26bc",
     "created": "Feb 14, 2018 8:31:54 AM",
-    "lastmod": "Mar 13, 2018 8:56:50 AM"
+    "lastmod": "Jun 12, 2018 5:38:45 PM"
   },
   {
     "neighbors": [
@@ -447,6 +540,12 @@
       "5a6eb4e70b272a1f64fa26b4",
       "5a6eb4e70b272a1f64fa26b5",
       "5a6eb4e70b272a1f64fa26b6"
+    ],
+    "nearby": [
+      "p_p4_n2_gx002539",
+      "p_p4_n2_gx002543",
+      "p_p4_n2_gx002549",
+      "p_p4_n2_gx002550"
     ],
     "checkpoint_reading": 1520380020000,
     "reading": 20.698561533704794,
@@ -464,7 +563,7 @@
     "remark": "{day_bigevent: 2, eve_bigevent: 4, mth_event: 13}",
     "icon": "siteicons/wsnsite.png",
     "geo_address": "物资中转仓库西290米",
-    "geo_latlng": "30.87635510400005,121.81574036700003",
+    "geo_latlng": "1.3486209999999978,103.974179",
     "geo_ref": "j_p4_n2_5077",
     "tag": {
       "subzone": "p4",
@@ -484,6 +583,6 @@
     },
     "_id": "5a6eb4e70b272a1f64fa26bb",
     "created": "Feb 14, 2018 9:10:18 AM",
-    "lastmod": "Mar 13, 2018 8:56:53 AM"
+    "lastmod": "Jun 12, 2018 5:38:45 PM"
   }
 ]
