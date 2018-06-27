@@ -31,6 +31,7 @@
 	window.__env.eventSingleRangeUrl = window.__env.baseUrl+'tsevent/datapoint';
 	//batch query time series
 	window.__env.batchTimeSeriesUrl = window.__env.baseUrl+'tsda/batchquery';
+	window.__env.batchMonitorTimeSeriesUrl = window.__env.baseUrl+'tsda/batchquery';
 	window.__env.monitorEventNextUrl = window.__env.baseUrl+'tsda/batchquery';
 	window.__env.monitorEventAddPlotUrl = window.__env.baseUrl+'tsda/batchquery';
 	window.__env.monitorEventDetailsUrl = window.__env.baseUrl+'tsevent/get';
@@ -123,12 +124,15 @@
 		*	- modules/remote/modalTimeSeriesCtrl.js
 		*/
 		window.__env.eventSingleRangeUrl = window.__env.json+'tsevent_datapoint.json?'; //done
-		/* 	batch time series - next 5 mins, monitor event details modal
-		*	- modules/monitor/modalMonitorEventDetailsCtrl.js
+		/* 	batch time series - next 5 mins
 		*	- modules/remote/modalEventDetailsCtrl.js
 		*	- modules/remote/modalTimeSeriesCtrl.js
 		*/
 		window.__env.batchTimeSeriesUrl = window.__env.json+'tsda_batch_highrate_next.json?'; //have to solve next / prev minutes data
+		/* 	batch time series - monitor event details modal
+		*	- modules/monitor/modalMonitorEventDetailsCtrl.js
+		*/
+		window.__env.batchMonitorTimeSeriesUrl = window.__env.json+'tsda_batch_monitor_event.json?';
 		/* 	set tagging
 		*	- modules/monitor/modalMonitorEventDetailsCtrl.js
 		*	- modules/remote/modalEventDetailsCtrl.js

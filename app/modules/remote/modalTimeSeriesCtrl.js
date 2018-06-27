@@ -350,8 +350,19 @@
 		function getTimeSeriesBatchData(){
 			var params = getParams();
 			if(angular.isDefined(params)){
-				apiService.batchTimeSeriesApi(params).then(function(response){
+				apiService.batchMonitorTimeSeriesApi(params).then(function(response){
+					vm.multiChartTimeSeries.length = 0; //for demo used
 					angular.forEach(response.data, function(row, index){
+						//for demo used
+						vm.multiChartTimeSeries.push({
+							type: "line",
+							name: row.meta.name,
+							color: commonService.getColors()[index],
+							showInLegend: true,
+							xValueType: "dateTime",
+							xValueFormatString:"YYYY MM DD HH:mm",
+							dataPoints: []
+						});
 						vm.multiChartTimeSeries[index].dataPoints.length = 0;
 						angular.forEach(row.data, function(value, key){
 							vm.multiChartTimeSeries[index].dataPoints.push({
