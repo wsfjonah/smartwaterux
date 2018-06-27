@@ -22,6 +22,7 @@
 	window.__env.userLoginUrl = window.__env.baseUrl+'user/login';
 	window.__env.switchProjectUrl = window.__env.baseUrl+'user/switchproject';
 	window.__env.timeSeriesAnyUrl = window.__env.baseUrl+'tsda/query';
+	window.__env.timeHighSeriesAnyUrl = window.__env.baseUrl+'tsda/query';
 	window.__env.timeSeriesRangeUrl = window.__env.baseUrl+'tsda/query';
 	window.__env.eventAnyUrl = window.__env.baseUrl+'tsevent/search/-1/100000000';
 	window.__env.eventDurationUrl = window.__env.baseUrl+'tsevent/search';
@@ -106,6 +107,12 @@
 		*	- modules/remote/modalHighRateCtrl.js
 		*/
 		window.__env.timeSeriesAnyUrl = window.__env.json+'tsda_query.json?'; //done
+		/* 	high rate - time series
+		*	- modules/remote/modalTimeSeriesCtrl.js
+		*	- modules/monitor/modalMonitorEventDetailsCtrl.js
+		*	- modules/remote/modalHighRateCtrl.js
+		*/
+		window.__env.timeHighSeriesAnyUrl = window.__env.json+'tsda_high_query.json?';
 		/* 	time series range
 		*	- modules/remote/modalTimeSeriesCtrl.js
 		*/

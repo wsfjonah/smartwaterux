@@ -172,7 +172,7 @@
 		this.timeSeriesHighRateApi = function(res){
 			return $http({
 				method: 'GET',
-				url: __env.timeSeriesAnyUrl+"/"+res.id+"/highrate/"+res.from+"/"+res.to,
+				url: __env.timeHighSeriesAnyUrl+"/"+res.id+"/highrate/"+res.from+"/"+res.to,
 				headers: headers
 			});
 		};
