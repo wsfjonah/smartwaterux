@@ -94,7 +94,7 @@
 						field: 'geo_latlng',
 						title: $translate.instant('site_location_table_header_action'),
 						align: 'center',
-						valign: 'middle',
+						valign: 'top',
 						width: '90px',
 						clickToSelect: false,
 						formatter: formatUserAction
