@@ -6,7 +6,7 @@
 	*	百度账号：bangzhonggaofenzi@126.com，密码：banzan2004
 	*/
 	siteTable.$inject = ['$scope','apiService','$rootScope'];
-	siteTable.controller('siteTableController', function siteTableController ($scope, apiService, $mdDialog, modalService, $translate, $rootScope) {
+	siteTable.controller('siteTableController', function siteTableController ($scope, apiService, $mdDialog, modalService, $translate, $rootScope, $timeout) {
 		var lang = ($rootScope.lang==="cn") ? "CN" : "EN";
 		var vm = this;
 		vm.tableData = [];
@@ -35,14 +35,14 @@
 						field: 'device_ref',
 						title: $translate.instant('site_location_table_header_device'),
 						align: 'right',
-						valign: 'bottom',
+						valign: 'top',
 						width: 80,
 						//sortable: true
 					},{
 						field: 'name',
 						title: $translate.instant('site_location_table_header_name'),
 						align: 'center',
-						valign: 'middle',
+						valign: 'top',
 						sortable: true
 					},{
 						field: 'geo_address',
@@ -94,7 +94,7 @@
 						field: 'geo_latlng',
 						title: $translate.instant('site_location_table_header_action'),
 						align: 'center',
-						valign: 'middle',
+						valign: 'top',
 						width: '90px',
 						clickToSelect: false,
 						formatter: formatUserAction
@@ -198,6 +198,9 @@
 						_id: value._id
 					});
 				});
+				$timeout(function(){
+					$('#info_table').bootstrapTable('resetWidth');
+				}, 500);
 			}).catch(function(/*err*/){
 				dialogService.alert(null,{content: $translate.instant('site_common_something_wrong')});
 			});
