@@ -2,37 +2,37 @@
   "p1b": {
     "id": "p1b",
     "name": "综合区",
-    "area": 45.84,
+    "area": 35.84,
     "pipe_length": 10.51
   },
   "p1a": {
     "id": "p1a",
     "name": "主城区",
-    "area": 81.01,
-    "pipe_length": 112.1
+    "area": 41.01,
+    "pipe_length": 62.1
   },
   "p2": {
     "id": "p2",
     "name": "生活东区",
-    "area": 54.73,
-    "pipe_length": 63.81
+    "area": 24.73,
+    "pipe_length": 33.81
   },
   "p1c": {
     "id": "p1c",
     "name": "生活西区",
-    "area": 41.88,
-    "pipe_length": 94.29
+    "area": 31.88,
+    "pipe_length": 24.29
   },
   "p3": {
     "id": "p3",
     "name": "生活南区",
-    "area": 34.63,
-    "pipe_length": 32.05
+    "area": 24.63,
+    "pipe_length": 12.05
   },
   "p4": {
     "id": "test",
     "name": "生活北区",
-    "area": 70.89,
-    "pipe_length": 101.5
+    "area": 50.89,
+    "pipe_length": 61.5
   }
 }
