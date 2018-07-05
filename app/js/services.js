@@ -22,7 +22,8 @@
 			},
 			timezone: "",
 			lang: "",
-			apps: {}
+			apps: {},
+			timestamp: null
 		};
 		/*jshint validthis: true */
 		this.login = function(user) {
@@ -63,7 +64,11 @@
 		this.setAuthentication = function(res){
 			var opts_res = angular.extend({}, _authentication_info, res);
 			if(angular.isDefined(res.token) && res.token!==""){
+				var expires = 3600; // 60/60 = 1min | 3600/60 = 1hr
+				var date = new Date();
+				var timestamp = Math.round((date.setSeconds(date.getSeconds()+expires))/1000);
 				opts_res.isAuth = true;
+				opts_res.timestamp = timestamp;
 			}
 			localStorageService.set(__env.CacheStorageName, opts_res);
 			this.getAuthentication();

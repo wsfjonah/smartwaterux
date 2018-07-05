@@ -35,7 +35,8 @@ app.controller('layoutCtrl', function layoutCtrl ($scope, $translate, authServic
 		},
 		timezone: "",
 		lang: "",
-		apps: {}
+		apps: {},
+		timestamp: null
 	};
 	vm.flag_img = {
 		"en" : flag_path+"US.png",
@@ -154,9 +155,18 @@ app.factory('authInterceptorService', ['$q', '$injector','$location', 'localStor
 		config.headers = config.headers || {};
 		var authData = localStorageService.get(__env.CacheStorageName);
 		var ignore_url = __env.ignoreInterceptorRequest;
-		if(authData!==null){
+		var date = new Date();
+		var current = Math.round(+date/1000);
+		var currUrl = $location.$$url;
+		var authService = $injector.get('authService');
+		if(authData!==null && (authData.timestamp !== null && authData.timestamp > current && currUrl !== "/\login")){
 			if(angular.isDefined(authData.token) && ignore_url.indexOf(config.url)<0) {
 				config.params = {'token': authData.token};
+			}
+		} else {
+			if(currUrl !== "/\login") {
+				authService.logout();
+				$location.path('/login');
 			}
 		}
 		return config;

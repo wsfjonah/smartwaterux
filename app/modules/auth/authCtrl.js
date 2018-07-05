@@ -5,12 +5,14 @@
 		.module('xProject.auth', [])
 		.controller('authLoginController', authLoginController);
 
-	authLoginController.$inject = ['$location', 'authService', 'dialogService','$translate'];
+	authLoginController.$inject = ['$location', 'authService', 'dialogService','$translate','modalService'];
 
-	function authLoginController($location, authService, dialogService, $translate) {
+	function authLoginController($location, authService, dialogService, $translate, modalService) {
 		/*jshint validthis: true */
 		var vm = this;
 		vm.user = {};
+		modalService.close();
+		$('.tooltip').remove();
 		vm.onLogin = function() {
 			authService.login(vm.user)
 			.then(function(user){

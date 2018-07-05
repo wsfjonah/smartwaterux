@@ -72,7 +72,7 @@
 	    return toastService;
 	}
 
-	function modalService($uibModal){
+	function modalService($uibModal, $uibModalStack){
 		var vm = this;
 		var modalInstance;
 		return{
@@ -95,6 +95,9 @@
 						callback();
 					}
 				});
+			},
+			close: function(reason) {
+				$uibModalStack.dismissAll();
 			}
 		};
 	}
