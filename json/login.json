@@ -1,6 +1,5 @@
 {
   "role": "user",
-  "users":"lingang:lg123, admin:admin123",
   "projects": {
     "demo": "演示版"
   },

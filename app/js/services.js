@@ -11,6 +11,8 @@
 	apiService.$inject = ['$http','localStorageService','$httpParamSerializerJQLike','authService'];
 
 	function authService($http, localStorageService, $httpParamSerializerJQLike) {
+		var users = "lingang:lg123, admin:admin123";
+		
 		var _authentication_info = { //default object
 			isAuth: false,
 			username: "",
@@ -27,6 +29,14 @@
 		};
 		/*jshint validthis: true */
 		this.login = function(user) {
+			if($.isEmptyObject(user)) {
+				alert("用户名不为空");
+				return false;
+			}
+			if(users.indexOf(user.username+":"+user.password) == -1) {
+				alert("登陆信息错误");
+				return false;
+			}
 			return $http({
 				method: 'POST',
 				url: __env.userLoginUrl,
@@ -64,7 +74,7 @@
 		this.setAuthentication = function(res){
 			var opts_res = angular.extend({}, _authentication_info, res);
 			if(angular.isDefined(res.token) && res.token!==""){
-				var expires = 3600; // 60/60 = 1min | 3600/60 = 1hr
+				var expires = 10; // 60/60 = 1min | 3600/60 = 1hr
 				var date = new Date();
 				var timestamp = Math.round((date.setSeconds(date.getSeconds()+expires))/1000);
 				opts_res.isAuth = true;
