@@ -74,7 +74,7 @@
 		this.setAuthentication = function(res){
 			var opts_res = angular.extend({}, _authentication_info, res);
 			if(angular.isDefined(res.token) && res.token!==""){
-				var expires = 10; // 60/60 = 1min | 3600/60 = 1hr
+				var expires = 600; // 60/60 = 1min | 3600/60 = 1hr
 				var date = new Date();
 				var timestamp = Math.round((date.setSeconds(date.getSeconds()+expires))/1000);
 				opts_res.isAuth = true;
