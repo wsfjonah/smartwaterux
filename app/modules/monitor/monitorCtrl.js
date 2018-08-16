@@ -109,7 +109,7 @@
 			confidence:{
 				model: null,
 				options: {
-					min: 1,
+					min: 0.1,
 					max: 100
 				}
 			}
