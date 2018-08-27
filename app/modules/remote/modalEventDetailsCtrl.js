@@ -215,5 +215,10 @@
 				}
 			});
 		}
+		
+		vm.analyze=function() {
+			console.log(vm.items.eventId);
+			window.open("/ux/transient/transient_analyzer.html?eventid="+vm.items.eventId);
+		};
 	});
 })();
