@@ -112,6 +112,11 @@
 		vm.viewMap= function(){
 			modalService.open(__env.modalMonitorEventMap, 'modalMonitorMapCtrl as vm', vm.events.info);
 		};
+		
+		vm.analyze=function() {
+			console.log(vm.events.eventid);
+			window.open("/ux/transient/transient_analyzer.html?eventid="+vm.events.eventid);
+		};
 
 		//add or remove plot
 		vm.actionPlot = function(row){
@@ -207,6 +212,7 @@
 						vm.events.range.end = end;
 						getSiteData(response.data.event.siteid);
 						vm.events.info = response.data.event;
+						vm.events.eventid = response.data.eventId;
 						vm.header = response.data.tsda.meta.name+" "+response.data.tsda.meta.unit;
 						vm.events.name = response.data.event.sitename;
 						vm.events.column.push({x: parseFloat(response.data.event.ts), y: parseFloat(response.data.event.confidence)});
