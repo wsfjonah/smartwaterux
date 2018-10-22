@@ -64,6 +64,9 @@
 					},{
 						id: 'unknown',
 						name: $translate.instant('site_monitor_tag_opt_unknown')
+					},{
+						id: 'classification',
+						name: 'Classified'
 					}
 				]
 			},

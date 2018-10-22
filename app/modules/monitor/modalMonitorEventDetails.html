@@ -6,14 +6,20 @@
 		<table class="table table-bordered m-b-0 table-sm">
 			<thead>
 					<tr>
+						<th width="30%">ID</th>
 						<th width="30%">{{ "site_monitor_event_table_desc" | translate }}</th>
-						<th width="25%">{{ "site_monitor_event_table_datetime" | translate }}</th>
-						<th width="25%">{{ "site_monitor_event_table_confidence" | translate }}</th>
-						<th width="20%">{{ "site_monitor_event_table_operation" | translate }}</th>
+						<th width="15%">{{ "site_monitor_event_table_datetime" | translate }}</th>
+						<th width="5%">sigma</th>
+						<th width="5%">mag</th>
+						<th width="10%">{{ "site_monitor_event_table_confidence" | translate }}</th>
+						<th width="5%">{{ "site_monitor_event_table_operation" | translate }}</th>
 					</tr>
 			</thead>
 			<tbody>
 				<tr>
+					<td>
+						<span class="text-muted text-12">{{ vm.events.eventid }}</span>
+					</td>
 					<td>
 						<span class="text-muted text-12">{{ vm.events.info.desc }}</span>
 					</td>
@@ -21,7 +27,13 @@
 						{{ vm.events.info.ts | date: 'dd-MM-yyyy HH:mm:ss' }}
 					</td>
 					<td>
-						{{ vm.events.info.confidence }}
+						{{ vm.events.info.sigma | number: 2}}
+					</td>
+					<td>
+						{{ vm.events.info.magnitude | number: 2 }}
+					</td>
+					<td>
+						{{ vm.events.info.confidence | number: 2 }}
 					</td>
 					<td>
 						{{ vm.events.info.operation }}
