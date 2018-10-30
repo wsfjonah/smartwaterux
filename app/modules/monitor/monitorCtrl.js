@@ -65,6 +65,9 @@
 						id: 'unknown',
 						name: $translate.instant('site_monitor_tag_opt_unknown')
 					},{
+						id: 's-processing',
+						name: 's-processing'
+					},{
 						id: 'classification',
 						name: 'Classified'
 					}
