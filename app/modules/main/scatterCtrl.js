@@ -62,7 +62,7 @@
 							},
 							data: [{
 								type: "scatter",
-								click: function(e){window.open("/ux/transient/transient_analyzer.html?eventid="+e.dataPoint.id);},
+								click: function(e){window.open("/ux/transient/transient.html?eventid="+e.dataPoint.id);},
 								xValueType: "dateTime",
 								xValueFormatString:"HH:mm",
 								toolTipContent: "<b>时间: </b>{x}<br/><b>异常大小: </b>{y}",

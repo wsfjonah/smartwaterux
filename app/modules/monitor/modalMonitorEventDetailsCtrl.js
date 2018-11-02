@@ -115,7 +115,7 @@
 		
 		vm.analyze=function() {
 			console.log(vm.events.eventid);
-			window.open("/ux/transient/transient_analyzer.html?eventid="+vm.events.eventid);
+			window.open("/ux/transient/transient.html?eventid="+vm.events.eventid);
 		};
 
 		//add or remove plot
