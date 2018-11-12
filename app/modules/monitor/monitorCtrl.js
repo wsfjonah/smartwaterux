@@ -44,6 +44,9 @@
 				model: null,
 				options:[
 					{
+						id: 'classification',
+						name: 'Classified'
+					},{
 						id: 'valve_open',
 						name: $translate.instant('site_monitor_tag_opt_valve_open')
 					},{
@@ -67,9 +70,6 @@
 					},{
 						id: 's-processing',
 						name: 's-processing'
-					},{
-						id: 'classification',
-						name: 'Classified'
 					}
 				]
 			},
