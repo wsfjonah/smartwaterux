@@ -11,7 +11,7 @@
 	apiService.$inject = ['$http','localStorageService','$httpParamSerializerJQLike','authService'];
 
 	function authService($http, localStorageService, $httpParamSerializerJQLike) {
-		var users = "lingang:lg123, admin:admin123";
+		var users = "lingang:lg123, admin:admin123, lingang01:lg2018";
 		
 		var _authentication_info = { //default object
 			isAuth: false,
