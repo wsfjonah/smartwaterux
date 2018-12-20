@@ -25,6 +25,7 @@
 	"site_menu_city_quality" : "Data Quality View",
 	"site_menu_city_pressure" : "Pressure Mode",
 	"site_menu_city_anomaly" : "Anomaly Mode",
+	"site_menu_test":"test",
 	"logout_label":"Logout",
 	"search_placeholder":"Search & Enter",
 	"site_location_graph_button" : "View Data",
