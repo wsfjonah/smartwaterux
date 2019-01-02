@@ -103,6 +103,15 @@
 				content: ''
 			};
 		};
+        this.markerConfig1 = function(color){
+            return {
+                icon: 'assets/images/map/marker_'+color+'.png',
+                width: 30,
+                height: 38,
+                title: '',
+                content: ''
+            };
+        };
 		this.hidePace = function(){
 			$('.pace-running').addClass('pace-done').removeClass('pace-running');
 			$('.pace-active').addClass('pace-inactive').removeClass('pace-active');

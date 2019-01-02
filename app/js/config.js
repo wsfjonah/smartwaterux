@@ -217,7 +217,29 @@
 			page_params: {
 				key: "monitor"
 			}
-		})
+		}).when('/flow', {
+                templateUrl: __env.folder+'/app/modules/DMA/flow.html',
+                controller: 'flowController as vm',
+                restrictions: {
+                    ensureAuthenticated: true,
+                    loginRedirect: false
+                },
+                resolve: {
+                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                        return $ocLazyLoad.load([
+                            'app/modules/network/networkDataCtrl.js',
+                            'app/vendors/angular-daterangepicker.min.js',
+                            'app/modules/remote/modalEventDetailsCtrl.js',
+                            'app/modules/remote/modalTimeSeriesCtrl.js',
+                            'app/modules/remote/modalHighRateCtrl.js',
+                            'app/modules/DMA/flowCtrl.js'
+                        ]);
+                    }]
+                },
+                page_params: {
+                    key: "flow"
+                }
+            })
 		.when('/login', {
 			templateUrl: __env.folder+'/app/modules/auth/login.html',
 			controller: 'authLoginController',

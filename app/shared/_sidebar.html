@@ -1,5 +1,6 @@
  <!-- Sidebar scroll-->
-<div class="scroll-sidebar">
+<script src="../js/config.js"></script>
+ <div class="scroll-sidebar">
 	<!-- User profile -->
 	<div class="user-profile">
 		<!-- User profile image -->
@@ -52,8 +53,12 @@
 				</a>
 			</li>
 			<li>
-				<a class="has-arrow waves-effect waves-dark" href="#!/dashboard-info" aria-expanded="false" target="_blank">
-					<i class="ti-wand"></i><span class="hide-menu" translate="site_menu_test"></span>
+				<a class="has-arrow waves-effect waves-dark" href="" aria-expanded="false" target="_blank">
+					<i class="ti-map"></i><span class="hide-menu" translate="site_menu_dma"></span></a>
+					<ul aria-expanded="false" class="collapse">
+						<li><a href="/ux/map/dma.html" translate="site_menu_zone" target="_blank"></a></li>
+						<li><a href="#!flow" translate="site_menu_flow" ng-class="{ active: vm.isCurrentPath('/flow') }"></a></li>
+					</ul>
 				</a>
 			</li>
 		</ul>
