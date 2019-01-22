@@ -325,7 +325,13 @@
 			var ids = [];
 			if(vm.plotData.length){
 				angular.forEach(vm.plotData, function(value){
-					ids.push(value.datapoint.pressure._id);
+					console.log("modelTimeSerieCtrl: ");
+					console.log(value);
+					if(value.type=='flow') {
+						ids.push(value.datapoint.consumption._id);
+					} else {
+						ids.push(value.datapoint.pressure._id);
+					}
 				});
 			}
 			return ids;
