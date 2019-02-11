@@ -217,7 +217,54 @@
 			page_params: {
 				key: "monitor"
 			}
-		}).when('/flow', {
+		})
+		.when('/classification', {
+			templateUrl: __env.folder+'/app/modules/monitor/classification.html',
+			controller: 'monitorController as vm',
+			restrictions: {
+				ensureAuthenticated: true,
+				loginRedirect: false
+			},
+			resolve: {
+				loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+					return $ocLazyLoad.load([
+						'app/vendors/angular-daterangepicker.min.js',
+						'app/vendors/fastRepeat.js',
+						'app/vendors/ng-infinite-scroll.min.js',
+						'app/modules/monitor/monitorCtrl.js',
+						'app/modules/monitor/modalMapCtrl.js',
+						'app/modules/monitor/modalMonitorEventDetailsCtrl.js'
+					]);
+				}]
+			},
+			page_params: {
+				key: "classification"
+			}
+		})
+		.when('/eventlib', {
+			templateUrl: __env.folder+'/app/modules/monitor/eventlib.html',
+			controller: 'monitorController as vm',
+			restrictions: {
+				ensureAuthenticated: true,
+				loginRedirect: false
+			},
+			resolve: {
+				loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+					return $ocLazyLoad.load([
+						'app/vendors/angular-daterangepicker.min.js',
+						'app/vendors/fastRepeat.js',
+						'app/vendors/ng-infinite-scroll.min.js',
+						'app/modules/monitor/monitorCtrl.js',
+						'app/modules/monitor/modalMapCtrl.js',
+						'app/modules/monitor/modalMonitorEventDetailsCtrl.js'
+					]);
+				}]
+			},
+			page_params: {
+				key: "eventlib"
+			}
+		})
+		.when('/flow', {
                 templateUrl: __env.folder+'/app/modules/DMA/flow.html',
                 controller: 'flowController as vm',
                 restrictions: {

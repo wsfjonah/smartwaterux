@@ -12,6 +12,8 @@
 	"site_menu_dashboard_network" : "Network Dashboard",
 	"site_menu_dashboard_scatter" : "Scatter",
 	"site_menu_monitor" : "Monitoring",
+	"menu_event_classification" : "Classification",
+	"menu_event_library" : "Event Library",
 	"site_menu_remote" : "Remote Site",
 	"site_menu_location" : "Location",
 	"site_menu_table" : "Information",

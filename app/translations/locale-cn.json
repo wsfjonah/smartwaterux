@@ -13,6 +13,8 @@
 	"site_menu_dashboard_scatter" : "散点分析",
 	"site_menu_dma":"DMA分区",
 	"site_menu_monitor" : "监控",
+	"menu_event_classification" : "归类",
+	"menu_event_library" : "库",
 	"site_menu_remote" : "远程终端",
 	"site_menu_location" : "地理位置",
 	"site_menu_table" : "信息",
