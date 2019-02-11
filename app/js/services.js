@@ -272,6 +272,7 @@
 		};
 
 		this.eventMonitorApi = function(res){
+			console.log(res);
 			return $http({
 				method: 'GET',
 				url: __env.eventDurationUrl+"/"+res.end+"/"+res.duration+res.filter,

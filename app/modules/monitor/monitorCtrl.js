@@ -31,6 +31,7 @@
 			button: false
 		};
 		vm.isTimer = true;
+		vm.source = "";
 		vm.tabMode = "monitor";
 		vm.filterOn = false;
 		vm.invest = {
@@ -44,9 +45,6 @@
 				model: null,
 				options:[
 					{
-						id: 'classification',
-						name: 'Classified'
-					},{
 						id: 'valve_open',
 						name: $translate.instant('site_monitor_tag_opt_valve_open')
 					},{
@@ -67,9 +65,6 @@
 					},{
 						id: 'unknown',
 						name: $translate.instant('site_monitor_tag_opt_unknown')
-					},{
-						id: 's-processing',
-						name: 's-processing'
 					}
 				]
 			},
@@ -151,9 +146,8 @@
 			}
 		};
 
-		vm.showFilterMonitor = function(src){
+		vm.showFilterMonitor = function(){
 			vm.invest.isFilter = true;
-			vm.invest.src = src;
 			loadInvestigateEvent(true);
 		};
 
@@ -213,12 +207,12 @@
 				return;
 			}
 			vm.invest.busy = true;
-			console.log("loadInvestigateEvent");
 			loadInvestigateEvent();
 		};
 
-		vm.switchMode = function(mode){
+		vm.switchMode = function(mode, source){
 			vm.tabMode = mode;
+			vm.source = source;
 			if(mode==="investigate"){
 				vm.nextPage(true);
 			}
@@ -289,14 +283,13 @@
 			}
 		}
 		function loadInvestigateEvent(init){
-			console.log(vm.invest.src);
 			var getData = vm.getFilterData();
-			var params = {end: vm.invest.paging, duration: vm.duration, source: vm.invest.src, filter: ""};
+			var params = {end: vm.invest.paging, duration: vm.duration, source: vm.source, filter: ""};
 			if(vm.invest.isFilter){
 				params = {
 					end: (angular.isDefined(init)) ? getData.end : vm.invest.paging,
 					duration: getData.duration,
-					source: vm.invest.src,
+					source: vm.source,
 					filter: ""
 				};
 				delete getData.end;
