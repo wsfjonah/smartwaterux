@@ -85,11 +85,7 @@
 
 		function getEventData(res){
 			if(angular.isDefined(res)){
-				var params = {
-					to: res.to,
-					duration: Number(res.to) - Number(res.from)
-				};
-				apiService.eventDurationApi(params).then(function(response){
+				apiService.eventSingleRangeApi(res.id, res.from, res.to).then(function(response){
 					if(angular.isDefined(response.data.event)){
 						angular.forEach(response.data.event, function(value/*, key*/){
 							vm.events.column.push({x: parseFloat(value.timestamp), y: parseFloat(value.sigma)});

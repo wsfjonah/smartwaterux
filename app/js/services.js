@@ -263,14 +263,6 @@
 			});
 		};
 
-		this.eventDurationApi = function(res){
-			return $http({
-				method: 'GET',
-				url: __env.eventDurationUrl+"/"+res.to+"/"+res.duration,
-				headers: headers
-			});
-		};
-
 		this.eventMonitorApi = function(res){
 			console.log("eventMonitorApi: ");
 			console.log(res);
