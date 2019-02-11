@@ -284,19 +284,20 @@
 		}
 		function loadInvestigateEvent(init){
 			var getData = vm.getFilterData();
-			var params = {end: vm.invest.paging, duration: vm.duration, source: vm.source, filter: ""};
+			var params = {end: vm.invest.paging, duration: vm.duration, source: "", filter: ""};
 			if(vm.invest.isFilter){
 				params = {
 					end: (angular.isDefined(init)) ? getData.end : vm.invest.paging,
 					duration: getData.duration,
-					source: vm.source,
+					source: "",
 					filter: ""
 				};
 				delete getData.end;
 				delete getData.duration;
-				params.filter = "/?filter="+encodeURIComponent(JSON.stringify(getData));
+				params.filter = "filter="+encodeURIComponent(JSON.stringify(getData));
 				vm.invest.isFilter = true;
 			}
+			params.source = "source="+vm.source;
 			apiService.eventMonitorApi(params).then(function(response){
 				var objKey = {};
 				if(angular.isDefined(init)){

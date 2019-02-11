@@ -272,10 +272,21 @@
 		};
 
 		this.eventMonitorApi = function(res){
+			console.log("eventMonitorApi: ");
 			console.log(res);
+			var url = __env.eventDurationUrl+"/"+res.end+"/"+res.duration;
+			if(angular.isDefined(res.filter) || angular.isDefined(res.source)) {
+				url = url + "/?";
+			}
+			if(angular.isDefined(res.filter)) {
+				url = url + res.filter + "&";
+			}
+			if(angular.isDefined(res.source)) {
+				url = url + res.source + "&";
+			}
 			return $http({
 				method: 'GET',
-				url: __env.eventDurationUrl+"/"+res.end+"/"+res.duration+res.filter,
+				url: url,
 				headers: headers
 			});
 		};
