@@ -151,8 +151,9 @@
 			}
 		};
 
-		vm.showFilterMonitor = function(){
+		vm.showFilterMonitor = function(src){
 			vm.invest.isFilter = true;
+			vm.invest.src = src;
 			loadInvestigateEvent(true);
 		};
 
@@ -212,6 +213,7 @@
 				return;
 			}
 			vm.invest.busy = true;
+			console.log("loadInvestigateEvent");
 			loadInvestigateEvent();
 		};
 
@@ -287,12 +289,14 @@
 			}
 		}
 		function loadInvestigateEvent(init){
+			console.log(vm.invest.src);
 			var getData = vm.getFilterData();
-			var params = {end: vm.invest.paging, duration: vm.duration, filter: ""};
+			var params = {end: vm.invest.paging, duration: vm.duration, source: vm.invest.src, filter: ""};
 			if(vm.invest.isFilter){
 				params = {
 					end: (angular.isDefined(init)) ? getData.end : vm.invest.paging,
 					duration: getData.duration,
+					source: vm.invest.src,
 					filter: ""
 				};
 				delete getData.end;
