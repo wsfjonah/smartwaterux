@@ -15,37 +15,10 @@
 		<div class="card">
 			<div class="card-body p-0">
 				<ul class="nav nav-tabs customtab" role="tablist">
-					<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#monitor" role="tab" ng-click="vm.switchMode('monitor')"><span class="hidden-sm-up"><i class="ti-world"></i></span> <span class="hidden-xs-down">{{ "site_monitor_tab_monitor" | translate }}</span></a></li>
 					<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#investigate" role="tab" ng-click="vm.switchMode('investigate')"><span class="hidden-sm-up"><i class="ti-zoom-in"></i></span> <span class="hidden-xs-down">{{ "site_monitor_tab_investigate" | translate }}</span></a></li>
 					<li class="monitor-filter-toggle" ng-if="vm.tabMode == 'investigate'"><button type="button" class="btn btn-secondary" ng-click="vm.toggleFilter()" ng-class="{active: vm.filterOn}"><i class="ti-filter"></i></button></li>
 				</ul>
 				<div class="tab-content p-0">
-					<div class="tab-pane active p-20" id="monitor" role="tabpanel">
-						<!-- content -->
-						<div class="monitoring">
-							<div ng-if="vm.isObjectEmpty(vm.monitor)" class="text-center p-20">
-								<i class="ti-info-alt newline font-30 m-b-10"></i>{{ "site_monitor_no_result" | translate }}
-							</div>
-							<div class="row-event" ng-repeat="item in vm.monitor | limitTo: vm.monitorPage.limitTo" ng-click="vm.viewEventDetails(item)">
-								<div class="row">
-									<div class="col-md-12 clearfix">
-										<span class="event-badge {{ item.degree }}">
-											<i class="ti-light-bulb"></i>
-											<div class="notify" ng-show="item.degree == 'high'"><span class="heartbit"></span><span class="point"></span></div>
-										</span>
-										<div class="event-info">
-											<div class="name">{{ item.desc }}<span class="datetime text-muted font-11 m-l-10"><i class="ti-time"></i> {{ item.timestamp | date: 'dd-MM-yyyy HH:mm:ss'}}</span></div>
-											<div class="address text-muted font-12"><i class="ti-location-pin"></i><span>{{ item.location }}</span><span>{{ item.confidence }}</span><span>{{ item.operation }}</span></div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="text-center">
-								<button type="button" class="btn btn-default btn-block" ng-click="vm.loadmoreMonitor()" ng-show="vm.monitorPage.button">{{ "site_monitor_show_more" | translate }}</button>
-							</div>
-						</div>
-						<!-- //END content -->
-					</div>
 					<div class="tab-pane" id="investigate" role="tabpanel">
 						<!-- content -->
 						<div class="monitor-filter clearfix" ng-show="vm.filterOn">
