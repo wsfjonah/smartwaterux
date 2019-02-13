@@ -178,7 +178,9 @@
 				tag: [],
 				duration: duration,
 				operation: [],
-				end: (isToday) ? "-1" : end.format('x'),
+				// end: (isToday) ? "-1" : end.format('x'),
+				// end: (isToday) ? end.format('x') : end.format('x'),
+                end: end.format('x'),
 				confidence: vm.filter.confidence.model
 			};
 			angular.forEach(vm.filter.operation.model, function(v){
