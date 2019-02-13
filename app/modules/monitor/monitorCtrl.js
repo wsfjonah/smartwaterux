@@ -16,6 +16,12 @@
 *	- degree status
 *	(low - green), (low-medium - yellow), (medium - orange), (high - red)
 */
+/*
+*   1.添加过滤删选条件-datapoint
+*   - 弹出datapoint弹出框 - 远程终端-信息 - 将‘行动’中的内容换成单选框  - 选择后弹框自动消失
+*   - 加到筛选url中进行url编码
+* */
+
 (function() {
 	'use strict';
 	var monitor = angular.module('xProject.monitor', ['infinite-scroll', 'daterangepicker']);
@@ -179,7 +185,9 @@
 				tag: [],
 				duration: duration,
 				operation: [],
-				end: (isToday) ? "-1" : end.format('x'),
+				// end: (isToday) ? "-1" : end.format('x'),
+				// end: (isToday) ? end.format('x') : end.format('x'),
+                end: end.format('x'),
 				confidence: vm.filter.confidence.model
 			};
 			angular.forEach(vm.filter.operation.model, function(v){
