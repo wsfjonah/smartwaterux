@@ -127,6 +127,7 @@
 	"site_monitor_show_more" : "展示更多",
 	"site_monitor_filter_tag" : "标签",
 	"site_monitor_filter_operation" : "行动",
+    "site_monitor_filter_add_datapoint" : "添加事件",
 	"site_monitor_filter_confidence" : "置信度",
 	"site_monitor_info" : "信息",
 	"site_monitor_event_table_desc" : "描述",
