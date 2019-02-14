@@ -78,6 +78,7 @@
 	window.__env.modalInformationTableInfo = window.__env.folder+'/app/modules/remote/modalDetails.html';
 	window.__env.modalInformationTableMap = window.__env.folder+'/app/modules/remote/modalMap.html';
 	window.__env.modalMonitorEventMap = window.__env.folder+'/app/modules/monitor/modalMap.html';
+	window.__env.modalMonitorSiteDetailsUrl = window.__env.folder+'/app/modules/monitor/modalMonitorSiteDetails.html';
 	window.__env.modalSiteEventUrl = window.__env.folder+'/app/modules/remote/modalSiteEvents.html';
 
 	//locale folder

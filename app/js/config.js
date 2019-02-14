@@ -210,7 +210,8 @@
 						'app/vendors/ng-infinite-scroll.min.js',
 						'app/modules/monitor/monitorCtrl.js',
 						'app/modules/monitor/modalMapCtrl.js',
-						'app/modules/monitor/modalMonitorEventDetailsCtrl.js'
+						'app/modules/monitor/modalMonitorEventDetailsCtrl.js',
+						'app/modules/monitor/modalMonitorSiteDetailsCtrl.js'
 					]);
 				}]
 			},

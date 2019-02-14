@@ -89,6 +89,19 @@
 					}
 				]
 			},
+            dplists:{
+			    model:null,
+                options:[
+                    {
+                        id: '5a6eb4e70b272a1f64fa26ba-pressure',
+                        name:'江山路妙香路'
+                    },
+                    {
+                        id: '5a6eb4e70b272a1f64fa26b2-pressure',
+                        name:'江山路云水路（新昇半导体）'
+                    }
+                ]
+            },
 			duration:{
 				model: null,
 				options:[
@@ -123,6 +136,7 @@
 		};
 		vm.filter.duration.model = vm.filter.duration.options[0];
 		vm.filter.tag.model = vm.filter.tag.options;
+		vm.filter.dplists.model= vm.filter.dplists.options;
 		vm.filter.confidence.model = 50;
 		vm.filter.operation.model = vm.filter.operation.options;
     		var start = moment();
@@ -151,7 +165,23 @@
 				vm.monitorPage.button = false;
 			}
 		};
-
+        
+        vm.showDatapoints=function () {
+            console.log('show datapoints list');
+            var params={
+                eventId: 11,
+                datapointid:11,
+                name: ""
+            }
+            
+            // modalService.open(__env.modalMonitorEventDetailsUrl, 'modalMonitorEventDetailsCtrl as vm', params, function(){
+            // });
+            
+            modalService.open(__env.modalMonitorSiteDetailsUrl, 'modalMonitorSiteDetailsCtrl as vm', params, function(){
+            });
+            console.log('end')
+        }
+		
 		vm.showFilterMonitor = function(){
 			vm.invest.isFilter = true;
 			loadInvestigateEvent(true);
@@ -185,6 +215,7 @@
 				tag: [],
 				duration: duration,
 				operation: [],
+                datapoint:[],
 				// end: (isToday) ? "-1" : end.format('x'),
 				// end: (isToday) ? end.format('x') : end.format('x'),
                 end: end.format('x'),
@@ -196,6 +227,9 @@
 			angular.forEach(vm.filter.tag.model, function(v){
 				res.tag.push(v.id);
 			});
+			angular.forEach(vm.filter.dplists.model,function (v) {
+                res.datapoint.push(v.id);
+            })
 			return res;
 		};
 
