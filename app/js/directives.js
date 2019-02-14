@@ -21,7 +21,7 @@
 		return {
 			link: function (scope, element/*, attr*/) {
 				$timeout(function() {
-					element.selectpicker();
+					element.selectpicker('deselectAll');
 				});
 			}
 		};

@@ -35,6 +35,7 @@
 			limitTo: 500,
 			max: 0,
 			button: false
+
 		};
 		vm.isTimer = true;
 		vm.source = "";
@@ -44,12 +45,13 @@
 			paging: "-1",
 			busy: false,
 			results: [],
-			isFilter: false
+            isFilter: false
 		};
+		
 		vm.filter = {
 			tag:{
 				model: null,
-				options:[
+                options:[
 					{
 						id: 'valve_open',
 						name: $translate.instant('site_monitor_tag_opt_valve_open')
@@ -92,14 +94,6 @@
             dplists:{
 			    model:null,
                 options:[
-                    {
-                        id: '5a6eb4e70b272a1f64fa26ba-pressure',
-                        name:'江山路妙香路'
-                    },
-                    {
-                        id: '5a6eb4e70b272a1f64fa26b2-pressure',
-                        name:'江山路云水路（新昇半导体）'
-                    }
                 ]
             },
 			duration:{
@@ -134,6 +128,7 @@
 				}
 			}
 		};
+		loadFilterDplist();
 		vm.filter.duration.model = vm.filter.duration.options[0];
 		vm.filter.tag.model = vm.filter.tag.options;
 		vm.filter.dplists.model= vm.filter.dplists.options;
@@ -165,22 +160,7 @@
 				vm.monitorPage.button = false;
 			}
 		};
-        
-        vm.showDatapoints=function () {
-            console.log('show datapoints list');
-            var params={
-                eventId: 11,
-                datapointid:11,
-                name: ""
-            }
-            
-            // modalService.open(__env.modalMonitorEventDetailsUrl, 'modalMonitorEventDetailsCtrl as vm', params, function(){
-            // });
-            
-            modalService.open(__env.modalMonitorSiteDetailsUrl, 'modalMonitorSiteDetailsCtrl as vm', params, function(){
-            });
-            console.log('end')
-        }
+		
 		
 		vm.showFilterMonitor = function(){
 			vm.invest.isFilter = true;
@@ -227,10 +207,16 @@
 			angular.forEach(vm.filter.tag.model, function(v){
 				res.tag.push(v.id);
 			});
-			angular.forEach(vm.filter.dplists.model,function (v) {
-                res.datapoint.push(v.id);
-            })
-			return res;
+			
+			if(vm.filter.dplists.model.length=== 0){    //datapoint没选
+                delete res.datapoint;
+            }else {
+                angular.forEach(vm.filter.dplists.model,function (v) {
+                    res.datapoint.push(v.id);
+                });
+            }
+            
+            return res;
 		};
 
 		vm.empty = function(){
@@ -285,6 +271,65 @@
 
 		loadAnyEvent();
 
+		function loadFilterDplist() {
+            // {
+            //     id: '5a6eb4e70b272a1f64fa26ba-pressure',
+            //         name:'江山路妙香路'
+            // },
+            // {
+            //     id: '5a6eb4e70b272a1f64fa26b2-pressure',
+            //         name:'江山路云水路（新昇半导体）'
+            // }
+            var dplistsArr=[
+                {
+                    id: '5a6eb4e70b272a1f64fa26ba-pressure',
+                    name:'江山路妙香路'
+                },
+                {
+                    id: '5a6eb4e70b272a1f64fa26b2-pressure',
+                    name:'江山路云水路（新昇半导体）'
+                },
+                {
+                    id: '5a6eb4e70b272a1f64fa26b3-pressure',
+                    name:'沧海路妙香路（五七路妙香路泵站）'
+                },
+                {
+                    id: '5a6eb4e70b272a1f64fa26b4-pressure',
+                    name:'江山路倚天路'
+                },
+                {
+                    id: '5a6eb4e70b272a1f64fa26b5-pressure',
+                    name:'万水路新元南路'
+                },
+                {
+                    id: '5a6eb4e70b272a1f64fa26b6-pressure',
+                    name:'沧海路中（中港柴油机制造）'
+                },
+                {
+                    id: '5a6eb4e70b272a1f64fa26b7-pressure',
+                    name:'南芦公路（芦潮港，果园泵站）'
+                },
+                {
+                    id: '5a6eb4e70b272a1f64fa26b8-pressure',
+                    name:'芦五公路'
+                },
+                {
+                    id: '5a6eb4e70b272a1f64fa26b9-pressure',
+                    name:'倚天路沧海路'
+                },
+                {
+                    id: '5a6eb4e70b272a1f64fa26bc-pressure',
+                    name:'层林路沧海路（上海电气）'
+                },
+                {
+                    id: '5a6eb4e70b272a1f64fa26bb-pressure',
+                    name:'江山路天高路'
+                }
+                ];
+            
+            vm.filter.dplists.options=dplistsArr;
+        }
+		
 		function getEventDetails(row){
 			var params = {
 				eventId: row.key,

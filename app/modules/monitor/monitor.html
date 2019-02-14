@@ -91,7 +91,7 @@
                                             </div>
                                             <!--<button class="form-control" data-width="80%" ng-click="vm.showDatapoints()">-->
                                             <!--</button>-->
-                                            <select class="form-control selectpicker" multiple="false" data-select-watcher ng-model="vm.filter.dplists.model" ng-options="res.name for res in vm.filter.dplists.options track by res.id" data-actions-box="true" data-width="80%" data-selected-text-format="count > 2">
+                                            <select class="form-control selectpicker" multiple data-select-watcher ng-model="vm.filter.dplists.model" ng-options="res.name for res in vm.filter.dplists.options track by res.name" data-max-options="5" data-live-search="true" title="Select All" data-width="80%" data-selected-text-format="count > 3">
                                             </select>
                                         </div>
                                     </div>
