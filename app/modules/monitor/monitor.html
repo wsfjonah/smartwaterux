@@ -1,4 +1,8 @@
-
+<style>
+    .deselected-only .bs-select-all {
+        display: none;
+    }
+</style>
 <div class="row page-titles m-b-0">
 	<div class="col-md-5 align-self-center">
 		<h3 class="text-white" translate="site_menu_monitor"></h3>
@@ -91,7 +95,7 @@
                                             </div>
                                             <!--<button class="form-control" data-width="80%" ng-click="vm.showDatapoints()">-->
                                             <!--</button>-->
-                                            <select class="form-control selectpicker" multiple data-select-watcher ng-model="vm.filter.dplists.model" ng-options="res.name for res in vm.filter.dplists.options track by res.name" data-max-options="5" data-live-search="true" title="Select All" data-width="80%" data-selected-text-format="count > 3">
+                                            <select class="form-control selectpicker deselected-only" multiple data-select-watcher ng-model="vm.filter.dplists.model" ng-options="res.name for res in vm.filter.dplists.options track by res.name" data-actions-box="true" data-max-options="5" data-live-search="true" data-width="80%" data-selected-text-format="count > 3">
                                             </select>
                                         </div>
                                     </div>

@@ -207,9 +207,11 @@
 			angular.forEach(vm.filter.tag.model, function(v){
 				res.tag.push(v.id);
 			});
-			
-			if(vm.filter.dplists.model.length=== 0){    //datapoint没选
+			console.log(vm.filter.dplists.model.length);
+			if(vm.filter.dplists.model.length=== 11){    //datapoint全选
                 delete res.datapoint;
+            }else if (vm.filter.dplists.model.length>5 && vm.filter.dplists.model.length<11){
+			    alert('添加站点请选择五个之内或全选');
             }else {
                 angular.forEach(vm.filter.dplists.model,function (v) {
                     res.datapoint.push(v.id);
