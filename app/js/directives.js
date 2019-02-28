@@ -737,7 +737,7 @@
 
 	function drawCoveragePipe(map, opts, status, marker, results){
 		//var isAdd = status || true;
-		var color = "red";
+		var color = "#ED784A";
 		var centerPoints = [];
 		angular.forEach(results, function(row){
 			var junctions = [];
@@ -746,7 +746,7 @@
 				centerPoints.push({lng: element.lng, lat: element.lat});
 				junctions.push(p);
 			});
-			var pline = new BMap.Polyline(junctions, {strokeColor:color, strokeWeight:7, strokeOpacity:0.7});
+			var pline = new BMap.Polyline(junctions, {strokeColor:color, strokeWeight:5, strokeOpacity:1});
 			opts.coveragePipes.push(pline);
 			map.addOverlay(pline);
 		});

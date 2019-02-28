@@ -65,25 +65,39 @@
 									<div class="col-md-6 filter-col" style="padding-right:4px">
 										<div class="input-group">
 											<div class="input-group-addon">
-												<span class="input-group-text">{{ "site_monitor_filter_tag" | translate }}</span>
+												<span class="input-group-text">{{ "site_monitor_filter_tag" | translate }}(自动)</span>
 											</div>
-											<select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.tag.model" ng-options="res.name for res in vm.filter.tag.options track by res.id" data-actions-box="true" data-width="80%" data-selected-text-format="count > 2">
+											<select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.autotag.model" ng-options="res.name for res in vm.filter.autotag.options track by res.id" data-actions-box="true" data-width="80%" data-selected-text-format="count > 2">
 			  								</select>
 										</div>
 									</div>
-									<div class="col-md-6 p-l-0 filter-col">
-										<div class="input-group">
-											<div class="input-group-addon">
-												<span class="input-group-text">{{ "site_monitor_filter_operation" | translate }}</span>
-											</div>
-											<select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.operation.model" ng-options="res.name for res in vm.filter.operation.options track by res.id" data-actions-box="true" data-width="80%" data-selected-text-format="count > 2">
-			  								</select>
-										</div>
-									</div>
+                                    <div class="col-md-6 p-l-0 filter-col">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <span class="input-group-text">{{ "site_monitor_filter_tag" | translate }}(手动)</span>
+                                            </div>
+                                            <select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.mantag.model" ng-options="res.name for res in vm.filter.mantag.options track by res.id" data-actions-box="true" data-width="80%" data-selected-text-format="count > 2">
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <!--<div class="col-md-2">-->
                                         <!--<button  type="button" class="btn btn-primary btn-block">{{ "site_monitor_filter_add_datapoint" | translate }}</button>-->
                                     <!--</div>-->
 								</div>
+                            </div>
+                            <div class="m-b-5">
+                                <div class="row">
+                                    <div class="col-md-12 filter-col">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <span class="input-group-text">{{ "site_monitor_filter_operation" | translate }}</span>
+                                            </div>
+                                            <select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.operation.model" ng-options="res.name for res in vm.filter.operation.options track by res.id" data-actions-box="true" data-width="80%" data-selected-text-format="count > 2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="m-b-5">
@@ -93,8 +107,6 @@
                                             <div class="input-group-addon">
                                                 <span class="input-group-text">{{ "site_monitor_filter_add_datapoint" | translate }}</span>
                                             </div>
-                                            <!--<button class="form-control" data-width="80%" ng-click="vm.showDatapoints()">-->
-                                            <!--</button>-->
                                             <select class="form-control selectpicker deselected-only" multiple data-select-watcher ng-model="vm.filter.dplists.model" ng-options="res.name for res in vm.filter.dplists.options track by res.name" data-actions-box="true" data-max-options="5" data-live-search="true" data-width="80%" data-selected-text-format="count > 3">
                                             </select>
                                         </div>

@@ -1,4 +1,8 @@
-
+<style>
+    .deselected-only .bs-select-all {
+        display: none;
+    }
+</style>
 <div class="row page-titles m-b-0">
 	<div class="col-md-5 align-self-center">
 		<h3 class="text-white" translate="menu_event_library"></h3>
@@ -15,7 +19,7 @@
 		<div class="card">
 			<div class="card-body p-0">
 				<ul class="nav nav-tabs customtab" role="tablist">
-					<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#investigate" role="tab" ng-click="vm.switchMode('investigate', 'eventlib')"><span class="hidden-sm-up"><i class="ti-zoom-in"></i></span> <span class="hidden-xs-down">{{ "site_monitor_tab_investigate" | translate }}</span></a></li>
+					<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#investigate" role="tab" ng-click="vm.switchMode('investigate', 'transient_lib')"><span class="hidden-sm-up"><i class="ti-zoom-in"></i></span> <span class="hidden-xs-down">{{ "site_monitor_tab_investigate" | translate }}</span></a></li>
 					<li class="monitor-filter-toggle" ng-if="vm.tabMode == 'investigate'"><button type="button" class="btn btn-secondary" ng-click="vm.toggleFilter()" ng-class="{active: vm.filterOn}"><i class="ti-filter"></i></button></li>
 				</ul>
 				<div class="tab-content p-0">
@@ -51,6 +55,19 @@
 									</div>
 								</div>
 							</div>
+                            <div class="m-b-5">
+                                <div class="row">
+                                    <div class="col-md-12 filter-col">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <span class="input-group-text">{{ "site_monitor_filter_add_datapoint" | translate }}</span>
+                                            </div>
+                                            <select class="form-control selectpicker deselected-only" multiple data-select-watcher ng-model="vm.filter.dplists.model" ng-options="res.name for res in vm.filter.dplists.options track by res.name" data-actions-box="true" data-max-options="5" data-live-search="true" data-width="80%" data-selected-text-format="count > 3">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 							<div class="row">
 								<div class="col-md-12">
 									<div class="input-group">

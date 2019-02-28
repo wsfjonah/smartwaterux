@@ -7,6 +7,32 @@
 
 	function appConfig($routeProvider) {
 		$routeProvider
+        .when('/admin', {
+            templateUrl: __env.folder+'/app/modules/admin/admin.html',
+            controller: 'adminController as vm',
+            restrictions: {
+                ensureAuthenticated: true,
+                loginRedirect: false
+            },
+            page_params: {
+                key: "admin"
+            },
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        files: [
+                            'app/modules/admin/adminCtrl.js',
+                            'app/modules/network/networkDataCtrl.js',
+                            'app/vendors/angular-daterangepicker.min.js',
+                            'app/modules/remote/modalEventDetailsCtrl.js',
+                            'app/modules/remote/modalTimeSeriesCtrl.js',
+                            'app/modules/remote/modalHighRateCtrl.js'
+                        ]
+                    });
+                }]
+            }
+        })
 		.when('/dashboard-info', {
 			templateUrl: __env.folder+'/app/modules/main/main.html',
 			controller: 'mainController as vm',

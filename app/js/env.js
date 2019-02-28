@@ -18,6 +18,7 @@
 	window.__env.timeSeriesRangeUrl = window.__env.baseUrl+'tsda/query';
 	window.__env.eventAnyUrl = window.__env.baseUrl+'tsevent/search/-1/100000000';
 	window.__env.eventDurationUrl = window.__env.baseUrl+'tsevent/search';
+	window.__env.adminEventUrl=window.__env.baseUrl+'notificationBean/search';
 	window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query';
 	window.__env.eventDetailsUrl = window.__env.baseUrl+'tsevent/get';
 	window.__env.eventSingleRangeUrl = window.__env.baseUrl+'tsevent/datapoint';
@@ -88,7 +89,7 @@
 	window.__env.ignoreInterceptorRequest = ['uib/template/modal/window.html', window.__env.baseUrl+'user/login'];
 
 	//language reload page
-	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location','/network-data','/monitor','/flow'];
+	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location','/network-data','/monitor','/flow','/admin'];
 
 	//main page after user login
 	window.__env.pageMain = '/dashboard-info';

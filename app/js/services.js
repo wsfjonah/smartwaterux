@@ -282,6 +282,13 @@
 				headers: headers
 			});
 		};
+        this.eventAdminApi = function(from, to){
+            return $http({
+                method: 'GET',
+                url: __env.adminEventUrl+"/"+from+"/"+to,
+                headers: headers
+            });
+        };
 
 		this.eventRangeApi = function(from, to){
 			return $http({
