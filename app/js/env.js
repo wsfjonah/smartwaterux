@@ -18,7 +18,10 @@
 	window.__env.timeSeriesRangeUrl = window.__env.baseUrl+'tsda/query';
 	window.__env.eventAnyUrl = window.__env.baseUrl+'tsevent/search/-1/100000000';
 	window.__env.eventDurationUrl = window.__env.baseUrl+'tsevent/search';
-	window.__env.adminEventUrl=window.__env.baseUrl+'notificationBean/search';
+	window.__env.notificationAnyUrl=window.__env.baseUrl+'notification/search/any';
+	window.__env.addUserUrl=window.__env.baseUrl+'user/addUser';
+	window.__env.userAllUrl=window.__env.baseUrl+'user/allUser';
+	window.__env.moreNotificationUrl=window.__env.baseUrl+'notification/search';
 	window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query';
 	window.__env.eventDetailsUrl = window.__env.baseUrl+'tsevent/get';
 	window.__env.eventSingleRangeUrl = window.__env.baseUrl+'tsevent/datapoint';
@@ -81,6 +84,7 @@
 	window.__env.modalMonitorEventMap = window.__env.folder+'/app/modules/monitor/modalMap.html';
 	window.__env.modalMonitorSiteDetailsUrl = window.__env.folder+'/app/modules/monitor/modalMonitorSiteDetails.html';
 	window.__env.modalSiteEventUrl = window.__env.folder+'/app/modules/remote/modalSiteEvents.html';
+	window.__env.modalUserUrl=window.__env.folder+'/app/modules/admin/modalAddUser.html';
 
 	//locale folder
 	window.__env.localeFolderUrl = window.__env.folder+'/app/translations/locale-';
@@ -89,7 +93,7 @@
 	window.__env.ignoreInterceptorRequest = ['uib/template/modal/window.html', window.__env.baseUrl+'user/login'];
 
 	//language reload page
-	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location','/network-data','/monitor','/flow','/admin'];
+	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location','/network-data','/monitor','/flow','/user','/notification'];
 
 	//main page after user login
 	window.__env.pageMain = '/dashboard-info';

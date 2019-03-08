@@ -25,7 +25,11 @@
 				</a>
 			</li> -->
             <li>
-                <a class="has-arrow waves-effect waves-dark" href="#!admin" ng-class="{ active: vm.isCurrentPath('/admin') }" aria-expanded="false"><i class="ti-user"></i><span class="hide-menu" translate="site_menu_admin"></span></a>
+                <a class="has-arrow waves-effect waves-dark" aria-expanded="false" ><i class="ti-user"></i><span class="hide-menu" translate="site_menu_admin"></span></a>
+                <ul aria-expanded="false" class="collapse">
+                   <li><a href="#!user" translate="site_menu_user"  ng-class="{ active: vm.isCurrentPath('/user') }"></a></li>
+                   <li><a href="#!notification" translate="site_menu_notification"  ng-class="{ active: vm.isCurrentPath('/notification') }"></a></li>
+                </ul>
             </li>
 			<li>
 				<a class="has-arrow waves-effect waves-dark" href="" aria-expanded="false"><i class="ti-package"></i><span class="hide-menu" translate="site_menu_main"></span></a>

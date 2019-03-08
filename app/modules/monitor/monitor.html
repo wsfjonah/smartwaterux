@@ -62,7 +62,7 @@
 							</div>
 							<div class="m-b-5">
 								<div class="row">
-									<div class="col-md-6 filter-col" style="padding-right:4px">
+									<div class="col-md-12 filter-col">
 										<div class="input-group">
 											<div class="input-group-addon">
 												<span class="input-group-text">{{ "site_monitor_filter_tag" | translate }}(自动)</span>
@@ -71,15 +71,15 @@
 			  								</select>
 										</div>
 									</div>
-                                    <div class="col-md-6 p-l-0 filter-col">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <span class="input-group-text">{{ "site_monitor_filter_tag" | translate }}(手动)</span>
-                                            </div>
-                                            <select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.mantag.model" ng-options="res.name for res in vm.filter.mantag.options track by res.id" data-actions-box="true" data-width="80%" data-selected-text-format="count > 2">
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <!--<div class="col-md-6 p-l-0 filter-col">-->
+                                        <!--<div class="input-group">-->
+                                            <!--<div class="input-group-addon">-->
+                                                <!--<span class="input-group-text">{{ "site_monitor_filter_tag" | translate }}(手动)</span>-->
+                                            <!--</div>-->
+                                            <!--<select class="form-control selectpicker" multiple="true" data-select-watcher ng-model="vm.filter.mantag.model" ng-options="res.name for res in vm.filter.mantag.options track by res.id" data-actions-box="true" data-width="80%" data-selected-text-format="count > 2">-->
+                                            <!--</select>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
 
                                     <!--<div class="col-md-2">-->
                                         <!--<button  type="button" class="btn btn-primary btn-block">{{ "site_monitor_filter_add_datapoint" | translate }}</button>-->

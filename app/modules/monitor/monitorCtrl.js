@@ -76,33 +76,6 @@
 					}
 				]
 			},
-            mantag:{
-                model: null,
-                options:[
-                    {
-                        id: 'valve_open',
-                        name: $translate.instant('site_monitor_tag_opt_valve_open')
-                    },{
-                        id: 'valve_close',
-                        name: $translate.instant('site_monitor_tag_opt_valve_close')
-                    },{
-                        id: 'burst',
-                        name: $translate.instant('site_monitor_tag_opt_burst')
-                    },{
-                        id: 'hammer',
-                        name: $translate.instant('site_monitor_tag_opt_hammer')
-                    },{
-                        id: 'data_error',
-                        name: $translate.instant('site_monitor_tag_opt_data_error')
-                    },{
-                        id: 'anomaly',
-                        name: $translate.instant('site_monitor_tag_opt_anomaly')
-                    },{
-                        id: 'unknown',
-                        name: $translate.instant('site_monitor_tag_opt_unknown')
-                    }
-                ]
-            },
 			operation:{
 				model: null,
 				options:[
@@ -161,7 +134,6 @@
 		loadFilterDplist();
 		vm.filter.duration.model = vm.filter.duration.options[0];
 		vm.filter.autotag.model = vm.filter.autotag.options;
-		vm.filter.mantag.model=vm.filter.mantag.options;
 		vm.filter.dplists.model= vm.filter.dplists.options;
 		vm.filter.confidence.model = 50;
 		vm.filter.operation.model = vm.filter.operation.options;
@@ -227,7 +199,6 @@
 			}
 			var res = {
                 autotag: [],
-                mantag:[],
 				duration: duration,
 				operation: [],
                 datapoint:[],
@@ -242,9 +213,6 @@
 			angular.forEach(vm.filter.autotag.model, function(v){
 				res.autotag.push(v.id);
 			});
-            angular.forEach(vm.filter.mantag.model, function(v){
-                res.mantag.push(v.id);
-            });
 			console.log(vm.filter.dplists.model.length);
 			if(vm.filter.dplists.model.length=== 11){    //datapoint全选
                 delete res.datapoint;

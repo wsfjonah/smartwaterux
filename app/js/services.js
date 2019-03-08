@@ -282,10 +282,32 @@
 				headers: headers
 			});
 		};
-        this.eventAdminApi = function(from, to){
+		this.userAllApi=function () {
+            return $http({
+                method:'GET',
+                url:__env.userAllUrl,
+                headers:headers
+            })
+        }
+        this.addUserApi=function (username,password,phone,email) {
+            return $http({
+                method:'GET',
+                url:__env.addUserUrl+"?username="+username+"&password="+password+"&phone="+phone+"&email="+email,
+                headers:headers
+            })
+        }
+		this.notificationAnyApi=function () {
+		    return $http({
+                method:'POST',
+                url:__env.notificationAnyUrl,
+                headers:headers
+            })
+            
+        }
+        this.moreNotificationApi = function(from, to){
             return $http({
                 method: 'GET',
-                url: __env.adminEventUrl+"/"+from+"/"+to,
+                url: __env.moreNotificationUrl+"/"+from+"/"+to,
                 headers: headers
             });
         };

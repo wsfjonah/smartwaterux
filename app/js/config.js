@@ -7,32 +7,71 @@
 
 	function appConfig($routeProvider) {
 		$routeProvider
-        .when('/admin', {
-            templateUrl: __env.folder+'/app/modules/admin/admin.html',
-            controller: 'adminController as vm',
+        .when('/user', {
+            templateUrl: __env.folder+'/app/modules/admin/user.html',
+            controller: 'userController as vm',
             restrictions: {
                 ensureAuthenticated: true,
                 loginRedirect: false
             },
             page_params: {
-                key: "admin"
+                key: "user"
             },
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         serie: true,
                         files: [
-                            'app/modules/admin/adminCtrl.js',
-                            'app/modules/network/networkDataCtrl.js',
+                            'assets/css/bootstrap-table.css',
+                            'assets/js/bootstrap-table.min.js',
+                            'app/vendors/bootstrap-table-angular.min.js',
+                            'assets/js/locale/bootstrap-table-zh-CN.min.js',
+                            'assets/js/locale/bootstrap-table-en-US.min.js',
                             'app/vendors/angular-daterangepicker.min.js',
                             'app/modules/remote/modalEventDetailsCtrl.js',
                             'app/modules/remote/modalTimeSeriesCtrl.js',
-                            'app/modules/remote/modalHighRateCtrl.js'
+                            'app/modules/remote/modalHighRateCtrl.js',
+                            'app/modules/remote/modalDetailsCtrl.js',
+                            'app/modules/remote/modalMapCtrl.js',
+                            'app/modules/admin/userCtrl.js',
+                            'app/modules/remote/modalSiteEventsCtrl.js'
                         ]
                     });
                 }]
             }
-        })
+        }).when('/notification', {
+                templateUrl: __env.folder+'/app/modules/admin/notification.html',
+                controller: 'notificationController as vm',
+                restrictions: {
+                    ensureAuthenticated: true,
+                    loginRedirect: false
+                },
+                page_params: {
+                    key: "notification"
+                },
+                resolve: {
+                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            serie: true,
+                            files: [
+                                'app/modules/admin/notificationCtrl.js',
+                                'assets/css/bootstrap-table.css',
+                                'assets/js/bootstrap-table.min.js',
+                                'app/vendors/bootstrap-table-angular.min.js',
+                                'assets/js/locale/bootstrap-table-zh-CN.min.js',
+                                'assets/js/locale/bootstrap-table-en-US.min.js',
+                                'app/vendors/angular-daterangepicker.min.js',
+                                'app/modules/remote/modalEventDetailsCtrl.js',
+                                'app/modules/remote/modalTimeSeriesCtrl.js',
+                                'app/modules/remote/modalHighRateCtrl.js',
+                                'app/modules/remote/modalDetailsCtrl.js',
+                                'app/modules/remote/modalMapCtrl.js',
+                                'app/modules/remote/modalSiteEventsCtrl.js'
+                            ]
+                        });
+                    }]
+                }
+            })
 		.when('/dashboard-info', {
 			templateUrl: __env.folder+'/app/modules/main/main.html',
 			controller: 'mainController as vm',
