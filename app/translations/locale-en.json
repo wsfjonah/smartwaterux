@@ -15,7 +15,10 @@
 	"site_menu_dashboard_network" : "Network Dashboard",
 	"site_menu_dashboard_scatter" : "Scatter",
 	"site_menu_monitor" : "Monitoring",
-	"menu_event_classification" : "Classification",
+    "site_menu_setpsw" : "Reset Password",
+    "site_location_table_header_psw": "Set Password",
+    "site_location_table_header_confirm_psw" :"Confirm Password",
+    "menu_event_classification" : "Classification",
 	"menu_event_library" : "Event Library",
 	"site_menu_remote" : "Remote Site",
 	"site_menu_location" : "Location",
@@ -60,6 +63,8 @@
     "site_user_table_header_add":"Add User",
     "site_location_table_header_add": "Add",
     "site_location_table_header_username": "UserName",
+    "site_location_table_header_tel": "Tel",
+    "site_location_table_header_email": "Email",
     "site_location_table_header_role": "Role",
     "site_location_table_header_lang": "Lang",
     "site_location_table_header_timezone": "TimeZone",
@@ -195,5 +200,9 @@
 	"site_dashboard_zone_table_area" : "Area",
 	"site_dashboard_zone_table_pipe_length" : "Pipe Length",
 	"site_dashboard_network_event_summary" : "Event Summary",
-	"site_dashboard_network_variation_summary" : "Variation Summary"
+	"site_dashboard_network_variation_summary" : "Variation Summary",
+    "site_admin_user_name_placeholder":"Please Input Username",
+    "site_admin_user_password_placeholder":"Please Input Password",
+    "site_event_add_button_label": "Add"
+
 }

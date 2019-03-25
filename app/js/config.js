@@ -34,6 +34,7 @@
                             'app/modules/remote/modalDetailsCtrl.js',
                             'app/modules/remote/modalMapCtrl.js',
                             'app/modules/admin/userCtrl.js',
+                            'app/modules/admin/modalAddUser.js',
                             'app/modules/remote/modalSiteEventsCtrl.js'
                         ]
                     });
@@ -351,6 +352,32 @@
                 },
                 page_params: {
                     key: "flow"
+                }
+            })
+            .when('/setpsw', {
+                templateUrl: __env.folder+'/app/modules/admin/setPsw.html',
+                controller: 'setPswController as vm',
+                restrictions: {
+                    ensureAuthenticated: false,
+                    loginRedirect: false
+                },
+                page_params: {
+                    key: "login"
+                },
+                resolve: {
+                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            serie: true,
+                            files: [
+                                'app/modules/admin/setPswCtrl.js',
+                                'assets/css/bootstrap-table.css',
+                                'assets/js/bootstrap-table.min.js',
+                                'app/vendors/bootstrap-table-angular.min.js',
+                                'assets/js/locale/bootstrap-table-zh-CN.min.js',
+                                'assets/js/locale/bootstrap-table-en-US.min.js'
+                            ]
+                        });
+                    }]
                 }
             })
 		.when('/login', {

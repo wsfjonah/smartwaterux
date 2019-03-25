@@ -16,6 +16,9 @@
 	"site_menu_dashboard_scatter" : "散点分析",
 	"site_menu_dma":"DMA分区",
 	"site_menu_monitor" : "监控",
+	"site_menu_setpsw" : "重置密码",
+    "site_location_table_header_psw": "设置密码",
+    "site_location_table_header_confirm_psw" :"确认密码",
 	"menu_event_classification" : "归类",
 	"menu_event_library" : "库",
 	"site_menu_remote" : "远程终端",
@@ -58,6 +61,8 @@
 	"site_location_event_title”" : "事件詳情",
 	"site_location_highrate_graph_title" : "高精度",
     "site_location_table_header_username": "用户名",
+    "site_location_table_header_tel": "手机号",
+    "site_location_table_header_email": "邮箱",
     "site_user_table_header_add":"添加用户",
     "site_location_table_header_add": "添加",
     "site_location_table_header_role": "角色",
@@ -196,5 +201,10 @@
 	"site_dashboard_zone_table_area" : "区域",
 	"site_dashboard_zone_table_pipe_length" : "水管长度",
 	"site_dashboard_network_event_summary" : "管网事件统计",
-	"site_dashboard_network_variation_summary" : "管网变化统计"
+	"site_dashboard_network_variation_summary" : "管网变化统计",
+    "site_admin_user_name_placeholder":"请输入用户名",
+    "site_admin_user_password_placeholder":"请输入密码",
+    "site_event_add_button_label": "添加"
+
+
 }

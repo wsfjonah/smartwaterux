@@ -93,7 +93,7 @@
 	window.__env.ignoreInterceptorRequest = ['uib/template/modal/window.html', window.__env.baseUrl+'user/login'];
 
 	//language reload page
-	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location','/network-data','/monitor','/flow','/user','/notification'];
+	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location','/network-data','/monitor','/flow','/user','/notification','/setPsw'];
 
 	//main page after user login
 	window.__env.pageMain = '/dashboard-info';

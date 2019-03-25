@@ -289,10 +289,10 @@
                 headers:headers
             })
         }
-        this.addUserApi=function (username,password,phone,email) {
+        this.addUserApi=function (username,phone,email) {
             return $http({
                 method:'GET',
-                url:__env.addUserUrl+"?username="+username+"&password="+password+"&phone="+phone+"&email="+email,
+                url:__env.addUserUrl+"?username="+username+"&phone="+phone+"&email="+email,
                 headers:headers
             })
         }
