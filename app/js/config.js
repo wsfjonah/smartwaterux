@@ -354,9 +354,9 @@
                     key: "flow"
                 }
             })
-            .when('/setpsw', {
-                templateUrl: __env.folder+'/app/modules/admin/setPsw.html',
-                controller: 'setPswController as vm',
+            .when('/verification', {
+                templateUrl: __env.folder+'/app/modules/public/verification.html',
+                controller: 'verificationController as vm',
                 restrictions: {
                     ensureAuthenticated: false,
                     loginRedirect: false
@@ -369,7 +369,7 @@
                         return $ocLazyLoad.load({
                             serie: true,
                             files: [
-                                'app/modules/admin/setPswCtrl.js',
+                                'app/modules/public/verificationCtrl.js',
                                 'assets/css/bootstrap-table.css',
                                 'assets/js/bootstrap-table.min.js',
                                 'app/vendors/bootstrap-table-angular.min.js',

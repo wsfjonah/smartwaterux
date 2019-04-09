@@ -34,6 +34,15 @@
 				//headers: {'Content-Type': 'application/json'} //application/json
 			});
 		};
+		this.resetpassword=function (username,code,password) {
+		    var params={username:username, verificationcode: code, password: password};
+            return $http({
+                method: 'POST',
+                url: __env.resetPasswordUrl,
+                data: $httpParamSerializerJQLike(params),
+                headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+            });
+        }
 		this.switchProject = function(projectId){
 			var params = {projectid: projectId, token: this.getAuthentication().token};
 			return $http({
@@ -463,6 +472,20 @@
 				headers: headers
 			});
 		};
+		this.checkVerificationCodeApi=function (code) {
+            return $http({
+                method:'GET',
+                url: __env.checkVerificationCodeUrl+"?verificationcode="+code,
+                headers:headers
+            })
+        }
+        this.checkUsernameApi=function (name,code) {
+            return $http({
+                method:'GET',
+                url: __env.checkUsernameUrl+"?username="+name+"&verificationcode="+code,
+                headers:headers
+            })
+        }
 
 	}
 })();
