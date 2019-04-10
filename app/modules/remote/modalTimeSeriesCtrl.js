@@ -14,7 +14,19 @@
 			from: null,
 			to: null
 		};
-		vm.ok = function () {
+        
+        function getToken() {
+            var authData=localStorage.getItem('ls.authorizationData');
+            var authDataObj = JSON.parse(authData);
+            return authDataObj.token;
+        }
+        vm.downLoad=function () {
+            var params = getParams();
+            apiService.timeSeriesRangeCsvApi(params).then(function () {
+            });
+        }
+        
+        vm.ok = function () {
 			$uibModalInstance.close(vm.selected.item);
 		};
 		vm.cancel = function () {
@@ -42,8 +54,11 @@
 		vm.switchEvent = {
 			status: false
 		};
-		/* 	on change event off/on to trigger api
-		*/
+        
+        // console.log('1111111')
+        
+        /* 	on change event off/on to trigger api
+        */
 		vm.onChangeEvent = function(state){
 			if(!state){ //if status false, we need to remove event data[1]
 				vm.eventData.length = 0;
@@ -190,8 +205,6 @@
 				modalService.open(__env.modalHighRateUrl, 'modalHighRateCtrl as vm', params);
 			}
 		};
-
-		vm.csvUrl = "https://smartwater.banxiniot.com/api/tsda/query/5a6eb4e70b272a1f64fa26ba-pressure/1n/1523327700000/1523332740000/csv/GMT+8?token=617a1a81-0655-444e-a8cb-ea9daf0e406d";
 		
 		/* filter button
 		*/

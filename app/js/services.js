@@ -208,7 +208,7 @@
 		this.timeSeriesRangeCsvApi = function(params){
 			return $http({
 				method: 'GET',
-				url: __env.timeSeriesRangeUrl+"/"+params.datapoints+"/"+params.resolution+"/"+params.from+"/"+params.to+"/csv"+"/"+params.timezone,
+				url: __env.timeSeriesRangeUrl+"/"+params.datapoints+"/"+params.resolution+"/"+params.from+"/"+params.to+"/csv"+"/GMT+8",
 				headers: headers
 			});
 		};
