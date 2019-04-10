@@ -1,4 +1,4 @@
-/* global angular, __env, BMap */
+/* global angular, __env, T */
 (function() {
 	'use strict';
 	var modalInfoMapModule = angular.module('modal.infoMap',[]);
@@ -28,7 +28,7 @@
 				// Use global document since Angular's $document is weak
 				var script = document.createElement('script');
 				// script.src = "http://api.map.baidu.com/api?v=2.0&ak=您的密钥&callback=init";
-				script.src = 'https://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4&callback=initMap';
+				script.src = 'https://api.tianditu.gov.cn/api?v=4.0&tk=556f353f742842fd5aba67f36c52a0a6';
 				document.body.appendChild(script);
 			}
 		};
@@ -54,18 +54,18 @@
 				width: 30,
 				height: 38,
 			};
-			var map = new BMap.Map("allmap");            // 创建Map实例
-			var point = new BMap.Point(longitude, latitude); // 创建点坐标
-			var top_left_navigation = new BMap.NavigationControl();
-			map.centerAndZoom(point,15);
+			var map = new T.Map("allmap");            // 创建Map实例
+			var point = new T.LngLat(longitude, latitude); // 创建点坐标
+			var top_left_navigation = new T.Control.Zoom();
+			map.centerAndZoom(point,12);
 			map.enableScrollWheelZoom();
 			map.addControl(top_left_navigation);
-			var icon = new BMap.Icon(config.icon, new BMap.Size(config.width, config.height));
-			vm.addMarker(map, new BMap.Point(longitude, latitude), icon);
+			var icon = new T.Icon({iconUrl:config.icon, iconSize:new T.Point(config.width, config.height)});
+			vm.addMarker(map, new T.LngLat(longitude, latitude), icon);
 		};
 		vm.addMarker = function(map, point, icon){
-			var marker = new BMap.Marker(point, { icon: icon });
-			map.addOverlay(marker);
+			var marker = new T.Marker(point, { icon: icon });
+			map.addOverLay(marker);
 		};
 	});
 

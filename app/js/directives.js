@@ -1,4 +1,4 @@
-/* global angular, BMap, xpro, __env, BMapLib, BMAP_ANCHOR_TOP_RIGHT, BMAP_ANIMATION_BOUNCE */
+/* global angular, T, xpro, __env, TLib, T_ANCHOR_TOP_RIGHT, T_ANIMATION_BOUNCE */
 (function() {
 	'use strict';
 	angular
@@ -229,9 +229,13 @@
 					var previousMarkers = [];
 
 					//create markers
-					redrawMarkers(map, $translate, previousMarkers, opts, scope, modalService);
+					
+					// setTimeout(function () {
+                        redrawMarkers(map, $translate, previousMarkers, opts, scope, modalService);
+                        boundaryArea(map, opts);
+                    // },5000)
 					//set boundary
-					boundaryArea(map, opts);
+                    console.log(options.markers)
 
 					scope.$watch('options.markers', function (/*newValue, oldValue*/) {
 						redrawMarkers(map, $translate, previousMarkers, opts, scope, modalService);
@@ -240,11 +244,11 @@
 						boundaryArea(map, opts, scope);
 					}, true);
 				};
-				mapApi.then(function () {
+				// mapApi.then(function () {
 					scope.initialize();
-				}, function () {
+				// }, function () {
 					// Promise rejected
-				});
+				// });
 
 			},
 			template: '<div ng-style="divStyle"><label ng-style="labelStyle"></label></div>'
@@ -454,7 +458,8 @@
 			// Use global document since Angular's $document is weak
 			var script = document.createElement('script');
 			// script.src = "http://api.map.baidu.com/api?v=2.0&ak=您的密钥&callback=init";
-			script.src = 'https://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4&callback=initMap';
+			// script.src = 'https://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4&callback=initMap';
+			script.src = 'https://api.tianditu.gov.cn/api?v=4.0&tk=556f353f742842fd5aba67f36c52a0a6';   //天地图
 			document.body.appendChild(script);
 		}
 
@@ -464,6 +469,7 @@
 		};
 
 		loadScript();
+		deferred.resolve();
 		return deferred.promise;
 	}
 
@@ -490,27 +496,27 @@
 	function moveMapToCenter(map, opts){
 		var points = [];
 		opts.boundary.forEach(function (loc) {
-			points.push(new BMap.Point(loc.longitude, loc.latitude));
+			points.push(new T.LngLat(loc.longitude, loc.latitude));
 		});
 		map.setViewport(points);
 	}
 
 	function fullscreenControl(){
 		/*jshint validthis:true */
-		this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
-		this.defaultOffset = new BMap.Size(10, 10);
+		this.defaultAnchor = T_ANCHOR_TOP_RIGHT;
+		this.defaultOffset = new T.Size(10, 10);
 	}
 
 	function toggleHeatMapButtons(){
 		/*jshint validthis:true */
-		this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
-		this.defaultOffset = new BMap.Size(50, 10);
+		this.defaultAnchor = T_ANCHOR_TOP_RIGHT;
+		this.defaultOffset = new T.Size(50, 10);
 	}
 
 	function toggleNetworkMapButtons(){
 		/*jshint validthis:true */
-		this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
-		this.defaultOffset = new BMap.Size(10, 10);
+		this.defaultAnchor = T_ANCHOR_TOP_RIGHT;
+		this.defaultOffset = new T.Size(10, 10);
 	}
 
 	/* create selected plot marker in the cart list
@@ -571,7 +577,7 @@
 
 	function createHeatMapButtons(map, opts, element, $translate){
 		if(opts.mapType==="heatmap"){
-			toggleHeatMapButtons.prototype = new BMap.Control();
+			toggleHeatMapButtons.prototype = new T.Control();
 			toggleHeatMapButtons.prototype.initialize = function(map){
 				var div = document.createElement("div");
 				div.className = "btn-group";
@@ -602,7 +608,7 @@
 				labelPipe.innerHTML += $translate.instant('site_city_heatmap_toolbar_pipe');
 
 				//third button
-				var labelMarker = document.createElement("label");
+                var labelMarker = document.createElement("label");
 				labelMarker.className = "btn btn-secondary btn-outline btn-sm active";
 				labelMarker.setAttribute("for","toggle_marker");
 				var chkMarker = document.createElement("input");
@@ -669,7 +675,7 @@
 
 	function createFullScreen(map, opts, element){
 		if(opts.fullScreen){
-			fullscreenControl.prototype = new BMap.Control();
+			fullscreenControl.prototype = new T.Control();
 			fullscreenControl.prototype.initialize = function(map){
 				// 创建一个DOM元素
 				var zoomBtn = document.createElement("div");
@@ -703,14 +709,15 @@
 	}
 
 	function createMapInstance(opts, element, $translate){
-		var map = new BMap.Map(element[0]);    // 创建Map实例
+		var map = new T.Map(element[0]);    // 创建Map实例
 		/*	below line will force map to be centralize based on this address
 		*	we will use boundary function to move map to center
 		*/
-		map.centerAndZoom(new BMap.Point(opts.center.longitude, opts.center.latitude), opts.zoom);  // 初始化地图,设置中心点坐标和地图级别
-		//map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP]}));   //添加地图类型控件
-		map.addControl(new BMap.NavigationControl());   //add navigate control
-		map.setCurrentCity(opts.city);          // 设置地图显示的城市 此项是必须设置的
+		map.centerAndZoom(new T.LngLat(opts.center.longitude, opts.center.latitude), opts.zoom);  // 初始化地图,设置中心点坐标和地图级别
+		//map.addControl(new T.MapTypeControl({mapTypes: [T_NORMAL_MAP]}));   //添加地图类型控件
+		// map.addControl(new T.NavigationControl());   //add navigate control
+		// map.setCurrentCity(opts.city);          // 设置地图显示的城市 此项是必须设置的
+  
 		map.disableScrollWheelZoom(true);
 		createFullScreen(map, opts, element);
 		createHeatMapButtons(map, opts, element, $translate);
@@ -718,19 +725,19 @@
 	}
 
 	function createMarker(marker, point){
-		var newMarker = new BMap.Marker(point);
+		var newMarker = new T.Marker(point);
 		if (marker.icon) {
-			var icon = new BMap.Icon(marker.icon, new BMap.Size(marker.width, marker.height),{
-				 anchor: new BMap.Size(15, marker.height)
+			var icon = new T.Icon({iconUrl: marker.icon, iconSize: new T.Point(marker.width, marker.height),
+				 iconAnchor: new T.Point(15, marker.height)
 			});
-			newMarker = new BMap.Marker(point, { icon: icon });
+			newMarker = new T.Marker(point, { icon: icon });
 		}
 		return newMarker;
 	}
 
 	function removeCoverage(map, opts){
 		angular.forEach(opts.coveragePipes, function(row){
-			map.removeOverlay(row);
+			map.removeOverLay(row);
 		});
 		opts.coveragePipes.length = 0;
 	}
@@ -742,13 +749,13 @@
 		angular.forEach(results, function(row){
 			var junctions = [];
 			angular.forEach(row.junctions, function(element){
-				var p = new BMap.Point(element.lng, element.lat);
+				var p = new T.LngLat(element.lng, element.lat);
 				centerPoints.push({lng: element.lng, lat: element.lat});
 				junctions.push(p);
 			});
-			var pline = new BMap.Polyline(junctions, {strokeColor:color, strokeWeight:5, strokeOpacity:1});
+			var pline = new T.Polyline(junctions, {strokeColor:color, strokeWeight:5, strokeOpacity:1});
 			opts.coveragePipes.push(pline);
-			map.addOverlay(pline);
+			map.addOverLay(pline);
 		});
 		map.closeInfoWindow();
 		/* move to center of highlight pipe
@@ -773,7 +780,7 @@
 		if($('#map_menu').length){
 			$('#map_menu').remove();
 		}
-		toggleNetworkMapButtons.prototype = new BMap.Control();
+		toggleNetworkMapButtons.prototype = new T.Control();
 		toggleNetworkMapButtons.prototype.initialize = function(map){
 			var div = document.createElement("div");
 			div.className = "btn-group map-menu";
@@ -1186,7 +1193,7 @@
 		*/
 		var points = [];
 		res.forEach(function (loc) {
-			points.push(new BMap.Point(loc.lng, loc.lat));
+			points.push(new T.LngLat(loc.lng, loc.lat));
 		});
 		map.setViewport(points);
 	}
@@ -1281,19 +1288,19 @@
 		var markerInstance = opts.customerInstance;
 		if(!status && value==="all"){ //all & off
 			angular.forEach(opts.customers, function(element, i){
-				map.removeOverlay(markerInstance[i]);
+				map.removeOverLay(markerInstance[i]);
 			});
 		}else if(status && value==="all"){ //all & on
 			angular.forEach(opts.customers, function(element, i){
-				map.addOverlay(markerInstance[i]);
+				map.addOverLay(markerInstance[i]);
 			});
 		}else if(value!=="all"){
 			angular.forEach(opts.customers, function(element, i){
 				if(element.title===value){
 					if(status){
-						map.addOverlay(markerInstance[i]);
+						map.addOverLay(markerInstance[i]);
 					}else{
-						map.removeOverlay(markerInstance[i]);
+						map.removeOverLay(markerInstance[i]);
 					}
 				}
 			});
@@ -1307,19 +1314,19 @@
 		var pumpInstance = opts.pumpInstance;
 		if(!status && value==="all"){ //all & off
 			angular.forEach(opts.pumps, function(element, i){
-				map.removeOverlay(pumpInstance[i]);
+				map.removeOverLay(pumpInstance[i]);
 			});
 		}else if(status && value==="all"){ //all & on
 			angular.forEach(opts.pumps, function(element, i){
-				map.addOverlay(pumpInstance[i]);
+				map.addOverLay(pumpInstance[i]);
 			});
 		}else if(value!=="all"){
 			angular.forEach(opts.pumps, function(element, i){
 				if(element.name===value.toString()){
 					if(status){
-						map.addOverlay(pumpInstance[i]);
+						map.addOverLay(pumpInstance[i]);
 					}else{
-						map.removeOverlay(pumpInstance[i]);
+						map.removeOverLay(pumpInstance[i]);
 					}
 				}
 			});
@@ -1333,19 +1340,19 @@
 		var markerInstance = opts.markerInstance;
 		if(!status && value==="all"){ //all & off
 			angular.forEach(opts.markers, function(element, i){
-				map.removeOverlay(markerInstance[i]);
+				map.removeOverLay(markerInstance[i]);
 			});
 		}else if(status && value==="all"){ //all & on
 			angular.forEach(opts.markers, function(element, i){
-				map.addOverlay(markerInstance[i]);
+				map.addOverLay(markerInstance[i]);
 			});
 		}else if(value!=="all"){
 			angular.forEach(opts.markers, function(element, i){
 				if(element.status===value){
 					if(status){
-						map.addOverlay(markerInstance[i]);
+						map.addOverLay(markerInstance[i]);
 					}else{
-						map.removeOverlay(markerInstance[i]);
+						map.removeOverLay(markerInstance[i]);
 					}
 				}
 			});
@@ -1359,19 +1366,19 @@
 		var markerInstance = opts.markerInstance;
 		if(!status && value==="all"){ //all & off
 			angular.forEach(opts.markers, function(element, i){
-				map.removeOverlay(markerInstance[i]);
+				map.removeOverLay(markerInstance[i]);
 			});
 		}else if(status && value==="all"){ //all & on
 			angular.forEach(opts.markers, function(element, i){
-				map.addOverlay(markerInstance[i]);
+				map.addOverLay(markerInstance[i]);
 			});
 		}else if(value!=="all"){
 			angular.forEach(opts.markers, function(element, i){
 				if(element.tag.subzone===value){
 					if(status){
-						map.addOverlay(markerInstance[i]);
+						map.addOverLay(markerInstance[i]);
 					}else{
-						map.removeOverlay(markerInstance[i]);
+						map.removeOverLay(markerInstance[i]);
 					}
 				}
 			});
@@ -1385,19 +1392,19 @@
 		var pipeInstance = opts.pipeInstance;
 		if(!status && value==="all"){ //all & off
 			angular.forEach(opts.pipes, function(element, i){
-				map.removeOverlay(pipeInstance[i]);
+				map.removeOverLay(pipeInstance[i]);
 			});
 		}else if(status && value==="all"){ //all & on
 			angular.forEach(opts.pipes, function(element, i){
-				map.addOverlay(pipeInstance[i]);
+				map.addOverLay(pipeInstance[i]);
 			});
 		}else if(value!=="all"){
 			angular.forEach(opts.pipes, function(element, i){
 				if(element.subzone===value){
 					if(status){
-						map.addOverlay(pipeInstance[i]);
+						map.addOverLay(pipeInstance[i]);
 					}else{
-						map.removeOverlay(pipeInstance[i]);
+						map.removeOverLay(pipeInstance[i]);
 					}
 				}
 			});
@@ -1410,7 +1417,7 @@
 	function clearHydrant(map, opts){
 		if(opts.hydrantInstance.length){
 			angular.forEach(opts.hydrantInstance, function(element/*, i*/){
-				map.removeOverlay(element);
+				map.removeOverLay(element);
 			});
 		}
 		opts.hydrantInstance.length = 0;
@@ -1422,7 +1429,7 @@
 	function clearPipeDetails(map, opts){
 		if(opts.pipeDetailsInstance.length){
 			angular.forEach(opts.pipeDetailsInstance, function(element/*, i*/){
-				map.removeOverlay(element);
+				map.removeOverLay(element);
 			});
 		}
 		opts.pipeDetailsInstance.length = 0;
@@ -1449,13 +1456,13 @@
 				title: '',
 				content: ''
 			};
-			var markerItem = createMarker(marker, new BMap.Point(row.longitude, row.latitude));
+			var markerItem = createMarker(marker, new T.LngLat(row.longitude, row.latitude));
 			//markerItem.setTop(true);
 			centerPoints.push({lng: row.longitude, lat: row.latitude});
 			opts.hydrantInstance.push(markerItem);
 			// add marker to the map
-			map.addOverlay(markerItem);
-			markerItem.setLabel("");
+			map.addOverLay(markerItem);
+			//markerItem.setLabel("");
 		});
 		/* move to center of highlight pipe
 		*/
@@ -1478,13 +1485,13 @@
 		opts.pipeDetails.forEach(function (row) {
 			var pipeArr = [];
 			row.location.forEach(function (loc) {
-				var pt = new BMap.Point(loc.longitude, loc.latitude);
+				var pt = new T.LngLat(loc.longitude, loc.latitude);
 				pipeArr.push(pt);
 				centerPoints.push({lng: loc.longitude, lat: loc.latitude});
 			});
-			var pipeOverlay = new BMap.Polyline(pipeArr, {strokeColor: "#000000", strokeWeight: row.weight, strokeOpacity:1});
+			var pipeOverlay = new T.Polyline(pipeArr, {strokeColor: "#000000", strokeWeight: row.weight, strokeOpacity:1});
 			opts.pipeDetailsInstance.push(pipeOverlay);
-			map.addOverlay(pipeOverlay);
+			map.addOverLay(pipeOverlay);
 		});
 		/* move to center of highlight pipe
 		*/
@@ -1504,12 +1511,12 @@
 				title: '',
 				content: ''
 			};
-			var markerItem = createMarker(marker, new BMap.Point(row.longitude, row.latitude));
+			var markerItem = createMarker(marker, new T.LngLat(row.longitude, row.latitude));
 			markerItem.setTop(true);
 			opts.pumpInstance.push(markerItem);
 			// add marker to the map
-			map.addOverlay(markerItem);
-			markerItem.setLabel("");
+			map.addOverLay(markerItem);
+			//markerItem.setLabel("");
 
 
 			/* info window
@@ -1519,13 +1526,13 @@
 			}
 			//info window msg
 			var msg = '<p>'+row.name+'</p><p>'+row.content+'</p>';
-			var infoWindowItem = new BMap.InfoWindow(msg, {
+			var infoWindowItem = new T.InfoWindow(msg, {
 				enableMessage: true,
 				width : 350
 			});
 
 			markerItem.addEventListener('click', function(/*e*/){
-				map.openInfoWindow(infoWindowItem, new BMap.Point(row.longitude, row.latitude));
+				map.openInfoWindow(infoWindowItem, new T.LngLat(row.longitude, row.latitude));
 			});
 		});
 	}
@@ -1539,13 +1546,13 @@
 		opts.pipes.forEach(function (row) {
 			var pipeArr = [];
 			row.location.forEach(function (loc) {
-				var pt = new BMap.Point(loc.longitude, loc.latitude);
+				var pt = new T.LngLat(loc.longitude, loc.latitude);
 				pipeArr.push(pt);
 
 			});
-			var pipeOverlay = new BMap.Polyline(pipeArr, {strokeColor: row.color, strokeWeight: row.weight, strokeOpacity:1});
+			var pipeOverlay = new T.Polyline(pipeArr, {strokeColor: row.color, strokeWeight: row.weight, strokeOpacity:1});
 			opts.pipeInstance.push(pipeOverlay);
-			map.addOverlay(pipeOverlay);
+			map.addOverLay(pipeOverlay);
 
 			/* info window
 			*/
@@ -1554,13 +1561,13 @@
 			}
 			//info window msg
 			var msg = '<p>' + (row.title || '') + '</p><p>' + (row.content || '') + '</p>';
-			var infoWindowItem = new BMap.InfoWindow(msg, {
+			var infoWindowItem = new T.InfoWindow(msg, {
 				enableMessage: true,
 				width : 350
 			});
 
 			pipeOverlay.addEventListener('click', function(e){
-				map.openInfoWindow(infoWindowItem, new BMap.Point(e.point.lng, e.point.lat));
+				map.openInfoWindow(infoWindowItem, new T.LngLat(e.point.lng, e.point.lat));
 			});
 		});
 	}
@@ -1617,13 +1624,13 @@
 		var points = [];
 		var num = Math.ceil(opts.boundary.length/2);
 		opts.boundary.forEach(function (loc) {
-			points.push(new BMap.Point(loc.longitude, loc.latitude));
+			points.push(new T.LngLat(loc.longitude, loc.latitude));
 		});
-		var polygon = new BMap.Polygon(points, {strokeColor:"blue", strokeWeight:3, strokeOpacity:1, fillColor:""});
+		var polygon = new T.Polygon(points, {strokeColor:"blue", strokeWeight:3, strokeOpacity:1, fillColor:""});
 		if(opts.boundary.length){
-			map.centerAndZoom(new BMap.Point(opts.boundary[num].longitude, opts.boundary[num].latitude), opts.zoom);
+			map.centerAndZoom(new T.LngLat(opts.boundary[num].longitude, opts.boundary[num].latitude), opts.zoom);
 		}
-		map.addOverlay(polygon);
+		map.addOverLay(polygon);
 		map.setViewport(points);
 		moveMapToCenter(map, opts);
 	}
@@ -1635,8 +1642,8 @@
 		map.removeEventListener("tilesloaded", drawHeatMap); //remove listener
 		var radius = 150;
 		var max = 90;
-		heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":radius});
-		map.addOverlay(heatmapOverlay);
+		heatmapOverlay = new TLib.HeatmapOverlay({"radius":radius});
+		map.addOverLay(heatmapOverlay);
 		heatmapOverlay.setDataSet({
 			data:opts.heatMap,
 			max:max
@@ -1674,12 +1681,12 @@
 		}
 
 		opts.customers.forEach(function (marker) {
-			var markerItem = createMarker(marker, new BMap.Point(marker.longitude, marker.latitude));
-			points.push(new BMap.Point(marker.longitude, marker.latitude));
+			var markerItem = createMarker(marker, new T.LngLat(marker.longitude, marker.latitude));
+			points.push(new T.LngLat(marker.longitude, marker.latitude));
 			opts.customerInstance.push(markerItem);
 			// add marker to the map
-			map.addOverlay(markerItem);
-			markerItem.setLabel("");
+			map.addOverLay(markerItem);
+			//markerItem.setLabel("");
 			// append marker
 			var markerEvent = { marker: markerItem, listener: null };
 			if (!marker.title) {
@@ -1687,7 +1694,7 @@
 			}
 			//info window msg
 			var msg = '<p>' + (marker.title || '') + '</p>';
-			var infoWindowItem = new BMap.InfoWindow(msg, {
+			var infoWindowItem = new T.InfoWindow(msg, {
 				enableMessage: !!marker.enableMessage
 			});
 			//marker binding
@@ -1707,7 +1714,7 @@
 			var listener = item.listener;
 
 			marker.removeEventListener('click', listener);
-			map.removeOverlay(marker);
+			map.removeOverLay(marker);
 		});
 		previousMarkers.length = 0;
 		if (!opts.markers) {
@@ -1719,17 +1726,17 @@
 			opts.markerInstance.length = 0;
 		}
 		opts.markers.forEach(function (marker) {
-			var markerItem = createMarker(marker, new BMap.Point(marker.longitude, marker.latitude));
+			var markerItem = createMarker(marker, new T.LngLat(marker.longitude, marker.latitude));
 
 			var infoButton = "<div class='btn-group'>";
 				infoButton += "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='"+$translate.instant('site_location_button_viewinfo')+"' id='baidu_marker_info'><i class='ti-info-alt'></i></button>";
 				infoButton += "<button type='button' class='btn btn-secondary' data-toggle='tooltip' data-trigger='hover' title='"+$translate.instant('site_location_button_viewdata')+"' id='baidu_marker_data'><i class='ti-stats-up'></i></button>";
 				infoButton += "</div>";
-			points.push(new BMap.Point(marker.longitude, marker.latitude));
+			points.push(new T.LngLat(marker.longitude, marker.latitude));
 			opts.markerInstance.push(markerItem);
 			// add marker to the map
-			map.addOverlay(markerItem);
-			markerItem.setLabel("");
+			map.addOverLay(markerItem);
+			//markerItem.setLabel("");
 			// append marker
 			var previousMarker = { marker: markerItem, listener: null };
 			previousMarkers.push(previousMarker);
@@ -1748,7 +1755,7 @@
 				msg = '<p>' + (marker.title || '') + '</p>'+cartButton+'<p>' + (marker.content || '') + '</p>';
 			}
 
-			var infoWindowItem = new BMap.InfoWindow(msg, {
+			var infoWindowItem = new T.InfoWindow(msg, {
 				enableMessage: !!marker.enableMessage
 			});
 			//marker binding
@@ -1785,7 +1792,7 @@
 							if(totalSelected<max){
 								if(isUnique){
 									opts.plotMarkerInstance.push(markerItem);
-									markerItem.setAnimation(BMAP_ANIMATION_BOUNCE);
+									markerItem.setAnimation(T_ANIMATION_BOUNCE);
 									$scope.$apply(function() {
 										$scope.options.plotMarkers.push(marker);
 									});
@@ -1827,7 +1834,7 @@
 	function centralizeMonitorArea(map, opts/*, $scope*/){
 		var points = [];
 		opts.boundary.forEach(function (row) {
-			points.push(new BMap.Point(row.longitude, row.latitude));
+			points.push(new T.LngLat(row.longitude, row.latitude));
 		});
 		setTimeout(function(){
 			map.setViewport(points);

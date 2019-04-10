@@ -1,4 +1,4 @@
-/* global angular, BMap */
+/* global angular, T */
 (function() {
 	'use strict';
 	angular

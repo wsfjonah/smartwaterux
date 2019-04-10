@@ -1,0 +1,25 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-white" translate="site_menu_user"></h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)" translate="site_menu_main">Dashboard</a></li>
+            <li class="breadcrumb-item active" translate="site_menu_table">Site</li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-t-0 p-b-0">
+                    <table bs-table-control="vm.remoteTable" id="info_table">
+                        <input date-range-picker class="form-control date-picker" style="width:40%;position: absolute;top: 3px;right: 100px;" type="text" ng-model="vm.datePickerDate.date" options="vm.datePickerDate.options" readonly="true" placeholder="Auto" id="daterange_timeseries" />
+                        <button class="btn btn-primary waves-effect waves-dark" style="position: absolute;top: 3px;right: 20px;" type="button" ng-click="vm.getTimeSeriesFilter()">{{'site_location_modal_filter_btn' | translate}}</button>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

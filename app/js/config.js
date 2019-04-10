@@ -175,7 +175,7 @@
 					return $ocLazyLoad.load({
 						serie: true,
 						files: [
-							'js!https://api.map.baidu.com/api?v=2.0&ak=CSFSaXio89D3WK1AB38sLNtnkV9fWZO4',
+							'js!https://api.tianditu.gov.cn/api?v=4.0&tk=556f353f742842fd5aba67f36c52a0a6',
 							'assets/css/bootstrap-table.css',
 							'assets/js/bootstrap-table.min.js',
 							'app/vendors/bootstrap-table-angular.min.js',

@@ -1,4 +1,4 @@
-/* global angular, BMap */
+/* global angular, T */
 (function() {
 	'use strict';
 	var modalMonitorMapModule = angular.module('modal.modalMonitorMapCtrl',[]);
@@ -35,7 +35,7 @@
 			pipes: []
 		};
 		vm.addMarker = function(map, point, icon){
-			var marker = new BMap.Marker(point, { icon: icon });
+			var marker = new T.Marker(point, { icon: icon });
 			map.addOverlay(marker);
 		};
 		formatSensors();

@@ -307,7 +307,7 @@
         }
 		this.notificationAnyApi=function () {
 		    return $http({
-                method:'POST',
+                method:'GET',
                 url:__env.notificationAnyUrl,
                 headers:headers
             })

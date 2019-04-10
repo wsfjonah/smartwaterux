@@ -15,7 +15,7 @@
 		*/
 		//modalService.open(__env.modalInformationTableInfo, 'modalInfoDetails as vm', params);
 		vm.projectInfo = authService.getAuthentication();
-		var defaultMapInfo = vm.projectInfo.current_project.map;
+		var defaultMapInfo = vm.projectInfo.current_project.map;   //{lng: 121.328581, level: 13, lat: 31.099107}
 		vm.siteMapOptions = {
 			center: {
 				longitude: (angular.isDefined(defaultMapInfo)) ? defaultMapInfo.lng : longitude,

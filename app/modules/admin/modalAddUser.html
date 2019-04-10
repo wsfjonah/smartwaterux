@@ -1,0 +1,43 @@
+<div class="modal-header">
+    <h3 class="modal-title" translate="site_user_table_header_add"></h3>
+</div>
+<div class="modal-body canvas-modal">
+    <form action="">
+        <table class="table table-bordered">
+            <div class="m-b-5">
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 filter-col">
+                        <div class="input-group" >
+                            <div class="input-group-addon">
+                                <span class="input-group-text">{{ "site_location_table_header_username" | translate }}</span>
+                            </div>
+                            <input type="text" class="form-control" id="uUsername">
+                        </div>
+                    </div>
+                    <div class="col-md-6 filter-col">
+                        <div class="input-group" >
+                            <div class="input-group-addon">
+                                <span class="input-group-text">{{ "site_location_table_header_tel" | translate }}</span>
+                            </div>
+                            <input type="tel" class="form-control" id="uTel">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 filter-col">
+                        <div class="input-group" >
+                            <div class="input-group-addon">
+                                <span class="input-group-text">{{ "site_location_table_header_email" | translate }}</span>
+                            </div>
+                            <input type="email" class="form-control" id="uEmail">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </table>
+        <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="vm.addUser()">{{ "site_event_add_button_label" | translate }}</button>
+            <button type="button" class="btn btn-default" ng-click="$dismiss()">{{ "site_location_modal_close_btn" | translate }}</button>
+        </div>
+    </form>
+</div>
