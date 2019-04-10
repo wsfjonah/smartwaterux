@@ -229,20 +229,21 @@
 					var previousMarkers = [];
 
 					//create markers
-					
-					// setTimeout(function () {
+                    
+                    setTimeout(function () {
                         redrawMarkers(map, $translate, previousMarkers, opts, scope, modalService);
                         boundaryArea(map, opts);
-                    // },5000)
+    
+                    },1000);
 					//set boundary
-                    console.log(options.markers)
-
-					scope.$watch('options.markers', function (/*newValue, oldValue*/) {
-						redrawMarkers(map, $translate, previousMarkers, opts, scope, modalService);
-					}, true);
-					scope.$watch('options.boundary', function (/*newValue, oldValue*/) {
-						boundaryArea(map, opts, scope);
-					}, true);
+					// scope.$watch('options.markers', function (/*newValue, oldValue*/) {
+					//     console.log("in watch");
+                     //    console.log(opts.markers);
+					// 	redrawMarkers(map, $translate, previousMarkers, opts, scope, modalService);
+					// }, true);
+					// scope.$watch('options.boundary', function (/*newValue, oldValue*/) {
+					// 	boundaryArea(map, opts, scope);
+					// }, true);
 				};
 				// mapApi.then(function () {
 					scope.initialize();
