@@ -8,7 +8,7 @@
 	window.__env.baseUrl = "/api/"; //main api path - client development path - /api/ | wes dev - https://101.132.100.22/api/
 
 	//project folder name
-	window.__env.folder = "/smartwater"; //client development env - /smartwater | wes dev - ""
+	window.__env.folder = "/optimize"; //client development env - /smartwater | wes dev - ""
 
 	// API url
 	window.__env.userLoginUrl = window.__env.baseUrl+'user/login';
