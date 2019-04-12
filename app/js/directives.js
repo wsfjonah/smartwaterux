@@ -514,12 +514,6 @@
 		this.defaultOffset = new T.Size(50, 10);
 	}
 
-	function toggleNetworkMapButtons(){
-		/*jshint validthis:true */
-		this.defaultAnchor = T_ANCHOR_TOP_RIGHT;
-		this.defaultOffset = new T.Size(10, 10);
-	}
-
 	/* create selected plot marker in the cart list
 	*/
 	function createPlotMarkerCart(map, opts, scope, $translate, modalService){
@@ -669,9 +663,10 @@
 			};
 			// 创建控件
 			var myCtrl = new toggleHeatMapButtons();
-			// 添加到地图当中
+            // 添加到地图当中
 			map.addControl(myCtrl);
-		}
+        
+        }
 	}
 
 	function createFullScreen(map, opts, element){
@@ -715,8 +710,13 @@
 		*	we will use boundary function to move map to center
 		*/
 		map.centerAndZoom(new T.LngLat(opts.center.longitude, opts.center.latitude), opts.zoom);  // 初始化地图,设置中心点坐标和地图级别
-		//map.addControl(new T.MapTypeControl({mapTypes: [T_NORMAL_MAP]}));   //添加地图类型控件
-		// map.addControl(new T.NavigationControl());   //add navigate control
+        //创建缩放平移控件对象
+        var control = new T.Control.Zoom();
+        //添加缩放平移控件
+        map.addControl(control);
+        
+		// map.addControl(new T.MapTypeControl({mapTypes: [T_NORMAL_MAP]}));   //添加地图类型控件
+        // map.addControl(new T.NavigationControl());   //add navigate control
 		// map.setCurrentCity(opts.city);          // 设置地图显示的城市 此项是必须设置的
   
 		map.disableScrollWheelZoom(true);
@@ -763,354 +763,383 @@
 		*/
 		moveTargetToCenter(map, centerPoints);
 	}
-
-	function createNetworkMenu(map, opts, $translate, apiService, dialogService){
-		var menu = opts.menus;
-		var langMenu = {
-			search: $translate.instant('site_network_toolbar_search'),
-			pipes: $translate.instant('site_network_toolbar_pipes'),
-			sensors: $translate.instant('site_network_toolbar_sensors'),
-			customers: $translate.instant('site_network_toolbar_customer'),
-			status: $translate.instant('site_network_toolbar_status'),
-			pumps: $translate.instant('site_network_toolbar_pumps'),
-			hydrant: $translate.instant('site_network_toolbar_hydrant'),
-			pipeDetails: $translate.instant('site_network_toolbar_pipe_details'),
-			coverage: $translate.instant('site_network_toolbar_coverage'),
-			cart: $translate.instant('site_network_data_plot_plotlist')
-		};
-		if($('#map_menu').length){
-			$('#map_menu').remove();
-		}
-		toggleNetworkMapButtons.prototype = new T.Control();
-		toggleNetworkMapButtons.prototype.initialize = function(map){
-			var div = document.createElement("div");
-			div.className = "btn-group map-menu";
-			div.setAttribute("id","map_menu");
-			div.setAttribute("role","group");
-
-			if(menu.hasOwnProperty('search')){
-				var divSearch = document.createElement("div");
-
-				divSearch.className = "btn-group group-search";
-
-				var searchToggle = document.createElement("button");
-				searchToggle.className = "btn-toggle btn-link";
-
-				var searchIcon = document.createElement('i');
-				searchIcon.className = "ti-search";
-
-				var searchDropdown = document.createElement("div");
-				searchDropdown.className = "dropdown-search";
-
-				var searchClear = document.createElement("a");
-				searchClear.className = "remove";
-
-				var clearIcon = document.createElement('i');
-				clearIcon.className = 'ti-close';
-
-				var searchInput = document.createElement("input");
-				searchInput.setAttribute("type","text");
-				searchInput.setAttribute("placeholder","search");
-
-				searchClear.appendChild(clearIcon);
-				searchToggle.appendChild(searchIcon);
-				searchDropdown.appendChild(searchClear);
-				searchDropdown.appendChild(searchInput);
-
-				searchToggle.onclick = function(){
-					var elem = $(this),
-						group = elem.parents('.group-search'),
-						isActive = group.hasClass('on-search'),
-						isKeyword = group.hasClass('on-keyword'),
-						input = group.find('input'),
-						prevVal = (typeof input.data('value')!=="undefined") ? input.data('value') : "";
-
-					removeActiveClass(["cart","multi"]);
-					if(isActive){
-						group.removeClass('on-search');
-					}else{
-						group.addClass('on-search');
-						if(!isKeyword){
-							input.val('');
-						}
-						input.val(prevVal).focus();
-					}
-				};
-				searchClear.onclick = function(e){
-					e.preventDefault();
-					var elem = $(this),
-						group = elem.parents('.group-search'),
-						input = group.find('input');
-
-					group.removeClass('on-search').removeClass('on-keyword');
-					input.data('value','');
-					searchSensor(map, opts, "", dialogService, $translate);
-				};
-				searchInput.onkeyup = function(e){
-					var elem = $(this),
-						group = elem.parents('.group-search'),
-						value = $.trim(elem.val()),
-						prevVal = (typeof elem.data('value')!=="undefined") ? elem.data('value') : "";
-
-					if(e.keyCode === 13 && value!=="" && value!==prevVal){
-					 	group.addClass('on-keyword');
-					 	elem.data('value', value);
-					 	searchSensor(map, opts, value, dialogService, $translate);
-					}
-				};
-				searchInput.onblur = function(){
-					var elem = $(this),
-						group = elem.parents('.group-search');
-
-					setTimeout(function(){
-						group.removeClass('on-search');
-					},500);
-				};
-
-				divSearch.appendChild(searchToggle);
-				divSearch.appendChild(searchDropdown);
-				div.appendChild(divSearch);
-			}
-
-			if(menu.hasOwnProperty('cart')){
-				var divCartGroup = document.createElement("div");
-				divCartGroup.className = "btn-group cart-group";
-
-				var cartMenuButton = document.createElement("button");
-				cartMenuButton.className = "btn btn-secondary btn-outline btn-sm";
-				cartMenuButton.setAttribute("type","button");
-				cartMenuButton.innerHTML = langMenu.cart;
-
-				var badgeDiv = document.createElement("span");
-				badgeDiv.className = "badge badge-primary m-l-5";
-				badgeDiv.setAttribute("id","count_badge");
-				badgeDiv.innerHTML = "0";
-
-				cartMenuButton.appendChild(badgeDiv);
-				divCartGroup.appendChild(cartMenuButton);
-
-				cartMenuButton.onclick = function(e){
-					var elem = $(e.target),
-						pr = elem.parents('.cart-group'),
-						isActive = elem.hasClass('active'),
-						classActive = "active";
-
-					removeActiveClass(["search","multi"]);
-					if(isActive){
-						elem.removeClass(classActive);
-						pr.removeClass(classActive);
-					}else{
-						elem.addClass(classActive);
-						pr.addClass(classActive);
-					}
-				};
-
-				var cartDiv = document.createElement("div");
-				cartDiv.className = "cart-list card scale-up";
-
-				var cartHeader = document.createElement("div");
-				cartHeader.className = "card-header";
-
-				var cartHeaderTitle = document.createElement("h4");
-				cartHeaderTitle.className = "m-b-0";
-				cartHeaderTitle.innerHTML = $translate.instant('site_network_data_plot_plotlist');
-
-				var cartBody = document.createElement("div");
-				cartBody.className = "card-body";
-				cartBody.setAttribute("id","cart_options_list");
-
-				cartHeader.appendChild(cartHeaderTitle);
-				cartDiv.appendChild(cartHeader);
-				cartDiv.appendChild(cartBody);
-				divCartGroup.appendChild(cartDiv);
-				div.appendChild(divCartGroup);
-			}
-
-			var divGroup = document.createElement("div");
-			divGroup.className = "btn-group multi-group";
-			var divButtonTrigger = document.createElement("div");
-			divButtonTrigger.className = "btn btn-secondary btn-outline btn-sm btn-trigger";
-			var divButtonTriggerIcon = document.createElement("i");
-			divButtonTriggerIcon.className = "ti-menu";
-			var divSubGroup = document.createElement("div");
-			divSubGroup.className = "sub-group";
-
-
-			divButtonTrigger.appendChild(divButtonTriggerIcon);
-			divGroup.appendChild(divButtonTrigger);
-
-			divButtonTrigger.onclick = function(){
-				var elem = $(this),
-					group = elem.parents('.multi-group'),
-					isActive = group.hasClass('active'),
-					classActive = "active";
-
-				removeActiveClass(["cart","search"]);
-				if(isActive){
-					group.removeClass(classActive);
-				}else{
-					group.addClass(classActive);
-				}
-			};
-
-
-			angular.forEach(menu, function(value, key) {
-				var divMenuGroup = document.createElement("button");
-				var menuButton = document.createElement("button");
-				var divDropdown = document.createElement("div");
-
-				if(key!=="coverage" && key!=="hydrant" && key!=="cart" && key!=="pipeDetails" && key!=="search"){
-					divMenuGroup = document.createElement("div");
-					divMenuGroup.className = "btn-group";
-					divMenuGroup.setAttribute("role","group");
-
-					menuButton = document.createElement("button");
-					menuButton.className = "btn btn-secondary btn-outline btn-sm";
-					menuButton.setAttribute("type","button");
-					menuButton.setAttribute("data-toggle","dropdown");
-					menuButton.innerHTML = langMenu[key];
-
-					divDropdown = document.createElement("div");
-					divDropdown.className = "dropdown-menu";
-
-					divMenuGroup.appendChild(menuButton);
-
-					var divAll = document.createElement("a");
-					divAll.setAttribute("class","dropdown-item active");
-					divAll.setAttribute("href","#");
-					divAll.setAttribute("data-value","all");
-					divAll.setAttribute("data-type",key);
-					divAll.innerHTML = $translate.instant('site_network_toolbar_menu_all')+" "+langMenu[key];
-
-					divDropdown.appendChild(divAll);
-
-					divAll.onclick = function(e){
-						e.preventDefault();
-						e.stopPropagation();
-						var thisElem = $(e.target),
-							type = thisElem.data('type'),
-							value = "all",
-							isActive = !thisElem.hasClass('active');
-						thisElem.toggleClass('active');
-						if(isActive){
-							thisElem.siblings().addClass('active');
-						}else{
-							thisElem.siblings().removeClass('active');
-						}
-						toggleUpdateOverlay(type, map, isActive, value, opts);
-					};
-
-					angular.forEach(value.results, function(row){
-						var valName = row;
-						var divSub = document.createElement("a");
-						divSub.setAttribute("class","dropdown-item active");
-						divSub.setAttribute("href","#");
-						divSub.setAttribute("data-value",valName);
-						divSub.setAttribute("data-type",key);
-						divSub.innerHTML = valName;
-
-						divSub.onclick = function(e){
-							e.preventDefault();
-							e.stopPropagation();
-							var thisElem = $(e.target);
-							thisElem.toggleClass('active');
-							var group = thisElem.parent('.dropdown-menu'),
-								items = group.find('.dropdown-item'),
-								itemNonSelect = items.filter(":not(.active):not([data-value='all'])"),
-								itemAll = items.filter('[data-value="all"]'),
-								value = thisElem.data('value'),
-								type = thisElem.data('type'),
-								isActive = thisElem.hasClass('active');
-
-							if(itemNonSelect.length<=0){
-								itemAll.addClass('active');
-							}else if(itemNonSelect.length<=parseInt(items.length-1)){
-								itemAll.removeClass('active');
-							}
-							toggleUpdateOverlay(type, map, isActive, value, opts);
-						};
-						divDropdown.appendChild(divSub);
-					});
-					divMenuGroup.appendChild(divDropdown);
-					divSubGroup.appendChild(divMenuGroup);
-				}else if(key==="coverage"){
-					divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
-					divMenuGroup.innerHTML = langMenu[key];
-					divMenuGroup.onclick = function(){
-						removeCoverage(map, opts);
-					};
-					divSubGroup.appendChild(divMenuGroup);
-				}else if(key==="hydrant" || key==="pipeDetails"){
-					divMenuGroup = document.createElement("div");
-					divMenuGroup.className = "btn-group";
-					divMenuGroup.setAttribute("role","group");
-
-					menuButton = document.createElement("button");
-					menuButton.className = "btn btn-secondary btn-outline btn-sm";
-					menuButton.setAttribute("type","button");
-					menuButton.setAttribute("data-toggle","dropdown");
-					menuButton.innerHTML = langMenu[key];
-
-					divDropdown = document.createElement("div");
-					divDropdown.className = "dropdown-menu";
-
-					divMenuGroup.appendChild(menuButton);
-
-					var divSearch = document.createElement("a");
-					divSearch.setAttribute("class","dropdown-item");
-					divSearch.setAttribute("href","#");
-					divSearch.setAttribute("data-value","all");
-					divSearch.setAttribute("data-type",key);
-					divSearch.innerHTML = $translate.instant('site_network_toolbar_menu_search');
-					divDropdown.appendChild(divSearch);
-
-					divSearch.onclick = function(e){
-						e.preventDefault();
-						if(key==="hydrant"){
-							getHydrantData(map, opts, apiService, dialogService, $translate);
-						}else{
-							getPipeDetailsData(map, opts, apiService, dialogService, $translate);
-						}
-					};
-
-					var divClear = document.createElement("a");
-					divClear.setAttribute("class","dropdown-item");
-					divClear.setAttribute("href","#");
-					divClear.setAttribute("data-value","clear");
-					divClear.setAttribute("data-type",key);
-					divClear.innerHTML = $translate.instant('site_network_toolbar_menu_remove');
-					divDropdown.appendChild(divClear);
-
-					divClear.onclick = function(e){
-						e.preventDefault();
-						if(key==="hydrant"){
-							clearHydrant(map, opts);
-						}else{
-							clearPipeDetails(map, opts);
-						}
-
-					};
-					divMenuGroup.appendChild(divDropdown);
-					divSubGroup.appendChild(divMenuGroup);
-				}
-
-				//END - create multi group - without search
-			});
-
-			divGroup.appendChild(divSubGroup);
-			div.appendChild(divGroup);
-
-			// 添加DOM元素到地图中
-			map.getContainer().appendChild(div);
-			// 将DOM元素返回
-			return div;
-		};
-		// 创建控件
-		var myCtrl = new toggleNetworkMapButtons();
-		// 添加到地图当中
-		map.addControl(myCtrl);
-	}
-
+	
+	
+    
+    var newControl = new T.Control({position: T_ANCHOR_TOP_RIGHT});
+    newControl.onAdd = function (map) {
+        var container = document.createElement("div");
+        var zicsstext = "font-size:12px;border:solid 2px blue;background:#fff;padding:2px;line-height:15px;cursor:pointer;";
+        var zocsstext = "font-size:12px;border:solid 2px blue;background:#fff;padding:2px;line-height:15px;cursor:pointer;";
+        this.zoomInButton = createButton("放大", "放大", 'a', container, zicsstext);
+        this.zoomOutButton = createButton("缩小", "缩小", 'b', container, zocsstext);
+        this.zoomInButton.onclick = zoomIn;
+        this.zoomOutButton.onclick = zoomOut;
+        return container;
+    };
+    
+    
+    
+    
+    
+    function createNetworkMenu(map, opts, $translate, apiService, dialogService){
+        var menu = opts.menus;
+        var langMenu = {
+            search: $translate.instant('site_network_toolbar_search'),
+            pipes: $translate.instant('site_network_toolbar_pipes'),
+            sensors: $translate.instant('site_network_toolbar_sensors'),
+            customers: $translate.instant('site_network_toolbar_customer'),
+            status: $translate.instant('site_network_toolbar_status'),
+            pumps: $translate.instant('site_network_toolbar_pumps'),
+            hydrant: $translate.instant('site_network_toolbar_hydrant'),
+            pipeDetails: $translate.instant('site_network_toolbar_pipe_details'),
+            coverage: $translate.instant('site_network_toolbar_coverage'),
+            cart: $translate.instant('site_network_data_plot_plotlist')
+        };
+        if($('#map_menu').length){
+            $('#map_menu').remove();
+        }
+        var newControl = new T.Control({position: T_ANCHOR_TOP_RIGHT});
+        newControl.onAdd = function(map){
+            var div = document.createElement("div");
+            div.className = "btn-group map-menu";
+            div.setAttribute("id","map_menu");
+            div.setAttribute("role","group");
+            
+            if(menu.hasOwnProperty('search')){
+                var divSearch = document.createElement("div");
+                
+                divSearch.className = "btn-group group-search";
+                
+                var searchToggle = document.createElement("button");
+                searchToggle.className = "btn-toggle btn-link";
+                
+                var searchIcon = document.createElement('i');
+                searchIcon.className = "ti-search";
+                
+                var searchDropdown = document.createElement("div");
+                searchDropdown.className = "dropdown-search";
+                
+                var searchClear = document.createElement("a");
+                searchClear.className = "remove";
+                
+                var clearIcon = document.createElement('i');
+                clearIcon.className = 'ti-close';
+                
+                var searchInput = document.createElement("input");
+                searchInput.setAttribute("type","text");
+                searchInput.setAttribute("placeholder","search");
+                
+                searchClear.appendChild(clearIcon);
+                searchToggle.appendChild(searchIcon);
+                searchDropdown.appendChild(searchClear);
+                searchDropdown.appendChild(searchInput);
+                
+                searchToggle.onclick = function(){
+                    var elem = $(this),
+                        group = elem.parents('.group-search'),
+                        isActive = group.hasClass('on-search'),
+                        isKeyword = group.hasClass('on-keyword'),
+                        input = group.find('input'),
+                        prevVal = (typeof input.data('value')!=="undefined") ? input.data('value') : "";
+                    
+                    removeActiveClass(["cart","multi"]);
+                    if(isActive){
+                        group.removeClass('on-search');
+                    }else{
+                        group.addClass('on-search');
+                        if(!isKeyword){
+                            input.val('');
+                        }
+                        input.val(prevVal).focus();
+                    }
+                };
+                searchClear.onclick = function(e){
+                    e.preventDefault();
+                    var elem = $(this),
+                        group = elem.parents('.group-search'),
+                        input = group.find('input');
+                    
+                    group.removeClass('on-search').removeClass('on-keyword');
+                    input.data('value','');
+                    searchSensor(map, opts, "", dialogService, $translate);
+                };
+                searchInput.onkeyup = function(e){
+                    var elem = $(this),
+                        group = elem.parents('.group-search'),
+                        value = $.trim(elem.val()),
+                        prevVal = (typeof elem.data('value')!=="undefined") ? elem.data('value') : "";
+                    
+                    if(e.keyCode === 13 && value!=="" && value!==prevVal){
+                        group.addClass('on-keyword');
+                        elem.data('value', value);
+                        searchSensor(map, opts, value, dialogService, $translate);
+                    }
+                };
+                searchInput.onblur = function(){
+                    var elem = $(this),
+                        group = elem.parents('.group-search');
+                    
+                    setTimeout(function(){
+                        group.removeClass('on-search');
+                    },500);
+                };
+                
+                divSearch.appendChild(searchToggle);
+                divSearch.appendChild(searchDropdown);
+                div.appendChild(divSearch);
+            }
+            
+            if(menu.hasOwnProperty('cart')){
+                var divCartGroup = document.createElement("div");
+                divCartGroup.className = "btn-group cart-group";
+                
+                var cartMenuButton = document.createElement("button");
+                cartMenuButton.className = "btn btn-secondary btn-outline btn-sm";
+                cartMenuButton.setAttribute("type","button");
+                cartMenuButton.innerHTML = langMenu.cart;
+                
+                var badgeDiv = document.createElement("span");
+                badgeDiv.className = "badge badge-primary m-l-5";
+                badgeDiv.setAttribute("id","count_badge");
+                badgeDiv.innerHTML = "0";
+                
+                cartMenuButton.appendChild(badgeDiv);
+                divCartGroup.appendChild(cartMenuButton);
+                
+                cartMenuButton.onclick = function(e){
+                    var elem = $(e.target),
+                        pr = elem.parents('.cart-group'),
+                        isActive = elem.hasClass('active'),
+                        classActive = "active";
+                    
+                    removeActiveClass(["search","multi"]);
+                    if(isActive){
+                        elem.removeClass(classActive);
+                        pr.removeClass(classActive);
+                    }else{
+                        elem.addClass(classActive);
+                        pr.addClass(classActive);
+                    }
+                };
+                
+                var cartDiv = document.createElement("div");
+                cartDiv.className = "cart-list card scale-up";
+                
+                var cartHeader = document.createElement("div");
+                cartHeader.className = "card-header";
+                
+                var cartHeaderTitle = document.createElement("h4");
+                cartHeaderTitle.className = "m-b-0";
+                cartHeaderTitle.innerHTML = $translate.instant('site_network_data_plot_plotlist');
+                
+                var cartBody = document.createElement("div");
+                cartBody.className = "card-body";
+                cartBody.setAttribute("id","cart_options_list");
+                
+                cartHeader.appendChild(cartHeaderTitle);
+                cartDiv.appendChild(cartHeader);
+                cartDiv.appendChild(cartBody);
+                divCartGroup.appendChild(cartDiv);
+                div.appendChild(divCartGroup);
+            }
+            
+            var divGroup = document.createElement("div");
+            divGroup.className = "btn-group multi-group";
+            var divButtonTrigger = document.createElement("div");
+            divButtonTrigger.className = "btn btn-secondary btn-outline btn-sm btn-trigger";
+            var divButtonTriggerIcon = document.createElement("i");
+            divButtonTriggerIcon.className = "ti-menu";
+            var divSubGroup = document.createElement("div");
+            divSubGroup.className = "sub-group";
+            
+            
+            divButtonTrigger.appendChild(divButtonTriggerIcon);
+            divGroup.appendChild(divButtonTrigger);
+            
+            divButtonTrigger.onclick = function(){
+                var elem = $(this),
+                    group = elem.parents('.multi-group'),
+                    isActive = group.hasClass('active'),
+                    classActive = "active";
+                
+                removeActiveClass(["cart","search"]);
+                if(isActive){
+                    group.removeClass(classActive);
+                }else{
+                    group.addClass(classActive);
+                }
+            };
+            
+            
+            angular.forEach(menu, function(value, key) {
+                var divMenuGroup = document.createElement("button");
+                var menuButton = document.createElement("button");
+                var divDropdown = document.createElement("div");
+                
+                if(key!=="coverage" && key!=="hydrant" && key!=="cart" && key!=="pipeDetails" && key!=="search"){
+                    divMenuGroup = document.createElement("div");
+                    divMenuGroup.className = "btn-group";
+                    divMenuGroup.setAttribute("role","group");
+                    
+                    menuButton = document.createElement("button");
+                    menuButton.className = "btn btn-secondary btn-outline btn-sm";
+                    menuButton.setAttribute("type","button");
+                    menuButton.setAttribute("data-toggle","dropdown");
+                    menuButton.innerHTML = langMenu[key];
+                    
+                    divDropdown = document.createElement("div");
+                    divDropdown.className = "dropdown-menu";
+                    
+                    divMenuGroup.appendChild(menuButton);
+                    
+                    var divAll = document.createElement("a");
+                    divAll.setAttribute("class","dropdown-item active");
+                    divAll.setAttribute("href","#");
+                    divAll.setAttribute("data-value","all");
+                    divAll.setAttribute("data-type",key);
+                    divAll.innerHTML = $translate.instant('site_network_toolbar_menu_all')+" "+langMenu[key];
+                    
+                    divDropdown.appendChild(divAll);
+                    
+                    divAll.onclick = function(e){
+                        e.preventDefault();
+                        e.stopPropagation();
+                        var thisElem = $(e.target),
+                            type = thisElem.data('type'),
+                            value = "all",
+                            isActive = !thisElem.hasClass('active');
+                        thisElem.toggleClass('active');
+                        if(isActive){
+                            thisElem.siblings().addClass('active');
+                        }else{
+                            thisElem.siblings().removeClass('active');
+                        }
+                        toggleUpdateOverlay(type, map, isActive, value, opts);
+                    };
+                    
+                    angular.forEach(value.results, function(row){
+                        var valName = row;
+                        var divSub = document.createElement("a");
+                        divSub.setAttribute("class","dropdown-item active");
+                        divSub.setAttribute("href","#");
+                        divSub.setAttribute("data-value",valName);
+                        divSub.setAttribute("data-type",key);
+                        divSub.innerHTML = valName;
+                        
+                        divSub.onclick = function(e){
+                            e.preventDefault();
+                            e.stopPropagation();
+                            var thisElem = $(e.target);
+                            thisElem.toggleClass('active');
+                            var group = thisElem.parent('.dropdown-menu'),
+                                items = group.find('.dropdown-item'),
+                                itemNonSelect = items.filter(":not(.active):not([data-value='all'])"),
+                                itemAll = items.filter('[data-value="all"]'),
+                                value = thisElem.data('value'),
+                                type = thisElem.data('type'),
+                                isActive = thisElem.hasClass('active');
+                            
+                            if(itemNonSelect.length<=0){
+                                itemAll.addClass('active');
+                            }else if(itemNonSelect.length<=parseInt(items.length-1)){
+                                itemAll.removeClass('active');
+                            }
+                            toggleUpdateOverlay(type, map, isActive, value, opts);
+                        };
+                        divDropdown.appendChild(divSub);
+                    });
+                    divMenuGroup.appendChild(divDropdown);
+                    divSubGroup.appendChild(divMenuGroup);
+                }else if(key==="coverage"){
+                    divMenuGroup.className = "btn btn-secondary btn-outline btn-sm";
+                    divMenuGroup.innerHTML = langMenu[key];
+                    divMenuGroup.onclick = function(){
+                        removeCoverage(map, opts);
+                    };
+                    divSubGroup.appendChild(divMenuGroup);
+                }else if(key==="hydrant" || key==="pipeDetails"){
+                    divMenuGroup = document.createElement("div");
+                    divMenuGroup.className = "btn-group";
+                    divMenuGroup.setAttribute("role","group");
+                    
+                    menuButton = document.createElement("button");
+                    menuButton.className = "btn btn-secondary btn-outline btn-sm";
+                    menuButton.setAttribute("type","button");
+                    menuButton.setAttribute("data-toggle","dropdown");
+                    menuButton.innerHTML = langMenu[key];
+                    
+                    divDropdown = document.createElement("div");
+                    divDropdown.className = "dropdown-menu";
+                    
+                    divMenuGroup.appendChild(menuButton);
+                    
+                    var divSearch = document.createElement("a");
+                    divSearch.setAttribute("class","dropdown-item");
+                    divSearch.setAttribute("href","#");
+                    divSearch.setAttribute("data-value","all");
+                    divSearch.setAttribute("data-type",key);
+                    divSearch.innerHTML = $translate.instant('site_network_toolbar_menu_search');
+                    divDropdown.appendChild(divSearch);
+                    
+                    divSearch.onclick = function(e){
+                        e.preventDefault();
+                        if(key==="hydrant"){
+                            getHydrantData(map, opts, apiService, dialogService, $translate);
+                        }else{
+                            getPipeDetailsData(map, opts, apiService, dialogService, $translate);
+                        }
+                    };
+                    
+                    var divClear = document.createElement("a");
+                    divClear.setAttribute("class","dropdown-item");
+                    divClear.setAttribute("href","#");
+                    divClear.setAttribute("data-value","clear");
+                    divClear.setAttribute("data-type",key);
+                    divClear.innerHTML = $translate.instant('site_network_toolbar_menu_remove');
+                    divDropdown.appendChild(divClear);
+                    
+                    divClear.onclick = function(e){
+                        e.preventDefault();
+                        if(key==="hydrant"){
+                            clearHydrant(map, opts);
+                        }else{
+                            clearPipeDetails(map, opts);
+                        }
+                        
+                    };
+                    divMenuGroup.appendChild(divDropdown);
+                    divSubGroup.appendChild(divMenuGroup);
+                }
+                
+                //END - create multi group - without search
+            });
+            
+            divGroup.appendChild(divSubGroup);
+            div.appendChild(divGroup);
+            
+            // 添加DOM元素到地图中
+            map.getContainer().appendChild(div);
+            // 将DOM元素返回
+            return div;
+        };
+        // 创建控件
+        // 添加到地图当中
+        map.addControl(newControl);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	/* remove main menu active class
 	*/
 	function removeActiveClass(arr){
