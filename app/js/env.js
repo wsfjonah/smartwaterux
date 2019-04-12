@@ -45,6 +45,7 @@
 
 	//network sensor
 	window.__env.siteSearchUrl = window.__env.baseUrl+'site/search';
+	window.__env.siteDetailUrl = window.__env.baseUrl+'site/get';
 	window.__env.networkSensorUrl = window.__env.baseUrl+'site/search';
 	//network pipe
 	window.__env.networkPipeUrl = window.__env.baseUrl+'map/pipe';

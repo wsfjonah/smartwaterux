@@ -156,6 +156,17 @@
 			}
 			return $http(configArr);
 		};
+		
+		this.siteDetailApi = function(siteid){
+			var configArr = {
+				method: 'GET',
+				url: __env.siteDetailUrl+"/"+siteid,
+				headers: headers,
+				data: $httpParamSerializerJQLike()
+			};
+			
+			return $http(configArr);
+		};
 
 		this.projectApi = function(){
 			return $http({

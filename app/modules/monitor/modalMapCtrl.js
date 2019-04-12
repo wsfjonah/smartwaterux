@@ -5,23 +5,27 @@
 	modalMonitorMapModule.$inject = ['$ocLazyLoad'];
 	modalMonitorMapModule.controller('modalMonitorMapCtrl', function ($uibModalInstance, items, apiService, modalService, $scope, $translate, $ocLazyLoad, commonService, authService) {
 		var vm = this;
-		vm.items = items;
-		vm.selected = {
-			item: vm.items[0]
-		};
+		console.log("modalMonitorMapModule");
+		
+		var event = items;
+		var site;
+		
 		vm.ok = function () {
-			$uibModalInstance.close(vm.selected.item);
+			$uibModalInstance.close();
 		};
 		vm.cancel = function () {
 			$uibModalInstance.dismiss('cancel');
 		};
-		vm.header = vm.items.name;
 		vm.projectInfo = authService.getAuthentication();
 		var defaultMapInfo = vm.projectInfo.current_project.map;
 		var pipeColor = {};
 		var colorSet = commonService.getColors();
-		var longitude = parseFloat(vm.items.longitude);//121.324914; //default longitude
-		var latitude = parseFloat(vm.items.latitude);//31.099573; //default latitude
+		
+		vm.ready = function(){
+			console.log("monitor modalMap ready.");
+			vm.getSiteDetail(event.siteid);
+		};
+		
 		vm.defaultMarkerConfig = commonService.markerConfig();
 		vm.siteMapOptions = {
 			center: {
@@ -34,16 +38,49 @@
 			markers: [],
 			pipes: []
 		};
+		
+		vm.getSiteDetail = function(siteid){
+			console.log("event get site detail.");
+			apiService.siteDetailApi(siteid).then(function(response){
+				site = response.data;
+				console.log(site);
+				vm.mapInit();
+			}).catch(function(/*err*/){
+			});
+		};
+		
+		vm.mapInit = function(){
+			var config = {
+				icon: 'assets/images/map/marker_n.png',
+				width: 30,
+				height: 38,
+			};
+			
+			var map = new T.Map("allmap");
+			var point = new T.LngLat(site.geo_latlng.split(",")[1], site.geo_latlng.split(",")[0]);
+			console.log("init map at: ");
+			console.log(point);
+			
+			var top_left_navigation = new T.Control.Zoom();
+			map.centerAndZoom(point,15);
+			map.enableScrollWheelZoom();
+			map.addControl(top_left_navigation);
+			var icon = new T.Icon({iconUrl:config.icon, iconSize:new T.Point(config.width, config.height)});
+			vm.addMarker(map, new T.LngLat(site.geo_latlng.split(",")[1], site.geo_latlng.split(",")[0]), icon);
+			drawPipes(map);
+		};
+		
 		vm.addMarker = function(map, point, icon){
 			var marker = new T.Marker(point, { icon: icon });
-			map.addOverlay(marker);
+			map.addOverLay(marker);
 		};
-		formatSensors();
-		formatPipes();
-		function formatPipes(){
+		
+		
+		function drawPipes(map){
 			var obj = {};
-			angular.forEach(vm.items.localization, function(row){
+			angular.forEach(event.localization, function(row){
 				if(row.type==="pipe"){
+					console.log("draw pipe: "+row._id);
 					obj = {};
 					var weight = parseInt(row.optional.diameter)/250;
 					if(weight<=1){
@@ -79,55 +116,31 @@
 						obj.content += '</tbody>';
 					obj.content += '</table><div>';
 					angular.forEach(row.junctions, function(loc){
-						vm.siteMapOptions.boundary.push({
-							latitude: loc.lat,
-							longitude: loc.lng
-						});
-						obj.location.push({
-							latitude: loc.lat,
-							longitude: loc.lng
-						});
+						obj.location.push(new T.LngLat(loc.lng, loc.lat));
 					});
-					vm.siteMapOptions.pipes.push(obj);
+					
+					var pline = new T.Polyline(obj.location, {strokeColor: obj.color, strokeWeight:obj.weight, strokeOpacity:1});
+					console.log(pline);
+					map.addOverLay(pline);
+					
+					pline.addEventListener("click", function(e){
+						console.log(e);
+						infoWindow(map, obj.content, e.lnglat.lat, e.lnglat.lng);
+					});
 				}
 			});
 		}
-		function formatSensors(){
-			var obj = {};
-			angular.forEach(vm.items.localization, function(row){
-				if(row.type==="junction"){
-					obj = angular.extend({},row,vm.defaultMarkerConfig);
-					obj.latitude = row.loc.lat;
-					obj.longitude = row.loc.lng;
-					vm.siteMapOptions.boundary.push({
-						latitude: row.loc.lat,
-						longitude: row.loc.lng
-					});
-					obj.title = row._id;
-					obj.content = '<table class="table table-sm table-striped table-bordered">';
-						obj.content += '<tbody>';
-							obj.content += '<tr>';
-								obj.content += '<td>'+$translate.instant('site_network_table_field_type')+':</td>';
-								obj.content += '<td>'+row.type+'</td>';
-							obj.content += '</tr>';
-							obj.content += '<tr>';
-								obj.content += '<td>'+$translate.instant('site_network_table_field_geo')+':</td>';
-								obj.content += '<td>'+row.geo_id+'</td>';
-							obj.content += '</tr>';
-							obj.content += '<tr>';
-								obj.content += '<td>'+$translate.instant('site_network_table_field_layer')+':</td>';
-								obj.content += '<td>'+row.tag.layer+'</td>';
-							obj.content += '</tr>';
-							obj.content += '<tr>';
-								obj.content += '<td>'+$translate.instant('site_network_table_field_subzone')+':</td>';
-								obj.content += '<td>'+row.tag.subzone+'</td>';
-							obj.content += '</tr>';
-						obj.content += '</tbody>';
-					obj.content += '</table>';
-					vm.siteMapOptions.markers.push(obj);
-				}
-			});
+		
+		function infoWindow(map, content, lat, lng) {
+			var opts = {    
+				width : 350,  
+				height: 300,   
+				title : "Pipe Information" 
+			};
+			var w = new T.InfoWindow(content, opts);
+			map.openInfoWindow(w, new T.LngLat(lng, lat));
 		}
+		
 		function getColorPipe(pipe){
 			var zone = pipe.tag.subzone;
 			var setColor = "blue";
