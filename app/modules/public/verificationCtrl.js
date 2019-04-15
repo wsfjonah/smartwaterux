@@ -43,13 +43,7 @@
         function isAuthenticated() {
             return authService.isLoggedIn();
         }
-    
-    
-        // vm.logout = function () {
-        //     vm.userInfo = angular.extend({}, vm.userInfo, default_userInfo);
-        //     authService.logout();
-        //     $location.path('/login');
-        // };
+        
         
         function logout() {
             vm.userInfo = angular.extend({}, vm.userInfo, default_userInfo);
@@ -115,6 +109,8 @@
                 var hasCap=/[A-Z]/;
                 var hasSm=/[a-z]/;
                 var hasNum=/[0-9]/;
+                var hasSpecialChar="[ _`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]|\n|\r|\t";
+    
                 if(!psw.match(hasCap)){
                     alert('密码需包含大写字母');
                     return false;
@@ -124,7 +120,10 @@
                 }else if(!psw.match(hasNum)){
                     alert('密码需包含数字');
                     return false;
-                }else {
+                }else if (!(psw.match(hasSpecialChar)==null)){
+                    alert('密码不可包含特殊字符');
+                    return false;
+                } else {
                     //密码设置正确
                     var psw1=vm.psw1;
                     if (!(psw1==psw)){
