@@ -178,12 +178,12 @@
 						<div class="social-widget box-common">
 							<div class="soc-header">
 								<div class="info">
-									<span class="title">{{ "site_dashboard_pipe_total_len_title" | translate }}</span>
+									<span class="title">{{ "site_dashboard_pipe_total_len_title" | translate }} (km)</span>
 									<span class="icon"><i class="ti-ruler-alt"></i></span>
 								</div>
 							</div>
 							<div class="soc-content">
-								<div class="details"><h3 count-to="{{ vm.project.total_pipe_length }}" count-from="0" duration="1"></h3></div>
+								<div class="details"><h3 count-to="{{ vm.project.total_pipe_length/1000 }}" count-from="0" duration="1"></h3></div>
 							</div>
 						</div>
 					</div>
@@ -199,7 +199,7 @@
 						<div class="social-widget box-common">
 							<div class="soc-header">
 								<div class="info">
-									<span class="title">{{ "site_dashboard_pipe_max_diameter_title" | translate }}</span>
+									<span class="title">{{ "site_dashboard_pipe_max_diameter_title" | translate }} (mm)</span>
 									<span class="icon"><i class="ti-plus"></i></span>
 								</div>
 							</div>
@@ -220,7 +220,7 @@
 						<div class="social-widget box-common">
 							<div class="soc-header">
 								<div class="info">
-									<span class="title">{{ "site_dashboard_pipe_min_diameter_title" | translate }}</span>
+									<span class="title">{{ "site_dashboard_pipe_min_diameter_title" | translate }} (mm)</span>
 									<span class="icon"><i class="ti-minus"></i></span>
 								</div>
 							</div>
@@ -252,15 +252,15 @@
 								<table class="table table-striped">
 									<thead>
 										<tr>
-											<th class="text-left">{{ "site_dashboard_zone_table_id" | translate }}</th>
+											<!--<th class="text-left">{{ "site_dashboard_zone_table_id" | translate }}</th>-->
 											<th class="text-left">{{ "site_dashboard_zone_table_name" | translate }}</th>
-											<th class="text-left" width="20%">{{ "site_dashboard_zone_table_area" | translate }}</th>
-											<th class="text-left" width="20%">{{ "site_dashboard_zone_table_pipe_length" | translate }}</th>
+											<th class="text-left" width="20%">{{ "site_dashboard_zone_table_area" | translate }} (km2)</th>
+											<th class="text-left" width="20%">{{ "site_dashboard_zone_table_pipe_length" | translate }} (km)</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr ng-repeat="row in vm.project.dma">
-											<td class="text-left">{{ row.id }}</td>
+											<!--<td class="text-left">{{ row.id }}</td>-->
 											<td class="text-left">{{ row.name }}</td>
 											<td class="text-left">{{ row.area }}</td>
 											<td class="text-left">{{ row.pipe_length }}</td>
