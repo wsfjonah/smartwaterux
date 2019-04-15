@@ -754,7 +754,7 @@
 				centerPoints.push({lng: element.lng, lat: element.lat});
 				junctions.push(p);
 			});
-			var pline = new T.Polyline(junctions, {strokeColor:color, strokeWeight:5, strokeOpacity:1});
+			var pline = new T.Polyline(junctions, {color:color, weight:5, opacity:1});
 			opts.coveragePipes.push(pline);
 			map.addOverLay(pline);
 		});
@@ -1519,7 +1519,7 @@
 				pipeArr.push(pt);
 				centerPoints.push({lng: loc.longitude, lat: loc.latitude});
 			});
-			var pipeOverlay = new T.Polyline(pipeArr, {strokeColor: "#000000", strokeWeight: row.weight, strokeOpacity:1});
+			var pipeOverlay = new T.Polyline(pipeArr, {color: "#000000", weight: row.weight, opacity:1});
 			opts.pipeDetailsInstance.push(pipeOverlay);
 			map.addOverLay(pipeOverlay);
 		});
@@ -1542,7 +1542,7 @@
 				content: ''
 			};
 			var markerItem = createMarker(marker, new T.LngLat(row.longitude, row.latitude));
-			markerItem.setTop(true);
+			// markerItem.setTop(true);
 			opts.pumpInstance.push(markerItem);
 			// add marker to the map
 			map.addOverLay(markerItem);
@@ -1580,7 +1580,7 @@
 				pipeArr.push(pt);
 
 			});
-			var pipeOverlay = new T.Polyline(pipeArr, {strokeColor: row.color, strokeWeight: row.weight, strokeOpacity:1});
+			var pipeOverlay = new T.Polyline(pipeArr, {color: row.color, weight: row.weight, opacity:1});
 			opts.pipeInstance.push(pipeOverlay);
 			map.addOverLay(pipeOverlay);
 
@@ -1597,7 +1597,7 @@
 			});
 
 			pipeOverlay.addEventListener('click', function(e){
-				map.openInfoWindow(infoWindowItem, new T.LngLat(e.point.lng, e.point.lat));
+				map.openInfoWindow(infoWindowItem, new T.LngLat(e.lnglat.lng, e.lnglat.lat));
 			});
 		});
 	}
@@ -1656,7 +1656,7 @@
 		opts.boundary.forEach(function (loc) {
 			points.push(new T.LngLat(loc.longitude, loc.latitude));
 		});
-		var polygon = new T.Polygon(points, {strokeColor:"blue", strokeWeight:3, strokeOpacity:1, fillColor:""});
+		var polygon = new T.Polygon(points, {color:"blue", weight:3, opacity:1, fillColor:""});
 		if(opts.boundary.length){
 			map.centerAndZoom(new T.LngLat(opts.boundary[num].longitude, opts.boundary[num].latitude), opts.zoom);
 		}

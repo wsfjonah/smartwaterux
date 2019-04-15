@@ -221,10 +221,10 @@
 			});
 		}
 		function getColorPipe(pipe){
-			var zone = pipe.options.subzone;
+			var zone = pipe.options.subzone;   //p2,p3,p1a...
 			var setColor = "blue";
 			if(angular.isDefined(zone) && pipeColor.hasOwnProperty(zone)){
-				setColor = pipeColor[zone];
+                setColor = pipeColor[zone];
 			}else if(angular.isDefined(zone) && !pipeColor.hasOwnProperty(zone) && colorSet.length){
 				pipeColor[zone] = colorSet[0];
 				setColor = pipeColor[zone];
