@@ -61,6 +61,7 @@
 	window.__env.networkHydrantUrl = window.__env.baseUrl+'map/hydrant';
 	//network pipe end details
 	window.__env.networkPipeDetailsUrl = window.__env.baseUrl+'map/geo/pipe/detail';
+	// window.__env.networkSearchPipesUrl ='/api2/map/pipe/detail';
 
 	//site event - daily | weekly
 	window.__env.siteEventSummaryUrl = window.__env.baseUrl+'tsevent/pressuresummary';

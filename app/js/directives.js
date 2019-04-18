@@ -799,6 +799,24 @@
         if($('#map_menu').length){
             $('#map_menu').remove();
         }
+        function addClickHandler(content,marker){
+            // 为标注添加点击事件
+            marker.addEventListener("click",function(e){
+                    openInfo(content,e);
+                    e.stopPropagation();   //阻止事件冒泡
+                }
+            );}
+        function openInfo(content,e){
+            // 获取标注的经纬坐标
+            var point = e.lnglat;
+            // 创建标注
+            var marker = new T.Marker(point);
+            // 创建信息窗口对象
+            var markerInfoWin = new T.InfoWindow(content,{offset:new T.Point(0,0)});
+            // 开启信息窗口
+            map.openInfoWindow(markerInfoWin,point);
+        
+        }
         var newControl = new T.Control({position: T_ANCHOR_TOP_RIGHT});
         newControl.onAdd = function(map){
             var div = document.createElement("div");
@@ -811,82 +829,63 @@
                 
                 divSearch.className = "btn-group group-search";
                 
-                var searchToggle = document.createElement("button");
-                searchToggle.className = "btn-toggle btn-link";
+                var searchImg=document.createElement("div");
+                searchImg.className= "btn-search";
                 
-                var searchIcon = document.createElement('i');
-                searchIcon.className = "ti-search";
-                
-                var searchDropdown = document.createElement("div");
-                searchDropdown.className = "dropdown-search";
-                
-                var searchClear = document.createElement("a");
-                searchClear.className = "remove";
-                
-                var clearIcon = document.createElement('i');
-                clearIcon.className = 'ti-close';
-                
-                var searchInput = document.createElement("input");
-                searchInput.setAttribute("type","text");
-                searchInput.setAttribute("placeholder","search");
-                
-                searchClear.appendChild(clearIcon);
-                searchToggle.appendChild(searchIcon);
-                searchDropdown.appendChild(searchClear);
-                searchDropdown.appendChild(searchInput);
-                
-                searchToggle.onclick = function(){
-                    var elem = $(this),
-                        group = elem.parents('.group-search'),
-                        isActive = group.hasClass('on-search'),
-                        isKeyword = group.hasClass('on-keyword'),
-                        input = group.find('input'),
-                        prevVal = (typeof input.data('value')!=="undefined") ? input.data('value') : "";
+                var searchInp=document.createElement('input');
+                searchInp.id='searchVal';
+                searchInp.setAttribute("placeholder","search");
+                searchInp.setAttribute("type","text");
+    
+                searchImg.onclick=function () {
                     
-                    removeActiveClass(["cart","multi"]);
-                    if(isActive){
-                        group.removeClass('on-search');
-                    }else{
-                        group.addClass('on-search');
-                        if(!isKeyword){
-                            input.val('');
+                    
+                    var mPipe=$("#searchVal").val();
+                    if(mPipe.length>4){
+                        mPipe=mPipe.substr(mPipe.length-4,mPipe.length)
+                    }else if(mPipe.length<4){
+                        for (var i=0;i<4;i++){
+                            mPipe='0'+mPipe;
+                            if (mPipe.length=='4'){
+                                break;
+                            }
                         }
-                        input.val(prevVal).focus();
                     }
-                };
-                searchClear.onclick = function(e){
-                    e.preventDefault();
-                    var elem = $(this),
-                        group = elem.parents('.group-search'),
-                        input = group.find('input');
-                    
-                    group.removeClass('on-search').removeClass('on-keyword');
-                    input.data('value','');
-                    searchSensor(map, opts, "", dialogService, $translate);
-                };
-                searchInput.onkeyup = function(e){
-                    var elem = $(this),
-                        group = elem.parents('.group-search'),
-                        value = $.trim(elem.val()),
-                        prevVal = (typeof elem.data('value')!=="undefined") ? elem.data('value') : "";
-                    
-                    if(e.keyCode === 13 && value!=="" && value!==prevVal){
-                        group.addClass('on-keyword');
-                        elem.data('value', value);
-                        searchSensor(map, opts, value, dialogService, $translate);
+                    var query={
+                        systemid:"gx00"+mPipe
                     }
-                };
-                searchInput.onblur = function(){
-                    var elem = $(this),
-                        group = elem.parents('.group-search');
+                    var query1 =encodeURIComponent(JSON.stringify(query));
                     
-                    setTimeout(function(){
-                        group.removeClass('on-search');
-                    },500);
-                };
+                    var res = {
+                        query:query1
+                    };
+    
+                    apiService.networkSearchPipesApi(res).then(function (response) {
+                        console.log(response);
+                        var points=[];
+                        var data=response.data[0];
+                        $.each(data.location,function (j,point) {
+                            points.push(new T.LngLat(point.longitude,point.latitude));
+                        })
+                        var lineconfig={
+                            color: "#f75c2f",
+                            weight: 5,               //线的宽度
+                            opacity: 1,             //线的透明度
+                            lineStyle:"dashed"
+                        }
+                        //创建线对象
+                        var line = new T.Polyline(points,lineconfig);
+                        // var content="<div class='maker-info'><p class='maker-tlt'>管道信息</p><ul><li>Id:</li><li>"+data.id+"</li><li>Type:</li><li>"+data.type+"</li><li>Diameter:</li><li>"+data.diameter+"</li><li>Layer:</li><li>"+data.layer+"</li><li>Subzone:</li><li>"+data.subzone+"</li><li>SystemId:</li><li>"+data.options.systemid+"</li></ul><button type='button' onclick=''  style='position: absolute;float: right;right: 20px;bottom: 40px;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;border: 1px solid #b1b8bb;background: #fff;color: #67757c;width: 40px;height: 30px;'><i class='ti-target'></i></button></div>"
+                        var content='<div class="overflow:auto"><table class="table table-sm table-striped table-bordered table-responsive"><tbody><tr><td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_id')+':</td><td>'+data.id+'</td></tr><tr><td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_type')+':</td><td>'+data.type+'</td></tr><tr><td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_diameter')+':</td><td>'+data.diameter+'</td></tr><tr><td style="width:100px;min-width:100px">'+$translate.instant('site_network_table_field_others')+':</td><td><pre>'+angular.toJson(data.options, true)+'</pre></td></tr></tbody></table><div>'
+                        //向地图上添加线
+                        map.addOverLay(line);
+                        addClickHandler(content,line);
+                    })
+                }
                 
-                divSearch.appendChild(searchToggle);
-                divSearch.appendChild(searchDropdown);
+                divSearch.appendChild(searchImg);
+                divSearch.appendChild(searchInp);
+                // divSearch.appendChild(searchDropdown);
                 div.appendChild(divSearch);
             }
             

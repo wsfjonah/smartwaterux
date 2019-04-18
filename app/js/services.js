@@ -441,6 +441,13 @@
 				headers: headers
 			});
 		};
+		this.networkSearchPipesApi=function (res) {
+            return $http({
+                method: 'GET',
+                url: __env.networkPipeUrl+'?query='+res.query,
+                headers: headers
+            });
+        }
 		this.monitorSiteNeighbor = function(siteid){
 			return $http({
 				method: 'GET',
