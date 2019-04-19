@@ -38,8 +38,7 @@
         };
         var str=window.location.href;
         var code= GetRequest(str);
-    
-    
+        
         function isAuthenticated() {
             return authService.isLoggedIn();
         }

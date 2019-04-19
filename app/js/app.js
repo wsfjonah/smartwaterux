@@ -63,7 +63,29 @@ app.controller('layoutCtrl', function layoutCtrl ($scope, $translate, authServic
 	$scope.$watch(function() { return authService.getAuthentication(); }, function(/*newVal*/) {
 		vm.userInfo = authService.getAuthentication();
 	}, true);
-
+    
+    var getAuthList=function () {
+        var userType=vm.userInfo.role;
+        var arr=[];
+        if(userType=='user'){
+            arr=['profile','panel','remote','gis','monitor'];
+        }else if(userType=='admin'){
+            arr=['profile','admin','panel','remote','gis','monitor'];
+        }
+        return arr;
+    }
+	
+	vm.isAuth=function (menuId) {
+	    //获取可访问列表
+        var arr=getAuthList();
+        //判断该menu是否存在于可访问列表中
+        if(arr.indexOf(menuId)=='-1'){
+            return false;
+        }else {
+            return true;
+        }
+    }
+	
 	vm.layoutViewClass = function() {
 		return (angular.isDefined($rootScope.page_key) && $rootScope.page_key==="login") ? "layout-login" : "";
 	};
