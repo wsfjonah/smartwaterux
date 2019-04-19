@@ -36,7 +36,7 @@
 						title: $translate.instant('site_location_table_header_device'),
 						align: 'right',
 						valign: 'top',
-						width: 80,
+						width: 100,
 						//sortable: true
 					},{
 						field: 'name',
@@ -64,38 +64,38 @@
 						align: 'left',
 						width: '60px',
 						valign: 'top',
-						//sortable: true
-					},{
-						field: 'datavariation',
-						title: $translate.instant('site_location_table_header_datavariation'),
-						align: 'center',
-						width: '60px',
-						valign: 'top',
-						formatter: formatVariation
-					},{
-						field: 'dataquality',
-						title: $translate.instant('site_location_table_header_dataquality'),
-						align: 'left',
-						width: '60px',
-						valign: 'top'
+						sortable: true
+					//},{
+					//	field: 'datavariation',
+					//	title: $translate.instant('site_location_table_header_datavariation'),
+					//	align: 'center',
+					//	width: '60px',
+					//	valign: 'top',
+					//	formatter: formatVariation
+					//},{
+					//	field: 'dataquality',
+					//	title: $translate.instant('site_location_table_header_dataquality'),
+					//	align: 'left',
+					//	width: '60px',
+					//	valign: 'top'
 					},{
 						field: 'reading',
 						title: $translate.instant('site_location_table_header_reading'),
 						align: 'left',
 						width: '60px',
 						valign: 'top'
-					},{
-						field: 'checkpoint_reading',
-						title: $translate.instant('site_location_table_header_checkpoint_reading'),
-						align: 'left',
-						width: '100px',
-						valign: 'top'
+					//},{
+					//	field: 'checkpoint_reading',
+					//	title: $translate.instant('site_location_table_header_checkpoint_reading'),
+					//	align: 'left',
+					//	width: '100px',
+					//	valign: 'top'
 					},{
 						field: 'geo_latlng',
 						title: $translate.instant('site_location_table_header_action'),
 						align: 'center',
 						valign: 'top',
-						width: '90px',
+						width: '100px',
 						clickToSelect: false,
 						formatter: formatUserAction
 					}
@@ -147,15 +147,15 @@
 		function formatUserAction(value, row){
 			var html = "<div class='btn-group'>";
 				html += "<div class='btn-group'>";
-					html += "<button type='button' class='btn btn-secondary btn-sm' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
-					html += "<i class='ti-menu'></i>";
-					html += "</button>";
-					html += "<ul class='dropdown-menu dropdown-menu-sm'>";
-						html += "<li><a href='JavaScript:void(0)' class='dropdown-item' onclick=\"angular.element(this).scope().viewEvent('"+row._id+"', '"+row.name+"', 'daily_event')\">"+$translate.instant('site_location_table_action_daily_event')+"</a></li>";
-						html += "<li><a href='JavaScript:void(0)' class='dropdown-item' onclick=\"angular.element(this).scope().viewEvent('"+row._id+"', '"+row.name+"', 'weekly_event')\">"+$translate.instant('site_location_table_action_weekly_event')+"</a></li>";
-						html += "<li><a href='JavaScript:void(0)' class='dropdown-item' onclick=\"angular.element(this).scope().viewEvent('"+row._id+"', '"+row.name+"', 'daily_reading')\">"+$translate.instant('site_location_table_action_daily_reading')+"</a></li>";
-						html += "<li><a href='JavaScript:void(0)' class='dropdown-item' onclick=\"angular.element(this).scope().viewEvent('"+row._id+"', '"+row.name+"', 'weekly_reading')\">"+$translate.instant('site_location_table_action_weekly_reading')+"</a></li>";
-					html += "</ul>";
+					//html += "<button type='button' class='btn btn-secondary btn-sm' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+					//html += "<i class='ti-menu'></i>";
+					//html += "</button>";
+					//html += "<ul class='dropdown-menu dropdown-menu-sm'>";
+					//	html += "<li><a href='JavaScript:void(0)' class='dropdown-item' onclick=\"angular.element(this).scope().viewEvent('"+row._id+"', '"+row.name+"', 'daily_event')\">"+$translate.instant('site_location_table_action_daily_event')+"</a></li>";
+					//	html += "<li><a href='JavaScript:void(0)' class='dropdown-item' onclick=\"angular.element(this).scope().viewEvent('"+row._id+"', '"+row.name+"', 'weekly_event')\">"+$translate.instant('site_location_table_action_weekly_event')+"</a></li>";
+					//	html += "<li><a href='JavaScript:void(0)' class='dropdown-item' onclick=\"angular.element(this).scope().viewEvent('"+row._id+"', '"+row.name+"', 'daily_reading')\">"+$translate.instant('site_location_table_action_daily_reading')+"</a></li>";
+					//	html += "<li><a href='JavaScript:void(0)' class='dropdown-item' onclick=\"angular.element(this).scope().viewEvent('"+row._id+"', '"+row.name+"', 'weekly_reading')\">"+$translate.instant('site_location_table_action_weekly_reading')+"</a></li>";
+					//html += "</ul>";
 				html += "</div>";
 				html += "<button type='button' class='btn btn-secondary btn-sm' onclick=\"angular.element(this).scope().viewDetails('"+row.id+"')\"><i class='ti-info-alt'></i></button>";
 				html += "<button type='button' class='btn btn-secondary btn-sm' onclick=\"angular.element(this).scope().viewData('"+row.id+"')\"><i class='ti-stats-up'></i></button>";
@@ -180,7 +180,8 @@
 						id: value.device_ref,
 						device_ref: value.device_ref,
 						checkpoint_reading: moment(value.checkpoint_reading).format('YYYY-MM-DD HH:mm:ss'),
-						reading: ((value.reading/100) * 100).toFixed(2),
+						//reading: ((value.reading/100) * 100).toFixed(2),
+						reading: '水压',
 						dataquality: ((value.dataquality/1) * 100).toFixed(2) + '%',
 						datavariation: variation,
 						created: value.created,
@@ -191,7 +192,7 @@
 						longitude: value.geo_latlng.split(',')[1],
 						lastmod: value.lastmod,
 						name: value.name,
-						status: value.status,
+						status: getStatusView(value.status),
 						type: value.type,
 						optional: value.optional,
 						tag: value.tag,
@@ -204,6 +205,12 @@
 			}).catch(function(/*err*/){
 				dialogService.alert(null,{content: $translate.instant('site_common_something_wrong')});
 			});
+		}
+		
+		function getStatusView(status){
+			if(status == 'N') return '正常';
+			
+			return '异常';
 		}
 	});
 })();
