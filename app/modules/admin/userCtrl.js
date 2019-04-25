@@ -69,8 +69,7 @@
             }
         };
     
-        
-        
+    
         $scope.viewUser=function (type,name,id) {
             var params = {
                 type: type,
@@ -84,19 +83,26 @@
         */
         function getSiteData(){
             apiService.userAllApi().then(function(response){
-                angular.forEach(response.data, function(value/*, key*/){
-                    console.log(JSON.stringify(value.projects))
-                    vm.tableData.push({
-                        username: value.username,
-                        role: value.role,
-                        lang: value.lang,
-                        timezone: value.timezone,
-                        projects: JSON.stringify(value.projects)
+                if(response.data.errorCode){
+                    if(response.data.errorCode=="3"){
+                        window.location.href='/optimize/#!/dashboard-info';
+                        console.log('no access');
+                    }
+                }else {
+                    angular.forEach(response.data, function(value/*, key*/){
+                        // console.log(JSON.stringify(value.projects))
+                        vm.tableData.push({
+                            username: value.username,
+                            role: value.role,
+                            lang: value.lang,
+                            timezone: value.timezone,
+                            projects: JSON.stringify(value.projects)
+                        });
                     });
-                });
-                $timeout(function(){
-                    $('#info_table').bootstrapTable('resetWidth');
-                }, 500);
+                    $timeout(function(){
+                        $('#info_table').bootstrapTable('resetWidth');
+                    }, 500);
+                }
             }).catch(function(/*err*/){
                 dialogService.alert(null,{content: $translate.instant('site_common_something_wrong')});
             });

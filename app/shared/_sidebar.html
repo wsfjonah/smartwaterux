@@ -25,51 +25,34 @@
 				</a>
 			</li> -->
             <li ng-if="vm.isAuth('admin')">
-                <a class="has-arrow waves-effect waves-dark" aria-expanded="false" ><i class="ti-user"></i><span class="hide-menu" translate="site_menu_admin"></span></a>
-                <ul aria-expanded="false" class="collapse">
+                <a class="has-arrow waves-effect waves-dark" data-toggle="collapse" data-target="#admin"><i class="ti-user"></i><span class="hide-menu" translate="site_menu_admin"></span></a>
+                <ul id="admin" class="collapse">
                    <li><a href="#!user" translate="site_menu_user"  ng-class="{ active: vm.isCurrentPath('/user') }"></a></li>
                    <li><a href="#!notification" translate="site_menu_notification"  ng-class="{ active: vm.isCurrentPath('/notification') }"></a></li>
+                   <li ng-if="vm.isAuth('admin_remote')"><a href="#!adminsite" translate="site_menu_admin_remote" ng-class="{ active: vm.isCurrentPath('/adminremote') }"></a></li>
                 </ul>
             </li>
-			<li ng-if="vm.isAuth('panel')">
-				<a class="has-arrow waves-effect waves-dark" href="" aria-expanded="false"><i class="ti-package"></i><span class="hide-menu" translate="site_menu_main"></span></a>
-				<ul aria-expanded="false" class="collapse">
+			<li class="dropdown" ng-if="vm.isAuth('panel')">
+				<a class="has-arrow waves-effect waves-dark" data-toggle="collapse" href="" data-target="#panel"><i class="ti-package"></i><span class="hide-menu" translate="site_menu_main"></span></a>
+				<ul id="panel" class="collapse">
 					<li><a href="#!main" translate="site_menu_dashboard_info" ng-class="{ active: vm.isCurrentPath('/dashboard-info') }"></a></li>
-					<!--<li><a href="#!dashboard-network" translate="site_menu_dashboard_network" ng-class="{ active: vm.isCurrentPath('/dashboard-network') }"></a></li>-->
-					<!--<li><a href="#!dashboard-scatter" translate="site_menu_dashboard_scatter" ng-class="{ active: vm.isCurrentPath('/dashboard-scatter') }"></a></li>-->
-				</ul>
+                </ul>
 			</li>
 			<li ng-if="vm.isAuth('remote')">
-				<a class="has-arrow waves-effect waves-dark" href="" aria-expanded="false"><i class="ti-shield"></i><span class="hide-menu" translate="site_menu_remote"></span></a>
-				<ul aria-expanded="false" class="collapse">
+				<a class="has-arrow waves-effect waves-dark" href="" data-toggle="collapse" data-target="#remote"><i class="ti-shield"></i><span class="hide-menu" translate="site_menu_remote"></span></a>
+				<ul id="remote" class="collapse">
 					<li><a href="#!location" translate="site_menu_location" ng-class="{ active: vm.isCurrentPath('/location') }"></a></li>
 					<li><a href="#!site" translate="site_menu_table" ng-class="{ active: vm.isCurrentPath('/site') }"></a></li>
 				</ul>
 			</li>
-			<li ng-if="vm.isAuth('gis')"><a class="has-arrow waves-effect waves-dark" href="#!gis" aria-expanded="false" ng-class="{ active: vm.isCurrentPath('/gis') }"><i class="ti-location-pin"></i><span class="hide-menu" translate="site_menu_city_overview"></span></a>
-				<!--<ul aria-expanded="false" class="collapse">-->
-					<!--<li><a href="#!gis" translate="site_menu_city_overview" ng-class="{ active: vm.isCurrentPath('/gis') }"></a></li>-->
-					<!--<li><a href="#!network-analysis" translate="site_menu_network_analysis" ng-class="{ active: vm.isCurrentPath('/network-analysis') }"></a></li>-->
-					<!--<li><a href="#!network-data" translate="site_menu_network_data" ng-class="{ active: vm.isCurrentPath('/network-data') }"></a></li>-->
-				<!--</ul>-->
+			<li ng-if="vm.isAuth('gis')"><a class="has-arrow waves-effect waves-dark" href="#!gis" ng-class="{ active: vm.isCurrentPath('/gis') }"><i class="ti-location-pin"></i><span class="hide-menu" translate="site_menu_city_overview"></span></a>
 			</li>
 			<li ng-if="vm.isAuth('monitor')">
-				<a class="has-arrow waves-effect waves-dark" href="JavaScript:void(0);" aria-expanded="false"><i class="ti-signal"></i><span class="hide-menu" translate="site_menu_monitor"></span></a>
-				<ul aria-expanded="false" class="collapse">
+				<a class="has-arrow waves-effect waves-dark" href="JavaScript:void(0);" data-toggle="collapse" data-target="#monitor"><i class="ti-signal"></i><span class="hide-menu" translate="site_menu_monitor"></span></a>
+				<ul id="monitor" class="collapse">
 					<li><a href="#!monitoring" translate="site_menu_monitor" ng-class="{ active: vm.isCurrentPath('/monitoring') }"></a></li>
-					<!--<li><a href="#!classification" translate="menu_event_classification" ng-class="{ active: vm.isCurrentPath('/classification') }"></a></li>-->
-					<!--<li><a href="#!eventlib" translate="menu_event_library" ng-class="{ active: vm.isCurrentPath('/eventlib') }"></a></li>-->
-				</ul>
+                </ul>
 			</li>
-			<!--<li>-->
-				<!--<a class="has-arrow waves-effect waves-dark" href="" aria-expanded="false" target="_blank">-->
-					<!--<i class="ti-map"></i><span class="hide-menu" translate="site_menu_dma"></span></a>-->
-					<!--<ul aria-expanded="false" class="collapse">-->
-						<!--<li><a href="/ux/map/dma.html" translate="site_menu_zone" target="_blank"></a></li>-->
-						<!--<li><a href="#!flow" translate="site_menu_flow" ng-class="{ active: vm.isCurrentPath('/flow') }"></a></li>-->
-					<!--</ul>-->
-				<!--</a>-->
-			<!--</li>-->
 		</ul>
 	</nav>
 	<!-- End Sidebar navigation -->

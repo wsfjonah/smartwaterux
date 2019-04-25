@@ -71,6 +71,8 @@ app.controller('layoutCtrl', function layoutCtrl ($scope, $translate, authServic
             arr=['profile','panel','remote','gis','monitor'];
         }else if(userType=='admin'){
             arr=['profile','admin','panel','remote','gis','monitor'];
+        }else if(userType=='superadmin'){
+            arr=['profile','admin','panel','remote','gis','monitor','admin_remote'];
         }
         return arr;
     }

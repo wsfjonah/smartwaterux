@@ -150,7 +150,7 @@
         };
     
         vm.login=function () {
-            window.location.href='https://smartwater.mathearth.com/smartwater/#!/login';
+            window.location.href='/smartwater/#!/login';
         }
         // var loginStatus=vm.isAuthenticated();
         // console.log(loginStatus);
