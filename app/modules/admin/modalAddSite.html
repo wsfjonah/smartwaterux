@@ -1,0 +1,67 @@
+<div class="modal-header">
+    <h3 class="modal-title" translate="site_user_table_header_add"></h3>
+</div>
+<div class="modal-body canvas-modal">
+    <form action="">
+        <table class="table table-bordered">
+            <div class="m-b-5">
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 filter-col">
+                        <div class="input-group" >
+                            <div class="input-group-addon">
+                                <span class="input-group-text">{{ "site_location_table_header_device" | translate }}</span>
+                            </div>
+                            <input type="text" class="form-control" ng-model="vm.deviceRef">
+                        </div>
+                    </div>
+                    <div class="col-md-6 filter-col">
+                        <div class="input-group" >
+                            <div class="input-group-addon">
+                                <span class="input-group-text">{{ "site_location_table_header_name" | translate }}</span>
+                            </div>
+                            <input type="text" class="form-control" ng-model="vm.name">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 filter-col">
+                        <div class="input-group" >
+                            <div class="input-group-addon">
+                                <span class="input-group-text">{{ "site_location_table_header_address" | translate }}</span>
+                            </div>
+                            <input type="text" class="form-control" ng-model="vm.address">
+                        </div>
+                    </div>
+                    <div class="col-md-6 filter-col">
+                        <div class="input-group" >
+                            <div class="input-group-addon">
+                                <span class="input-group-text">{{ "site_location_table_header_geo" | translate }}</span>
+                            </div>
+                            <input type="text" class="form-control" ng-model="vm.latlng"  placeholder="格式：纬度,经度">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 filter-col">
+                        <div class="input-group" >
+                            <div class="input-group-addon">
+                                <span class="input-group-text">{{ "site_monitor_event_table_status" | translate }}</span>
+                            </div>
+                            <select name="" id="" class="form-control" ng-model="vm.status">
+                                <option value="N">{{ "site_admin_status_normal" | translate}}</option>
+                                <option value="T">{{ "site_admin_status_test" | translate}}</option>
+                                <option value="I">{{ "site_admin_status_idle" | translate}}</option>
+                                <option value="E">{{ "site_admin_status_error" | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </table>
+        <div class="modal-footer">
+            <!--<button type="button" class="btn btn-danger" ng-click="vm.delete()">{{ "site_admin_site_table_delete" | translate }}</button>-->
+            <button type="button" class="btn btn-primary" ng-click="vm.submit()">{{ "site_admin_site_table_submit" | translate }}</button>
+            <button type="button" class="btn btn-default" ng-click="$dismiss()">{{ "site_location_modal_close_btn" | translate }}</button>
+        </div>
+    </form>
+</div>
