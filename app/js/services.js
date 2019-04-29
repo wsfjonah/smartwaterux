@@ -309,6 +309,22 @@
                 headers:headers
             })
         }
+        this.AddSiteApi=function (params) {
+            return $http({
+                method: 'POST',
+                url: __env.AddSiteUrl,
+                data: $httpParamSerializerJQLike(params),
+                headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+            });
+        }
+        this.editSiteApi=function (params) {
+            return $http({
+                method: 'POST',
+                url: __env.editSiteUrl,
+                data:  $httpParamSerializerJQLike(params),
+                headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+            })
+        }
         this.addUserApi=function (username,phone,email) {
             return $http({
                 method:'GET',

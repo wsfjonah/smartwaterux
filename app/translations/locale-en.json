@@ -12,7 +12,9 @@
     "site_menu_notification": "Notification",
     "site_menu_admin_remote": "Remote Site Information",
     "site_menu_main" : "Dashboard",
-	"site_menu_dashboard_info" : "Info. Dashboard",
+    "site_admin_site_table_submit" : "Submit",
+    "site_admin_site_table_delete" : "Delete",
+    "site_menu_dashboard_info" : "Info. Dashboard",
 	"site_menu_dashboard_network" : "Network Dashboard",
 	"site_menu_dashboard_scatter" : "Scatter",
 	"site_menu_monitor" : "Monitoring",
@@ -205,6 +207,12 @@
 	"site_dashboard_network_variation_summary" : "Variation Summary",
     "site_admin_user_name_placeholder":"Please Input Username",
     "site_admin_user_password_placeholder":"Please Input Password",
-    "site_event_add_button_label": "Add"
+    "site_event_add_button_label": "Add",
+    "site_admin_modify_site":"modify Site",
+    "site_admin_status_normal": "Normal",
+    "site_admin_status_test": "Test",
+    "site_admin_status_idle": "Idle",
+    "site_admin_status_error": "Error"
+
 
 }

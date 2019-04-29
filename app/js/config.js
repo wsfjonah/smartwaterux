@@ -28,14 +28,14 @@
                             'assets/js/locale/bootstrap-table-zh-CN.min.js',
                             'assets/js/locale/bootstrap-table-en-US.min.js',
                             'app/vendors/angular-daterangepicker.min.js',
-                            'app/modules/remote/modalEventDetailsCtrl.js',
-                            'app/modules/remote/modalTimeSeriesCtrl.js',
-                            'app/modules/remote/modalHighRateCtrl.js',
-                            'app/modules/remote/modalDetailsCtrl.js',
-                            'app/modules/remote/modalMapCtrl.js',
+                            // 'app/modules/remote/modalEventDetailsCtrl.js',
+                            // 'app/modules/remote/modalTimeSeriesCtrl.js',
+                            // 'app/modules/remote/modalHighRateCtrl.js',
+                            // 'app/modules/remote/modalDetailsCtrl.js',
+                            // 'app/modules/remote/modalMapCtrl.js',
                             'app/modules/admin/userCtrl.js',
                             'app/modules/admin/modalAddUser.js',
-                            'app/modules/remote/modalSiteEventsCtrl.js'
+                            // 'app/modules/remote/modalSiteEventsCtrl.js'
                         ]
                     });
                 }]
@@ -62,12 +62,12 @@
                                 'assets/js/locale/bootstrap-table-zh-CN.min.js',
                                 'assets/js/locale/bootstrap-table-en-US.min.js',
                                 'app/vendors/angular-daterangepicker.min.js',
-                                'app/modules/remote/modalEventDetailsCtrl.js',
-                                'app/modules/remote/modalTimeSeriesCtrl.js',
-                                'app/modules/remote/modalHighRateCtrl.js',
-                                'app/modules/remote/modalDetailsCtrl.js',
-                                'app/modules/remote/modalMapCtrl.js',
-                                'app/modules/remote/modalSiteEventsCtrl.js'
+                                // 'app/modules/remote/modalEventDetailsCtrl.js',
+                                // 'app/modules/remote/modalTimeSeriesCtrl.js',
+                                // 'app/modules/remote/modalHighRateCtrl.js',
+                                // 'app/modules/remote/modalDetailsCtrl.js',
+                                // 'app/modules/remote/modalMapCtrl.js',
+                                // 'app/modules/remote/modalSiteEventsCtrl.js'
                             ]
                         });
                     }]
@@ -196,7 +196,42 @@
 			page_params: {
 				key: "site"
 			},
-		})
+		}).when('/adminremote', {
+                templateUrl: __env.folder+'/app/modules/admin/adminSite.html',
+                controller: 'adminSiteTableController as vm',
+                restrictions: {
+                    ensureAuthenticated: true,
+                    loginRedirect: false
+                },
+                resolve: {
+                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            serie: true,
+                            files: [
+                                'assets/css/bootstrap-table.css',
+                                'assets/js/bootstrap-table.min.js',
+                                'app/vendors/bootstrap-table-angular.min.js',
+                                'assets/js/locale/bootstrap-table-zh-CN.min.js',
+                                'assets/js/locale/bootstrap-table-en-US.min.js',
+                                'app/vendors/angular-daterangepicker.min.js',
+                                'app/modules/admin/adminSiteTableCtrl.js',
+                                'app/modules/admin/modalEditCtrl.js',
+                                'app/modules/admin/modalAddSiteCtrl.js',
+                                'app/modules/remote/modalEventDetailsCtrl.js',
+                                'app/modules/remote/modalTimeSeriesCtrl.js',
+                                'app/modules/remote/modalHighRateCtrl.js',
+                                'app/modules/remote/modalDetailsCtrl.js',
+                                'app/modules/remote/modalMapCtrl.js',
+                                'app/modules/remote/siteTableCtrl.js',
+                                'app/modules/remote/modalSiteEventsCtrl.js'
+                            ]
+                        });
+                    }]
+                },
+                page_params: {
+                    key: "adminremote"
+                },
+            })
 		.when('/gis', {
 			templateUrl: __env.folder+'/app/modules/network/gis.html',
 			controller: 'gisController as vm',

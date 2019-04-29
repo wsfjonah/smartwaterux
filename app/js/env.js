@@ -79,7 +79,9 @@
 
 	//event tagging
 	window.__env.eventTagsUrl = window.__env.baseUrl+'tsevent/alltags';
-
+	
+	window.__env.AddSiteUrl=window.__env.baseUrl+'site/add';
+    window.__env.editSiteUrl=window.__env.baseUrl+'site/update';
 	//modal
 	window.__env.modalTimeSeriesUrl = window.__env.folder+'/app/modules/remote/modalTimeSeries.html';
 	window.__env.modalEventDetailsUrl = window.__env.folder+'/app/modules/remote/modalEventDetails.html';
@@ -87,6 +89,8 @@
 	window.__env.modalHighRateUrl = window.__env.folder+'/app/modules/remote/modalHighRate.html';
 	window.__env.modalInformationTableInfo = window.__env.folder+'/app/modules/remote/modalDetails.html';
 	window.__env.modalInformationTableMap = window.__env.folder+'/app/modules/remote/modalMap.html';
+	window.__env.modalInformationTableEdit=window.__env.folder+'/app/modules/admin/modalEdit.html';
+	window.__env.modalInformationTableAdd=window.__env.folder+'/app/modules/admin/modalAddSite.html';
 	window.__env.modalMonitorEventMap = window.__env.folder+'/app/modules/monitor/modalMap.html';
 	window.__env.modalMonitorSiteDetailsUrl = window.__env.folder+'/app/modules/monitor/modalMonitorSiteDetails.html';
 	window.__env.modalSiteEventUrl = window.__env.folder+'/app/modules/remote/modalSiteEvents.html';
@@ -99,7 +103,7 @@
 	window.__env.ignoreInterceptorRequest = ['uib/template/modal/window.html', window.__env.baseUrl+'user/login'];
 
 	//language reload page
-	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location','/network-data','/monitor','/flow','/user','/notification','/verification'];
+	window.__env.langReloadPath = ["/site","/gis",'/network-analysis','/location','/network-data','/monitor','/flow','/user','/notification','/verification','/adminremote'];
 
 	//main page after user login
 	window.__env.pageMain = '/dashboard-info';

@@ -167,6 +167,8 @@
 	"site_monitor_event_table_name" : "名称",
 	"site_monitor_event_table_address" : "地址",
 	"site_monitor_event_table_status" : "状态",
+	"site_admin_site_table_submit" : "提交",
+	"site_admin_site_table_delete" : "删除",
 	"site_monitor_event_table_action" : "行动",
 	"site_monitor_event_add_plot" : "添加数据",
 	"site_monitor_event_remove_plot" : "删除数据",
@@ -206,7 +208,12 @@
 	"site_dashboard_network_variation_summary" : "管网变化统计",
     "site_admin_user_name_placeholder":"请输入用户名",
     "site_admin_user_password_placeholder":"请输入密码",
-    "site_event_add_button_label": "添加"
+    "site_event_add_button_label": "添加",
+    "site_admin_modify_site":"修改站点",
+    "site_admin_status_normal": "正常",
+    "site_admin_status_test": "测试",
+    "site_admin_status_idle": "空闲",
+    "site_admin_status_error": "错误"
 
 
 }
