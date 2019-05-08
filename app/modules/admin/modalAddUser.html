@@ -11,25 +11,29 @@
                             <div class="input-group-addon">
                                 <span class="input-group-text">{{ "site_location_table_header_username" | translate }}</span>
                             </div>
-                            <input type="text" class="form-control" id="uUsername">
+                            <input type="text" class="form-control" id="uUsername" ng-model="vm.username">
                         </div>
                     </div>
                     <div class="col-md-6 filter-col">
                         <div class="input-group" >
                             <div class="input-group-addon">
-                                <span class="input-group-text">{{ "site_location_table_header_tel" | translate }}</span>
+                                <span class="input-group-text">{{ "site_location_table_header_psw" | translate }}</span>
                             </div>
-                            <input type="tel" class="form-control" id="uTel">
+                            <input type="password" class="form-control" id="uPsw" ng-model="vm.psw">
                         </div>
                     </div>
                 </div>
-                <div class="row" style="margin-bottom: 10px;">
+                <div class="row" ng-if="true">
                     <div class="col-md-6 filter-col">
                         <div class="input-group" >
                             <div class="input-group-addon">
-                                <span class="input-group-text">{{ "site_location_table_header_email" | translate }}</span>
+                                <span class="input-group-text">{{ "site_location_table_header_role" | translate }}</span>
                             </div>
-                            <input type="email" class="form-control" id="uEmail">
+                            <select name="" id="uRole" class="form-control" ng-model="vm.role">
+                                <option value="superadmin" ng-if="vm.isAuthAddSA">{{ "site_location_table_header_superadmin" | translate }}</option>
+                                <option value="admin">{{ "site_location_table_header_admin" | translate }}</option>
+                                <option value="user" selected>{{ "site_location_table_header_user" | translate }}</option>
+                            </select>
                         </div>
                     </div>
                 </div>

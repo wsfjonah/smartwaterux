@@ -72,12 +72,12 @@ app.controller('layoutCtrl', function layoutCtrl ($scope, $translate, authServic
         }else if(userType=='admin'){
             arr=['profile','admin','panel','remote','gis','monitor'];
         }else if(userType=='superadmin'){
-            arr=['profile','admin','panel','remote','gis','monitor','admin_remote'];
+            arr=['profile','admin','panel','remote','gis','monitor','admin_remote','user_addSA'];
         }
         return arr;
     }
-	
-	vm.isAuth=function (menuId) {
+
+	   vm.isAuth=function (menuId) {
 	    //获取可访问列表
         var arr=getAuthList();
         //判断该menu是否存在于可访问列表中

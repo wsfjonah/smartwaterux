@@ -20,7 +20,7 @@
 	window.__env.eventDurationUrl = window.__env.baseUrl+'tsevent/search';
 	window.__env.notificationAnyUrl=window.__env.baseUrl+'notification/search/any';
 	window.__env.addUserUrl=window.__env.baseUrl+'user/adduser';
-	window.__env.userAllUrl=window.__env.baseUrl+'user/alluser';
+	window.__env.userAllUrl=window.__env.baseUrl+'user/project/alluser';
 	window.__env.moreNotificationUrl=window.__env.baseUrl+'notification/search';
 	window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query';
 	window.__env.eventDetailsUrl = window.__env.baseUrl+'tsevent/get';

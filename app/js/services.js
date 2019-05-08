@@ -85,6 +85,28 @@
 			var isToken = (angular.isDefined(user_info.token) && user_info.token!=="");
 			return (isAuth && isToken);
 		};
+		
+        this.getAuthList=function () {
+            var userType=this.getAuthentication().role;
+            var arr=[];
+            if(userType=='user'){
+                arr=['profile','panel','remote','gis','monitor'];
+            }else if(userType=='admin'){
+                arr=['profile','admin','panel','remote','gis','monitor'];
+            }else if(userType=='superadmin'){
+                arr=['profile','admin','panel','remote','gis','monitor','admin_remote','user_addSA'];
+            }
+            return arr;
+        }
+		this.isMunuAuth=function (menuId) {
+            console.log(menuId);
+            var arr=this.getAuthList();
+            if(arr.indexOf(menuId)=='-1'){
+                return false;
+            }else {
+                return true;
+            }
+        }
 		this.getAuthentication = function(){
 			var auth_res = localStorageService.get('authorizationData');
 			if(auth_res===null){
@@ -325,11 +347,12 @@
                 headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
             })
         }
-        this.addUserApi=function (username,phone,email) {
+        this.addUserApi=function (params) {
             return $http({
-                method:'GET',
-                url:__env.addUserUrl+"?username="+username+"&phone="+phone+"&email="+email,
-                headers:headers
+                method:'POST',
+                url:__env.addUserUrl,
+                data:$httpParamSerializerJQLike(params),
+                headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
             })
         }
 		this.notificationAnyApi=function () {
