@@ -35,6 +35,8 @@
                             // 'app/modules/remote/modalMapCtrl.js',
                             'app/modules/admin/userCtrl.js',
                             'app/modules/admin/modalAddUser.js',
+                            'app/modules/admin/modalEditUserCtrl.js',
+                            'app/modules/admin/modalUserUpdatePswCtrl.js'
                             // 'app/modules/remote/modalSiteEventsCtrl.js'
                         ]
                     });

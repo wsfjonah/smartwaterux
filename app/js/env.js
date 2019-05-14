@@ -20,6 +20,10 @@
 	window.__env.eventDurationUrl = window.__env.baseUrl+'tsevent/search';
 	window.__env.notificationAnyUrl=window.__env.baseUrl+'notification/search/any';
 	window.__env.addUserUrl=window.__env.baseUrl+'user/adduser';
+	window.__env.unlockUserUrl=window.__env.baseUrl+'user/unlockuser';
+	window.__env.lockUserUrl=window.__env.baseUrl+'user/lockuser';
+	window.__env.updatePswUrl=window.__env.baseUrl+'user/updatepassword';
+	window.__env.editUserUrl=window.__env.baseUrl+'user/updateuser';
 	window.__env.userAllUrl=window.__env.baseUrl+'user/project/alluser';
 	window.__env.moreNotificationUrl=window.__env.baseUrl+'notification/search';
 	window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query';
@@ -90,11 +94,13 @@
 	window.__env.modalInformationTableInfo = window.__env.folder+'/app/modules/remote/modalDetails.html';
 	window.__env.modalInformationTableMap = window.__env.folder+'/app/modules/remote/modalMap.html';
 	window.__env.modalInformationTableEdit=window.__env.folder+'/app/modules/admin/modalEdit.html';
+	window.__env.modalUserTableEdit=window.__env.folder+'/app/modules/admin/modalEditUser.html';
 	window.__env.modalInformationTableAdd=window.__env.folder+'/app/modules/admin/modalAddSite.html';
 	window.__env.modalMonitorEventMap = window.__env.folder+'/app/modules/monitor/modalMap.html';
 	window.__env.modalMonitorSiteDetailsUrl = window.__env.folder+'/app/modules/monitor/modalMonitorSiteDetails.html';
 	window.__env.modalSiteEventUrl = window.__env.folder+'/app/modules/remote/modalSiteEvents.html';
 	window.__env.modalUserUrl=window.__env.folder+'/app/modules/admin/modalAddUser.html';
+	window.__env.modalUserUpdatePsw=window.__env.folder+'/app/modules/admin/modalUserUpdatePsw.html'
 	
 	//locale folder
 	window.__env.localeFolderUrl = window.__env.folder+'/app/translations/locale-';

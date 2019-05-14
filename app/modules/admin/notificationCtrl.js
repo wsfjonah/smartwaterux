@@ -22,7 +22,7 @@
                 striped: true,
                 pagination: true,
                 pageSize: 10,
-                pageList: [5, 10, 25, 50, 100, 200],
+                pageList: [10],
                 search: true,
                 searchAlign: 'left',
                 //showColumns: true,

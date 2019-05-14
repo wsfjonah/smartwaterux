@@ -80,6 +80,8 @@
     "site_location_table_header_content": "Content",
     "site_location_table_header_device" : "Device",
 	"site_location_table_header_name" : "Name",
+    "site_location_table_header_active":"Active",
+    "site_location_table_header_inactive":"Inactive",
 	"site_location_table_header_address" : "Address",
 	"site_location_table_header_datavariation" : "Pressure Variation",
 	"site_location_table_header_dataquality" : "Data Quality",
@@ -215,7 +217,9 @@
     "site_admin_status_normal": "Normal",
     "site_admin_status_test": "Test",
     "site_admin_status_idle": "Idle",
-    "site_admin_status_error": "Error"
-
+    "site_admin_status_error": "Error",
+    "site_admin_table_edit_user" : "Edit User Information",
+    "site_alert_active_fail":"User Activation Fail",
+    "site_alert_inactive_fail":"User Inactivation Fail"
 
 }

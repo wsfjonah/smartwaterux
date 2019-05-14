@@ -97,7 +97,8 @@
     "site_location_table_header_superadmin":"超级管理员",
     "site_location_table_header_admin":"管理员",
     "site_location_table_header_user":"用户",
-//    "site_location_table_header_psw":"密码",
+    "site_location_table_header_active":"激活",
+    "site_location_table_header_inactive":"未激活",
 	"site_location_table_info_optional" : "可选的",
 	"site_location_table_info_tag" : "标签",
 	"site_location_button_viewinfo" : "查看信息",
@@ -217,7 +218,12 @@
     "site_admin_status_normal": "正常",
     "site_admin_status_test": "测试",
     "site_admin_status_idle": "空闲",
-    "site_admin_status_error": "错误"
+    "site_admin_status_error": "错误",
+    "site_admin_table_edit_user" : "编辑用户信息",
+    "site_alert_active_fail":"用户激活失败",
+    "site_alert_inactive_fail":"用户取消激活失败"
+
+
 
 
 }

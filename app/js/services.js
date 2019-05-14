@@ -99,7 +99,6 @@
             return arr;
         }
 		this.isMunuAuth=function (menuId) {
-            console.log(menuId);
             var arr=this.getAuthList();
             if(arr.indexOf(menuId)=='-1'){
                 return false;
@@ -120,7 +119,7 @@
 		};
 	}
 
-	function commonService($translate){
+	function commonService($translate,dialogService){
 		/*jshint validthis: true */
 		this.getColors = function() {
 			return ["#FF1493","#FFA500","#0f7ca8","#3867c4","#96137c","#b79494","#f9b49d","#c60303","#008066","#823f5e","#687759","#d14959","#703e7f","#000000","#e8c2ef","#efa7b1","#282268"];
@@ -147,6 +146,30 @@
 			$('.pace-running').addClass('pace-done').removeClass('pace-running');
 			$('.pace-active').addClass('pace-inactive').removeClass('pace-active');
 		};
+		this.userPswMatch = function (value) {
+            var hasCap=/[A-Z]/;
+            var hasSm=/[a-z]/;
+            var hasNum=/[0-9]/;
+            var hasSpecialChar="[ _`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]|\n|\r|\t";
+            if(!value.match(hasCap)){
+                dialogService.alert(null,{content:'密码需包含大写字母'});
+                return false;
+            }else if(!value.match(hasSm)){
+                dialogService.alert(null,{content:'密码需包含小写字母'});
+                return false;
+            }else if(!value.match(hasNum)){
+                dialogService.alert(null,{content:'密码需包含数字'});
+                return false;
+            }else if (!(value.match(hasSpecialChar)==null)){
+                dialogService.alert(null,{content:'密码不可包含特殊字符'});
+                return false;
+            }else if(value.length<8){
+                dialogService.alert(null,{content:'密码需为8位或以上'});
+                return false;
+            }else {
+                return true
+            }
+        }
 		this.tagMapping = function(value){
 			var lists = {
 				hammer: $translate.instant('site_monitor_tag_opt_hammer'),
@@ -351,6 +374,36 @@
             return $http({
                 method:'POST',
                 url:__env.addUserUrl,
+                data:$httpParamSerializerJQLike(params),
+                headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+            })
+        }
+        this.unlockUserApi=function (username) {
+            return $http({
+                method:'GET',
+                url:__env.unlockUserUrl+"?username="+username,
+                headers:headers
+            })
+        }
+        this.lockUserApi=function (username) {
+            return $http({
+                method:'GET',
+                url:__env.lockUserUrl+"?username="+username,
+                headers:headers
+            })
+        }
+        this.updatePswApi=function (params) {
+            return $http({
+                method:'POST',
+                url:__env.updatePswUrl,
+                data:$httpParamSerializerJQLike(params),
+                headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+            })
+        }
+        this.editUserApi=function (params) {
+            return $http({
+                method: 'POST',
+                url:__env.editUserUrl,
                 data:$httpParamSerializerJQLike(params),
                 headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
             })

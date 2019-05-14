@@ -27,6 +27,14 @@
                     <div class="col-md-6 filter-col">
                         <div class="input-group" >
                             <div class="input-group-addon">
+                                <span class="input-group-text">{{ "site_location_table_header_email" | translate }}</span>
+                            </div>
+                            <input type="email" class="form-control" id="uEmail" ng-model="vm.email">
+                        </div>
+                    </div>
+                    <div class="col-md-6 filter-col">
+                        <div class="input-group" >
+                            <div class="input-group-addon">
                                 <span class="input-group-text">{{ "site_location_table_header_role" | translate }}</span>
                             </div>
                             <select name="" id="uRole" class="form-control" ng-model="vm.role">
