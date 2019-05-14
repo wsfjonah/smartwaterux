@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h3 class="modal-title" translate="site_admin_table_edit_user"></h3>
+</div>
+<div class="modal-body canvas-modal">
+    <form action="">
+        <table class="table table-bordered">
+            <div class="m-b-5">
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 filter-col">
+                        <div class="input-group" >
+                            <div class="input-group-addon">
+                                <span class="input-group-text">{{ "site_location_table_header_username" | translate }}</span>
+                            </div>
+                            <input type="text" class="form-control" ng-model="vm.username" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-6 filter-col">
+                        <div class="input-group" >
+                            <div class="input-group-addon">
+                                <span class="input-group-text">{{ "site_location_table_header_psw" | translate }}</span>
+                            </div>
+                            <input type="password" class="form-control" ng-model="vm.psw">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </table>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="vm.submit()">{{ "site_admin_site_table_submit" | translate }}</button>
+            <button type="button" class="btn btn-default" ng-click="$dismiss()">{{ "site_location_modal_close_btn" | translate }}</button>
+        </div>
+    </form>
+</div>
