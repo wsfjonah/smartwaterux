@@ -400,10 +400,49 @@
                 headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
             })
         }
+        this.resetPswApi=function (params) {
+            return $http({
+                method:'POST',
+                url:__env.resetPswUrl,
+                data:$httpParamSerializerJQLike(params),
+                headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+            })
+        }
+        this.subscribeAllApi=function () {
+            return $http({
+                method:'GET',
+                url:__env.subscribeAllUrl,
+                headers:headers
+            })
+        }
+        this.activeAccountApi=function (params) {
+            return $http({
+                method: 'POST',
+                url:__env.activeAccountUrl,
+                data:$httpParamSerializerJQLike(params),
+                headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+            })
+        }
+        this.addAccountApi=function (params) {
+            return $http({
+                method: 'POST',
+                url:__env.addAccountUrl,
+                data:$httpParamSerializerJQLike(params),
+                headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+            })
+        }
         this.editUserApi=function (params) {
             return $http({
                 method: 'POST',
                 url:__env.editUserUrl,
+                data:$httpParamSerializerJQLike(params),
+                headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
+            })
+        }
+        this.editSubApi=function (params) {
+            return $http({
+                method: 'POST',
+                url:__env.editSubUrl,
                 data:$httpParamSerializerJQLike(params),
                 headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
             })
@@ -589,13 +628,7 @@
                 headers:headers
             })
         }
-        this.checkUsernameApi=function (name,code) {
-            return $http({
-                method:'GET',
-                url: __env.checkUsernameUrl+"?username="+name+"&verificationcode="+code,
-                headers:headers
-            })
-        }
+        
 
 	}
 })();

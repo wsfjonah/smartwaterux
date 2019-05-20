@@ -23,7 +23,12 @@
 	window.__env.unlockUserUrl=window.__env.baseUrl+'user/unlockuser';
 	window.__env.lockUserUrl=window.__env.baseUrl+'user/lockuser';
 	window.__env.updatePswUrl=window.__env.baseUrl+'user/updatepassword';
+	window.__env.resetPswUrl=window.__env.baseUrl+'user/resetpassword';
+	window.__env.subscribeAllUrl=window.__env.baseUrl+'alert/all';
+	window.__env.addAccountUrl=window.__env.baseUrl+'alert/add';
+	window.__env.activeAccountUrl=window.__env.baseUrl+'alert/activate';
 	window.__env.editUserUrl=window.__env.baseUrl+'user/updateuser';
+	window.__env.editSubUrl=window.__env.baseUrl+'alert/subscribe';
 	window.__env.userAllUrl=window.__env.baseUrl+'user/project/alluser';
 	window.__env.moreNotificationUrl=window.__env.baseUrl+'notification/search';
 	window.__env.eventRangeUrl = window.__env.baseUrl+'tsevent/query';
@@ -31,7 +36,7 @@
 	window.__env.eventSingleRangeUrl = window.__env.baseUrl+'tsevent/datapoint';
 	//batch query time series
 	window.__env.batchTimeSeriesUrl = window.__env.baseUrl+'tsda/batchquery';
-    window.__env.checkVerificationCodeUrl=window.__env.baseUrl+'user/checkverificationcode';
+    window.__env.checkVerificationCodeUrl=window.__env.baseUrl+'alert/checkverificationcode';
     window.__env.checkUsernameUrl=window.__env.baseUrl+'user/checkusername';
     window.__env.resetPasswordUrl=window.__env.baseUrl+'user/updatepassword';
     
@@ -101,7 +106,8 @@
 	window.__env.modalSiteEventUrl = window.__env.folder+'/app/modules/remote/modalSiteEvents.html';
 	window.__env.modalUserUrl=window.__env.folder+'/app/modules/admin/modalAddUser.html';
 	window.__env.modalUserUpdatePsw=window.__env.folder+'/app/modules/admin/modalUserUpdatePsw.html'
-	
+	window.__env.modalAddAccount=window.__env.folder+'/app/modules/admin/modalAddAccount.html'
+	window.__env.modalEditSub=window.__env.folder+'/app/modules/admin/modalEditSub.html'
 	//locale folder
 	window.__env.localeFolderUrl = window.__env.folder+'/app/translations/locale-';
 

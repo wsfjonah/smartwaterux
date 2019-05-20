@@ -42,6 +42,32 @@
                     });
                 }]
             }
+        }).when('/resetPsw', {
+            templateUrl: __env.folder+'/app/modules/admin/resetPsw.html',
+            controller: 'resetPswController as vm',
+            restrictions: {
+                ensureAuthenticated: true,
+                loginRedirect: false
+            },
+            page_params: {
+                key: "resetPsw"
+            },
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        files: [
+                            'assets/css/bootstrap-table.css',
+                            'assets/js/bootstrap-table.min.js',
+                            'app/vendors/bootstrap-table-angular.min.js',
+                            'assets/js/locale/bootstrap-table-zh-CN.min.js',
+                            'assets/js/locale/bootstrap-table-en-US.min.js',
+                            'app/vendors/angular-daterangepicker.min.js',
+                            'app/modules/admin/resetPswCtrl.js'
+                        ]
+                    });
+                }]
+            }
         }).when('/notification', {
                 templateUrl: __env.folder+'/app/modules/admin/notification.html',
                 controller: 'notificationController as vm',
@@ -74,8 +100,35 @@
                         });
                     }]
                 }
-            })
-		.when('/dashboard-info', {
+        }).when('/subscribe', {
+            templateUrl: __env.folder+'/app/modules/admin/subscribe.html',
+            controller: 'subscribeController as vm',
+            restrictions: {
+                ensureAuthenticated: true,
+                loginRedirect: false
+            },
+            page_params: {
+                key: "subscribe"
+            },
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        files: [
+                            'app/modules/admin/subscribeCtrl.js',
+                            'app/modules/admin/modalAddAccountCtrl.js',
+                            'app/modules/admin/modalEditSubCtrl.js',
+                            'assets/css/bootstrap-table.css',
+                            'assets/js/bootstrap-table.min.js',
+                            'app/vendors/bootstrap-table-angular.min.js',
+                            'assets/js/locale/bootstrap-table-zh-CN.min.js',
+                            'assets/js/locale/bootstrap-table-en-US.min.js',
+                        ]
+                    });
+                }]
+            }
+            
+        }).when('/dashboard-info', {
 			templateUrl: __env.folder+'/app/modules/main/main.html',
 			controller: 'mainController as vm',
 			restrictions: {

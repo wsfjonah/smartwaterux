@@ -22,7 +22,7 @@ var app = angular
 	]);
 
 app.constant('__env', env);
-app.controller('layoutCtrl', function layoutCtrl ($scope, $translate, authService, $location, $rootScope, $window) {
+app.controller('layoutCtrl', function layoutCtrl ($scope, $translate,modalService, authService, $location, $rootScope, $window) {
 	var vm = this;
 	var flag_path = __env.folder+"/assets/img/flags/";
 	var default_userInfo = {
@@ -119,6 +119,9 @@ app.controller('layoutCtrl', function layoutCtrl ($scope, $translate, authServic
 		authService.logout();
 		$location.path('/login');
 	};
+    	vm.resetPsw=function () {
+            $location.path('/resetPsw');
+        }
 	$rootScope.$on('$translateChangeSuccess', function(event, data) {
 		$rootScope.lang = data.language;
 		moment.locale(data.language);
