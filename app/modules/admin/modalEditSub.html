@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <h3 class="modal-title" translate="site_user_table_header_Edit_Sub"></h3>
+</div>
+<div class="modal-body canvas-modal">
+    <form action="">
+        <label for="hammer"><input type="checkbox" id="hammer" name="subscribe" value="hammer" ng-checked="vm.hammer">hammer</label>
+        <label for="burst"><input type="checkbox" id="burst" name="subscribe" value="burst" ng-checked="vm.burst">burst</label>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="vm.editSub()">{{ "site_admin_site_table_submit" | translate }}</button>
+            <button type="button" class="btn btn-default" ng-click="$dismiss()">{{ "site_location_modal_close_btn" | translate }}</button>
+        </div>
+    </form>
+</div>

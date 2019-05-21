@@ -42,13 +42,6 @@
         }
         
         function GetRequest(url) {
-            
-            var isAuth=isAuthenticated();   //判断登录状态，退出登录
-            if(isAuth==true){
-                logout();
-                var isauth=isAuthenticated();
-            }
-            
             if (url.indexOf('?') !== -1) {    //判断是否有参数
                 var idx=str.lastIndexOf('\?');
                 str=str.substr(idx+1,str.length);
@@ -74,8 +67,8 @@
         
         
     
-        vm.login=function () {
-            window.location.href='/smartwater/#!/login';
+        vm.toHome=function () {
+            window.location.href='/smartwater/#!/dashboard-info';
         }
         
         

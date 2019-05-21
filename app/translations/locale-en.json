@@ -11,7 +11,7 @@
     "site_menu_user": "User",
     "site_menu_notification": "Notification",
     "site_menu_admin_remote": "Remote Site Information",
-    "site_menu_subscribe": "Subscribe",
+    "site_menu_subscribe": "Alertmgmt",
     "site_menu_main" : "Dashboard",
     "site_admin_site_table_submit" : "Submit",
     "site_admin_site_table_delete" : "Delete",

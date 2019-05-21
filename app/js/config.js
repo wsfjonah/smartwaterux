@@ -100,7 +100,7 @@
                         });
                     }]
                 }
-        }).when('/subscribe', {
+        }).when('/alertmgmt', {
             templateUrl: __env.folder+'/app/modules/admin/subscribe.html',
             controller: 'subscribeController as vm',
             restrictions: {
