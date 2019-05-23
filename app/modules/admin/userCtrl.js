@@ -113,10 +113,10 @@
             if(status=='inactive'){
                 apiService.unlockUserApi(username).then(function (response) {
                     if(!(response.data.message=='success')){
-                        dialogService.alert(null,{content:$translate.instant('site_alert_active_fail')});
+                        dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:$translate.instant('site_alert_active_fail'),ok: $translate.instant('site_login_error_noted')});
                         
                     }else {
-                        dialogService.alert(null,{content:$translate.instant('site_success_label')});
+                        dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:$translate.instant('site_success_label'),ok: $translate.instant('site_login_error_noted')});
                         vm.tableData.length=0;
                         getSiteData();
     
@@ -125,9 +125,9 @@
             }else if(status=='active'){
                 apiService.lockUserApi(username).then(function (response) {
                     if(!(response.data.message=='success')){
-                        dialogService.alert(null,{content:$translate.instant('site_alert_inactive_fail')});
+                        dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:$translate.instant('site_alert_inactive_fail'),ok: $translate.instant('site_login_error_noted')});
                     }else {
-                        dialogService.alert(null,{content:$translate.instant('site_success_label')});
+                        dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:$translate.instant('site_success_label'),ok: $translate.instant('site_login_error_noted')});
                         vm.tableData.length=0;
                         getSiteData();
                     }
@@ -171,7 +171,7 @@
                     }, 500);
                 }
             }).catch(function(/*err*/){
-                dialogService.alert(null,{content: $translate.instant('site_common_something_wrong')});
+                dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content: $translate.instant('site_common_something_wrong'),ok: $translate.instant('site_login_error_noted')});
             });
         }
     

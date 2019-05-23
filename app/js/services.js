@@ -152,19 +152,19 @@
             var hasNum=/[0-9]/;
             var hasSpecialChar="[ _`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]|\n|\r|\t";
             if(!value.match(hasCap)){
-                dialogService.alert(null,{content:'密码需包含大写字母'});
+                dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:'密码需包含大写字母',ok: $translate.instant('site_login_error_noted')});
                 return false;
             }else if(!value.match(hasSm)){
-                dialogService.alert(null,{content:'密码需包含小写字母'});
+                dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:'密码需包含小写字母',ok: $translate.instant('site_login_error_noted')});
                 return false;
             }else if(!value.match(hasNum)){
-                dialogService.alert(null,{content:'密码需包含数字'});
+                dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:'密码需包含数字',ok: $translate.instant('site_login_error_noted')});
                 return false;
             }else if (!(value.match(hasSpecialChar)==null)){
-                dialogService.alert(null,{content:'密码不可包含特殊字符'});
+                dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:'密码不可包含特殊字符',ok: $translate.instant('site_login_error_noted')});
                 return false;
             }else if(value.length<8){
-                dialogService.alert(null,{content:'密码需为8位或以上'});
+                dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:'密码需为8位或以上',ok: $translate.instant('site_login_error_noted')});
                 return false;
             }else {
                 return true

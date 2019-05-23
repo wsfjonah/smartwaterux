@@ -169,7 +169,7 @@ app.config(function ($httpProvider, $translateProvider, $qProvider) {
 			prefix: __env.localeFolderUrl,
 			suffix: '.json'
 		})
-		.preferredLanguage('en')
+		.preferredLanguage('cn')
 		.useLocalStorage()
 		.useSanitizeValueStrategy('escapeParameters'); //without this. warning msg from angularjs about security issue
 

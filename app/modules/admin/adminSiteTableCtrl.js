@@ -220,7 +220,7 @@
 					$('#info_table').bootstrapTable('resetWidth');
 				}, 500);
 			}).catch(function(/*err*/){
-				dialogService.alert(null,{content: $translate.instant('site_common_something_wrong')});
+				dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content: $translate.instant('site_common_something_wrong'),ok: $translate.instant('site_login_error_noted')});
 			});
 		}
 		

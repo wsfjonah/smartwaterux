@@ -21,17 +21,17 @@
                         apiService.resetPswApi(params).then(function (response) {
                             console.log(response);
                             if(response.data.errorCode){
-                                dialogService.alert(null,{content:response.data.errorMsg});
+                                dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:response.data.errorMsg,ok: $translate.instant('site_login_error_noted')});
                             }else {
-                                dialogService.alert(null,{content:'密码修改成功'});
+                                dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:'密码修改成功',ok: $translate.instant('site_login_error_noted')});
                             }
                         });
                     }else {
-                        dialogService.alert(null,{content:'两次密码不一致'});
+                        dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:'两次密码不一致',ok: $translate.instant('site_login_error_noted')});
                     }
                 }
             }else {
-                dialogService.alert(null,{content:'请全部填写'});
+                dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:'请全部填写',ok: $translate.instant('site_login_error_noted')});
             }
             
         };

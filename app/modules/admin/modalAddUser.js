@@ -10,7 +10,7 @@
         
         vm.addUser=function () {
             if(!(vm.username && vm.psw && vm.role && vm.email)){
-                dialogService.alert(null,{content:'请全部填写'});
+                dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:'请全部填写',ok: $translate.instant('site_login_error_noted')});
                 return false;
             }else {
                 var userPswMatch = commonService.userPswMatch(vm.psw);
@@ -25,10 +25,10 @@
                     };
                     apiService.addUserApi(params).then(function (response) {
                         if(!(response.data.message=='success')){
-                            dialogService.alert(null,{content:'添加用户失败!'+response.data.errorMsg});
+                            dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:'添加用户失败!'+response.data.errorMsg,ok: $translate.instant('site_login_error_noted')});
                             return false;
                         }else {
-                            dialogService.alert(null,{content:$translate.instant('site_success_label')});
+                            dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:$translate.instant('site_success_label'),ok: $translate.instant('site_login_error_noted')});
                             window.location.reload();
                         }
                     });

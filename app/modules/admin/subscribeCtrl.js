@@ -79,7 +79,7 @@
             }
             apiService.activeAccountApi(params).then(function (response) {
                 if(response.data.errorCode){
-                    dialogService.alert(null,{content:response.data.errorMsg});
+                    dialogService.alert(null,{title: $translate.instant('site_menu_notification'),content:response.data.errorMsg,ok: $translate.instant('site_login_error_noted')});
                 }else {
                     window.location.reload();
                 }
