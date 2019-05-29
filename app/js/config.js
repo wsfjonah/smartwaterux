@@ -129,26 +129,51 @@
             }
             
         }).when('/dashboard-info', {
-			templateUrl: __env.folder+'/app/modules/main/main.html',
-			controller: 'mainController as vm',
-			restrictions: {
-				ensureAuthenticated: true,
-				loginRedirect: false
-			},
-			page_params: {
-				key: "dashboard"
-			},
-			resolve: {
-				loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-					return $ocLazyLoad.load({
-						serie: true,
-						files: [
-							'app/modules/main/mainCtrl.js'
-						]
-					});
-				}]
-			}
-		})
+            templateUrl: __env.folder+'/app/modules/main/main.html',
+            controller: 'mainController as vm',
+            restrictions: {
+                ensureAuthenticated: true,
+                loginRedirect: false
+            },
+            page_params: {
+                key: "dashboard"
+            },
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        files: [
+                            'app/modules/main/mainCtrl.js'
+                        ]
+                    });
+                }]
+            }
+        }).when('/analysis-report', {
+            templateUrl: __env.folder+'/app/modules/main/analysisReport.html',
+            controller: 'analysisReportController as vm',
+            restrictions: {
+                ensureAuthenticated: true,
+                loginRedirect: false
+            },
+            page_params: {
+                key: "analysisReport"
+            },
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        files: [
+                            'app/modules/main/analysisReportCtrl.js',
+                            'assets/css/bootstrap-table.css',
+                            'assets/js/bootstrap-table.min.js',
+                            'app/vendors/bootstrap-table-angular.min.js',
+                            'assets/js/locale/bootstrap-table-zh-CN.min.js',
+                            'assets/js/locale/bootstrap-table-en-US.min.js',
+                        ]
+                    });
+                }]
+            }
+        })
 		.when('/dashboard-network', {
 			templateUrl: __env.folder+'/app/modules/main/network.html',
 			controller: 'dashboardNetworkController as vm',

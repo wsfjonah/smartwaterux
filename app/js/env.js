@@ -39,6 +39,9 @@
     window.__env.checkVerificationCodeUrl=window.__env.baseUrl+'alert/checkverificationcode';
     window.__env.checkUsernameUrl=window.__env.baseUrl+'user/checkusername';
     window.__env.resetPasswordUrl=window.__env.baseUrl+'user/updatepassword';
+    window.__env.getReportsDirsUrl=window.__env.baseUrl+'report/ns/dirs';
+    window.__env.getDiridUrl=window.__env.baseUrl+'report/ns/dir';
+    window.__env.downLoadReportUrl=window.__env.baseUrl+'report/ns/file';
     
     //event used - e.g. tag
 	window.__env.eventSetUrl = window.__env.baseUrl+'tsevent/set';

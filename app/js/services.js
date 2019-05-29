@@ -268,7 +268,27 @@
 				headers: headers
 			});
 		};
-
+        this.getReportsDirsApi=function () {
+            return $http({
+                method:'GET',
+                url: __env.getReportsDirsUrl,
+                headers:headers
+            })
+        }
+        this.getDiridApi=function (id) {
+            return $http({
+                method:'GET',
+                url:__env.getDiridUrl+"/"+id,
+                headers:headers
+            })
+        }
+        this.downLoadReportApi=function (id) {
+            return $http({
+                method:'GET',
+                url:__env.downLoadReportUrl+"/"+id,
+                headers: {'Content-Type':'application/json; charset=UTF-8'}
+            })
+        }
 		this.batchTimeSeriesApi = function(params, extraPath){
 			var defaultParams = {
 				datapoints: "",
